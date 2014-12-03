@@ -1,0 +1,89 @@
+<!doctype html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
+<head>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/less" href="styles/main.less">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
+</head>
+<body ng-app="petclinicApp">
+<!--[if lt IE 7]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<div class="container">
+    <div class="header">
+        <ul class="nav nav-pills pull-right">
+            <li><a ng-href="#">Welcome</a></li>
+            <li><a ng-href="#/about">About</a></li>
+            <li><a ng-href="#/sandbox">Sandbox</a></li>
+        </ul>
+        <h3 class="text-muted">DRY_app Template</h3>
+    </div>
+    <div ng-view=""></div>
+    <ui-view></ui-view>
+
+    <div class="footer">
+        <p><span class="glyphicon glyphicon-heart"></span> from the generator team!!!</p>
+    </div>
+</div>
+
+<!-- build:js components/oldieshim.js -->
+<!--[if lt IE 9]>
+<script src="bower_components/es5-shim/es5-shim.js"></script>
+<script src="bower_components/json3/lib/json3.min.js"></script>
+<![endif]-->
+<!-- endbuild -->
+
+<!-- build:js components/vendor.js -->
+<!-- bower:js -->
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-messages/angular-messages.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="bower_components/angular-translate/angular-translate.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="bower_components/angular-material/angular-material.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+
+<!--build:js({.tmp,app}) components/components.js -->
+<script src="app.js"></script>
+<script src="utils/translations.js"></script>
+
+<!-- Services -->
+<script src="services/apiErrorHandlerService.js"></script>
+<script src="services/apiService.js"></script>
+<script src="services/apiMockService.js"></script>
+<script src="services/apiProvider.js"></script>
+
+<!-- Widgets -->
+<script src="widgets/signUpForm.js"></script>
+<script src="widgets/signInForm.js"></script>
+<script src="widgets/signOutForm.js"></script>
+<script src="widgets/userRoleDropDown.js"></script>
+<script src="widgets/allUsersDropDown.js"></script>
+<script src="widgets/createUserForm.js"></script>
+<script src="widgets/updateUserForm.js"></script>
+<script src="widgets/userView.js"></script>
+<script src="widgets/allUsersListView.js"></script>
+<script src="widgets/allUsersListViewListViewItem.js"></script>
+
+<!-- Pages-->
+<script src="pages/welcomeController.js"></script>
+<script src="pages/controlsSandBoxController.js"></script>
+
+<!-- endbuild -->
+</body>
+</html>

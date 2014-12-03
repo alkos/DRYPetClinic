@@ -1,0 +1,8 @@
+<div class="form-horizontal">
+    <select name="{{name}}" class="form-control" ng-required="required === 'true'" ng-model="selectedUserId"
+            data-ng-options="item.id as item.username for item in ctrl.viewModel.users" ng-disabled="ctrl.viewModel.isLoading">
+        <option ng-if="ctrl.viewModel.hasNullValue === true" value>{{config.nullValueLocalizationKey | translate}}</option>
+    </select>
+
+    <div ng-if="ctrl.viewModel.isLoading" class="glyphicon glyphicon-download"></div>
+</div>

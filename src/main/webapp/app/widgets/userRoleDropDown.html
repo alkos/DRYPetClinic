@@ -1,0 +1,4 @@
+<select name="{{name}}" class="form-control" ng-required="required === 'true'" ng-model="ctrl.viewModel.selectedUserRole"
+        data-ng-options="item | translate for item in ctrl.viewModel.userRoles" ng-disabled="disabled === 'true'">
+    <option ng-if="ctrl.viewModel.hasNullValue" value>{{nullValueLocalizationKey | translate}}</option>
+</select>

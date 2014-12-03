@@ -1,0 +1,55 @@
+(function () {
+    'use strict';
+
+    angular.module('petclinicApp').config(function ($translateProvider) {
+        $translateProvider.translations('en', {
+            WELCOME: 'Welcome to DRY Generator',
+            SIGNUPFORM_PASSWORD_HASH_MINLENGTH: 'PasswordHash max size is {{minlength}}.',
+            SIGNUPFORM_USERNAME_REQUIRED: 'Username is required.',
+            SIGNUPFORM_USERNAME_MAXLENGTH: 'Username max size is {{maxlength}}.',
+            SIGNUPFORM_PASSWORD_HASH_REQUIRED: 'PasswordHash is required.',
+            SIGNUPFORM_USERNAME: 'username',
+            SIGNUPFORM_PASSWORD_HASH_MAXLENGTH: 'PasswordHash max size is {{maxlength}}.',
+            SIGNUPFORM_SUBMIT: 'Submit',
+            SIGNUPFORM_PASSWORD_HASH: 'passwordHash',
+            SIGNUPFORM_USERNAME_MINLENGTH: 'Username max size is {{minlength}}.',
+            SIGNINFORM_PASSWORD_HASH_MINLENGTH: 'PasswordHash max size is {{minlength}}.',
+            SIGNINFORM_SUBMIT: 'Submit',
+            SIGNINFORM_PASSWORD_HASH: 'passwordHash',
+            SIGNINFORM_PASSWORD_HASH_REQUIRED: 'PasswordHash is required.',
+            SIGNINFORM_USERNAME_MAXLENGTH: 'Username max size is {{maxlength}}.',
+            SIGNINFORM_USERNAME: 'username',
+            SIGNINFORM_PASSWORD_HASH_MAXLENGTH: 'PasswordHash max size is {{maxlength}}.',
+            SIGNINFORM_USERNAME_MINLENGTH: 'Username max size is {{minlength}}.',
+            SIGNINFORM_USERNAME_REQUIRED: 'Username is required.',
+            SIGNOUTFORM_SUBMIT: 'Submit',
+            USERROLEDROPDOWN_ADMIN: 'Admin',
+            USERROLEDROPDOWN_USER: 'User',
+            USERROLEDROPDOWN_SELECT_ONE: 'Select one',
+            CREATEUSERFORM_SUBMIT: 'Submit',
+            CREATEUSERFORM_USERNAME_MAXLENGTH: 'Username max size is {{maxlength}}.',
+            CREATEUSERFORM_PASSWORD_REQUIRED: 'Password is required.',
+            CREATEUSERFORM_PASSWORD: 'password',
+            CREATEUSERFORM_USERNAME_MINLENGTH: 'Username max size is {{minlength}}.',
+            CREATEUSERFORM_USERNAME: 'username',
+            CREATEUSERFORM_PASSWORD_MAXLENGTH: 'Password max size is {{maxlength}}.',
+            CREATEUSERFORM_PASSWORD_MINLENGTH: 'Password max size is {{minlength}}.',
+            CREATEUSERFORM_USERNAME_REQUIRED: 'Username is required.',
+            UPDATEUSERFORM_PASSWORD: 'password',
+            UPDATEUSERFORM_SUBMIT: 'Submit',
+            UPDATEUSERFORM_ROLE: 'role',
+            UPDATEUSERFORM_ID: 'id',
+            UPDATEUSERFORM_ROLE_REQUIRED: 'Role is required.',
+            UPDATEUSERFORM_PASSWORD_MINLENGTH: 'Password max size is {{minlength}}.',
+            UPDATEUSERFORM_PASSWORD_MAXLENGTH: 'Password max size is {{maxlength}}.',
+            UPDATEUSERFORM_ID_REQUIRED: 'Id is required.',
+            USERVIEW_ID: 'id',
+            USERVIEW_ROLE: 'role',
+            USERVIEW_USERNAME: 'username',
+            ALLUSERSLISTVIEWLISTVIEWITEM_ID: 'id',
+            ALLUSERSLISTVIEWLISTVIEWITEM_USERNAME: 'username',
+            ALLUSERSLISTVIEWLISTVIEWITEM_ROLE: 'role'
+        });
+        $translateProvider.preferredLanguage('en');
+    });
+})();

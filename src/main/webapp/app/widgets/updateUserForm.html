@@ -1,0 +1,37 @@
+<form name="updateUserForm" role="form" novalidate ng-submit="ctrl.viewModel.onSubmit()">
+
+    <div class="form-group">
+        <label for="id">{{'UPDATEUSERFORM_ID' | translate}}</label>
+        <input type="number" id="id" class="form-control" name="id" ng-model="ctrl.viewModel.user.id"
+               ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0 } }"
+               placeholder="{{'UPDATEUSERFORM_ID' | translate}}"
+                 required>
+
+        <div ng-messages="updateUserForm.id.$error" ng-if="updateUserForm.id.$touched">
+            <div ng-message="required">{{'UPDATEUSERFORM_ID_REQUIRED' | translate}}</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{'UPDATEUSERFORM_ROLE' | translate}}</label>
+        <user-role-drop-down name="role" selected="ctrl.viewModel.user.role"
+        required></user-role-drop-down>
+
+        <div ng-messages="updateUserForm.role.$error" ng-if="updateUserForm.role.$touched">
+            <div ng-message="required">{{'UPDATEUSERFORM_ROLE_REQUIRED' | translate}}</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="password">{{'UPDATEUSERFORM_PASSWORD' | translate}}</label>
+        <input type="text" id="password" class="form-control" name="password" ng-model="ctrl.viewModel.user.password"
+               ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0 } }"
+               placeholder="{{'UPDATEUSERFORM_PASSWORD' | translate}}"
+               minlength="0" maxlength="1024" >
+
+        <div ng-messages="updateUserForm.password.$error" ng-if="updateUserForm.password.$touched">
+            <div ng-message="minlength">{{'UPDATEUSERFORM_PASSWORD_MINLENGTH' | translate:'{ minlength: 0 }'}}</div>
+            <div ng-message="maxlength">{{'UPDATEUSERFORM_PASSWORD_MAXLENGTH' | translate:'{ maxlength: 1024 }'}}</div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-default" ng-disabled="updateUserForm.$invalid">{{'UPDATEUSERFORM_SUBMIT' | translate}}</button>
+</form>
