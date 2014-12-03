@@ -3,58 +3,34 @@
         return {
             restrict: 'E',
             scope: {
-                selectedUser: '=?',
-                config: '='
+                users: '=',
+                selectedUser: '=?'
             },
             templateUrl: 'widgets/usersListView.html',
             controller: 'UsersListViewController',
             controllerAs: 'ctrl'
         }
-    }).controller('UsersListViewController', ['$scope', 'api', function ($scope, api) {
-        var ctrl = this;
-
-        this.viewModel = {
-            users: [],
+    }).controller('UsersListViewController', ['$scope', function ($scope) {
+        this.model = {
+            users: $scope.users,
             selectedUser: null,
             onUserClicked: onUserClicked
         };
 
         function onUserClicked(item) {
-            selectUser(item);
-        };
-
-        function selectUser(model) {
-            if (ctrl.viewModel.selectedUser !== null) {
-                ctrl.viewModel.selectedUser.isSelected = false;
+            if (this.selectedUser !== null) {
+                this.selectedUser.selected = false;
             }
 
-            if (ctrl.viewModel.selectedUser !== model) {
-                model.isSelected = true;
-                ctrl.viewModel.selectedUser = model;
-                $scope.selectedUser = ctrl.viewModel.selectedUser.model;
+            if (this.selectedUser !== item) {
+                item.selected = true;
+                this.selectedUser = item;
+                $scope.selectedUser = this.selectedUser.model;
             } else {
-                ctrl.viewModel.selectedUser = null;
+                this.selectedUser = null;
                 $scope.selectedUser = null;
             }
         };
 
-        function onApiSuccess(data) {
-            angular.forEach(data, addUser);
-        };
-
-        function addUser(dataItem) {
-            var newModel = {
-                model: dataItem,
-                isSelected: false
-            };
-
-            ctrl.viewModel.users.push(newModel);
-
-            if ($scope.config.initialSelectedId && $scope.config.initialSelectedId === dataItem.id) {
-                selectUser(newModel);
-            }
-        };
-
-        api.users($scope.config.from, $scope.config.maxRowCount, onApiSuccess);
     }]);
 })();

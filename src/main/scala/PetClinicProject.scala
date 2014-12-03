@@ -72,14 +72,15 @@ object PetClinicProject extends Project("eu.execom.dry", "petclinic") {
 
   //WEB
   val roleEnumDropDown = web.enumDropDown(userRoleEnum)
-  val usersDropDown = web.apiDropDown(allUsersApi, userId.name, userUsername.name, "user")
+  val usersDropDown = web.apiDropDown(allUsersApi, userId.name, userUsername.name, "user", Some("usersApiDropDown"))
 
-  val createUserForm = web.apiForm(userCrudApi.create, "user")
-  val updateUserForm = web.apiForm(userCrudApi.update, "user")
+  val createUserForm = web.apiForm(userCrudApi.create, "user",Some("userCreateApiForm"))
+  val updateUserForm = web.dtoForm(userCrudApi.update.requestDto.get, "user", Some("userUpdateForm"))
 
   val userView = web.view(userCrudApi.read.responseDto.get, "user")
 
-  val userListView = web.apiListView(allUsersApi, "user")
+  val userApiListView = web.apiListView(allUsersApi, "user", Some("usersApiListView"))
+  val userListView = web.listView(allUsersApi.responseDto.get, "user", Some("usersListView"))
 
   def main(args: Array[String]) {
     generate()
