@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('petclinicApp').directive('allUsersDropDown', function () {
+    angular.module('petclinicApp').directive('usersDropDown', function () {
         return {
             restrict: 'E',
             scope: {
@@ -10,8 +10,8 @@
                 selectedUserId: '=',
                 config: '='
             },
-            templateUrl: "widgets/allUsersDropDown.html",
-            controller: 'AllUsersDropDownController',
+            templateUrl: "widgets/usersDropDown.html",
+            controller: 'UsersDropDownController',
             controllerAs: 'ctrl',
             compile: function (element, attrs) {
                 if (attrs.required === '') {
@@ -19,9 +19,9 @@
                 }
             }
         }
-    }).constant('allUsersDropDownConfig', {
+    }).constant('usersDropDownConfig', {
         defaultEmptyItemLocalizationKey: 'SELECT_ONE'
-    }).controller('AllUsersDropDownController', ['$scope', 'api', 'allUsersDropDownConfig', function ($scope, api, allUsersDropDownConfig) {
+    }).controller('UsersDropDownController', ['$scope', 'api', 'usersDropDownConfig', function ($scope, api, usersDropDownConfig) {
         var ctrl = this;
 
         this.viewModel = {
@@ -51,9 +51,9 @@
         }
 
         if (!$scope.config.nullValueLocalizationKey || $scope.config.nullValueLocalizationKey === '') {
-            $scope.config.nullValueLocalizationKey = allUsersDropDownConfig.defaultEmptyItemLocalizationKey;
+            $scope.config.nullValueLocalizationKey = usersDropDownConfig.defaultEmptyItemLocalizationKey;
         }
 
-        api.allUsers($scope.config.from, $scope.config.maxRowCount, apiSuccessCallback, apiErrorCallback);
+        api.users($scope.config.from, $scope.config.maxRowCount, apiSuccessCallback, apiErrorCallback);
     }]);
 })();

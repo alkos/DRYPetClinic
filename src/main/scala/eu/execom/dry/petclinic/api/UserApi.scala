@@ -63,14 +63,14 @@ class UserApi(val userDao: UserDao, val userService: UserService, val securedSer
     }
   }
 
-  def allUsers(requestDto: AllUsersDto, authenticationCode: String)(implicit slickSession: SlickSession): Try[SearchResultDto[AllUsersResponseDto]] = Try {
+  def users(requestDto: UsersDto, authenticationCode: String)(implicit slickSession: SlickSession): Try[SearchResultDto[UsersResponseDto]] = Try {
     secure(authenticationCode) { implicit user: User =>
-      logger.trace(s".allUsers(requestDto: $requestDto, authenticationCode: $authenticationCode)")
+      logger.trace(s".users(requestDto: $requestDto, authenticationCode: $authenticationCode)")
 
       val result: List[User] = userDao.findAllPaged(requestDto.from, requestDto.maxRowCount)
 
       new SearchResultDto(
-        result.map(r => new AllUsersResponseDto(r.id, r.username, r.role)),
+        result.map(r => new UsersResponseDto(r.id, r.username, r.role)),
         userDao.countAll())
     }
   }
@@ -106,16 +106,16 @@ object UpdateUserDto {
   val PASSWORD: String = "password"
 }
 
-case class AllUsersDto(from: Int, maxRowCount: Int)
+case class UsersDto(from: Int, maxRowCount: Int)
 
-object AllUsersDto {
+object UsersDto {
   val FROM: String = "from"
   val MAXROWCOUNT: String = "maxRowCount"
 }
 
-case class AllUsersResponseDto(id: Int, username: String, role: UserRole)
+case class UsersResponseDto(id: Int, username: String, role: UserRole)
 
-object AllUsersResponseDto {
+object UsersResponseDto {
   val ID: String = "id"
   val USERNAME: String = "username"
   val ROLE: String = "role"

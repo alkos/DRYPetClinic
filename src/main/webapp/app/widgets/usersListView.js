@@ -1,16 +1,16 @@
 (function () {
-    angular.module('petclinicApp').directive('allUsersListView', function () {
+    angular.module('petclinicApp').directive('usersListView', function () {
         return {
             restrict: 'E',
             scope: {
                 selectedUser: '=?',
                 config: '='
             },
-            templateUrl: 'widgets/allUsersListView.html',
-            controller: 'AllUsersListViewController',
+            templateUrl: 'widgets/usersListView.html',
+            controller: 'UsersListViewController',
             controllerAs: 'ctrl'
         }
-    }).controller('AllUsersListViewController', ['$scope', 'api', function ($scope, api) {
+    }).controller('UsersListViewController', ['$scope', 'api', function ($scope, api) {
         var ctrl = this;
 
         this.viewModel = {
@@ -55,6 +55,6 @@
             }
         };
 
-        api.allUsers($scope.config.from, $scope.config.maxRowCount, onApiSuccess);
+        api.users($scope.config.from, $scope.config.maxRowCount, onApiSuccess);
     }]);
 })();

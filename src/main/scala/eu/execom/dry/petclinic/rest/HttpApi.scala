@@ -89,7 +89,7 @@ class HttpApi(val slickDb: Database, val authenticationApi: AuthenticationApi, v
       logger.trace("MaxRowCount:" + maxRowCount)
       val authenticationCode: String = securityToken
 
-      val response = userApi.allUsers(new AllUsersDto(from, maxRowCount), authenticationCode).get
+      val response = userApi.users(new UsersDto(from, maxRowCount), authenticationCode).get
       logger.trace(s"Response: $response")
       response
     }

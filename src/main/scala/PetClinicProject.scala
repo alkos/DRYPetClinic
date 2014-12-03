@@ -64,7 +64,7 @@ object PetClinicProject extends Project("eu.execom.dry", "petclinic") {
     new CrudProperty("password", userPassword).optionalUpdate.noOverview
   ).roleSecured(ADMIN).rest()
 
-  val allUsersApi = userAPI.pagedFind("allUsers",
+  val allUsersApi = userAPI.pagedFind("users",
     user.query.
       response(userId).
       response(userUsername).

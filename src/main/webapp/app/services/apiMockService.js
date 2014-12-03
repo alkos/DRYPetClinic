@@ -77,16 +77,16 @@
             });
         };
 
-        /** AllUsers (secured)
+        /** Users (secured)
          *
          * Api URL: /api/users?from:Int&maxRowCount:Int
-         *"Request": AllUsersDto {
+         *"Request": UsersDto {
          *    "from": Int,
          *    "maxRowCount": Int
          *}
-         *"Response": SearchResultDto[AllUsersResponseDto]
+         *"Response": SearchResultDto[UsersResponseDto]
          */
-        this.allUsers = function (from, maxRowCount, model, successCallback, errorCallback) {
+        this.users = function (from, maxRowCount, model, successCallback, errorCallback) {
             successCallback({
                 //TODO fill up mocked data values
             });

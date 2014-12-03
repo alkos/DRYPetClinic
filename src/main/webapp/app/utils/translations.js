@@ -46,9 +46,9 @@
             USERVIEW_ID: 'id',
             USERVIEW_ROLE: 'role',
             USERVIEW_USERNAME: 'username',
-            ALLUSERSLISTVIEWLISTVIEWITEM_ID: 'id',
-            ALLUSERSLISTVIEWLISTVIEWITEM_USERNAME: 'username',
-            ALLUSERSLISTVIEWLISTVIEWITEM_ROLE: 'role'
+            USERSLISTVIEWITEM_ID: 'id',
+            USERSLISTVIEWITEM_USERNAME: 'username',
+            USERSLISTVIEWITEM_ROLE: 'role'
         });
         $translateProvider.preferredLanguage('en');
     });
