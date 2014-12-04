@@ -36,6 +36,8 @@ class AppConfiguration extends LifeCycle with ApiConfiguration {
   lazy val mysqlPrepStmtCacheSize: String = properties.getProperty("mysql.prepStmtCacheSize")
   lazy val mysqlPrepStmtCacheSqlLimit: String = properties.getProperty("mysql.prepStmtCacheSqlLimit")
   lazy val mysqlUseServerPrepStmts: String = properties.getProperty("mysql.useServerPrepStmts")
+  lazy val hazelcastGroupName: String = properties.getProperty("hazelcast.group.name")
+  lazy val hazelcastGroupPassword: String = properties.getProperty("hazelcast.group.password")
   lazy val smtpUrl: String = properties.getProperty("smtp.url")
   lazy val smtpPort: String = properties.getProperty("smtp.port")
   lazy val smtpUserName: String = properties.getProperty("smtp.username")

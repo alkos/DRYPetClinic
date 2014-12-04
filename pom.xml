@@ -101,6 +101,13 @@
             <scope>test</scope>
         </dependency>
 
+		<!-- Hazelcast -->
+		<dependency>
+			<groupId>com.hazelcast</groupId>
+			<artifactId>hazelcast</artifactId>
+			<version>3.3</version>
+		</dependency>
+
         <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
