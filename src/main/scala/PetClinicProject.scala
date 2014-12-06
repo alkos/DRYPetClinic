@@ -72,11 +72,18 @@ object PetClinicProject extends Project("eu.execom.dry", "petclinic") {
       response(userUsername).
       response(userRole)).secured.restGet("users")
 
+  val adminUsersApi = userAPI.pagedFind("adminUsers",
+    user.query.
+      equals("role", userRole, Some(ADMIN)).
+      response(userId).
+      response(userUsername).
+      response(userRole)).secured.restGet("adminUsers")
+
   //WEB
   val roleEnumDropDown = web.enumDropDown(userRoleEnum)
   val usersDropDown = web.apiDropDown(allUsersApi, userId.name, userUsername.name, "user", Some("usersApiDropDown"))
 
-  val createUserForm = web.apiForm(userCrudApi.create, "user",Some("userCreateApiForm"))
+  val createUserForm = web.apiForm(userCrudApi.create, "user", Some("userCreateApiForm"))
   val updateUserForm = web.dtoForm(userCrudApi.update.requestDto.get, "user", Some("userUpdateForm"))
 
   val userView = web.view(userCrudApi.read.responseDto.get, "user")

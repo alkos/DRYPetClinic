@@ -129,6 +129,30 @@
             });
         };
 
+        /** AdminUsers (secured)
+         *
+         * Api URL: /api/adminUsers?from:Int&maxRowCount:Int
+         *"Request": AdminUsersDto {
+         *    "from": Int,
+         *    "maxRowCount": Int
+         *}
+         *"Response": SearchResultDto[AdminUsersResponseDto]
+         */
+        this.adminUsers = function (from, maxRowCount, model, successCallback, errorCallback) {
+            $http({
+                method: 'GET',
+                url: '/api/adminUsers',
+                params: {
+                    from: from,
+                    maxRowCount: maxRowCount
+                }
+            }).success(function (data) {
+                successCallback(data);
+            }).error(function (data, header, status, config) {
+                apiErrorHandlerService(data, header, status, config, errorCallback);
+            });
+        };
+
         /** SignUp
          *
          * Api URL: /api/signUp?

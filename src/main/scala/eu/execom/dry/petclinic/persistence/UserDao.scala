@@ -13,14 +13,18 @@ import scala.slick.jdbc.JdbcBackend.{Session => SlickSession}
 
 case class User(private var _id: Int, private var _authenticationCode: Option[String], private var _role: String, private var _username: String, private var _passwordHash: String) {
 
-  var id_persisted: Int = id
+  private var id_persisted: Int = id
+  def idPersisted: Int = id_persisted
+
   def id: Int = _id
   def id_=(newId: Int)(implicit session: SlickSession): Any = if (newId != id) {
 
     _id = newId
   }
 
-  var authenticationCode_persisted: Option[String] = authenticationCode
+  private var authenticationCode_persisted: Option[String] = authenticationCode
+  def authenticationCodePersisted: Option[String] = authenticationCode_persisted
+
   def authenticationCode: Option[String] = _authenticationCode
   def authenticationCode_=(newAuthenticationCode: Option[String])(implicit session: SlickSession): Any = if (newAuthenticationCode != authenticationCode) {
     if (newAuthenticationCode.isDefined) {
@@ -31,7 +35,9 @@ case class User(private var _id: Int, private var _authenticationCode: Option[St
     _authenticationCode = newAuthenticationCode
   }
 
-  var role_persisted: UserRole = role
+  private var role_persisted: UserRole = role
+  def rolePersisted: UserRole = role_persisted
+
   def role: UserRole = UserRole.withName(_role)
   def role_=(newRole: UserRole)(implicit session: SlickSession): Any = if (newRole != role) {
 
@@ -40,7 +46,9 @@ case class User(private var _id: Int, private var _authenticationCode: Option[St
     _role = newRole.name
   }
 
-  var username_persisted: String = username
+  private var username_persisted: String = username
+  def usernamePersisted: String = username_persisted
+
   def username: String = _username
   def username_=(newUsername: String)(implicit session: SlickSession): Any = if (newUsername != username) {
 
@@ -52,7 +60,9 @@ case class User(private var _id: Int, private var _authenticationCode: Option[St
     _username = newUsername
   }
 
-  var passwordHash_persisted: String = passwordHash
+  private var passwordHash_persisted: String = passwordHash
+  def passwordHashPersisted: String = passwordHash_persisted
+
   def passwordHash: String = _passwordHash
   def passwordHash_=(newPasswordHash: String)(implicit session: SlickSession): Any = if (newPasswordHash != passwordHash) {
 
@@ -252,6 +262,24 @@ class UserDao extends GenericSlickDao[User] {
     var query: Query[Users, Users#TableElementType, Seq] = TableQuery[Users]
 
     query.drop(from).take(maxRowCount).list
+  }
+
+  def findByRoleIsAdminPaged(from: Int, maxRowCount: Int)(implicit session: SlickSession): List[User] = {
+    logger.trace(s".findByRoleIsAdminPaged(from: $from, maxRowCount: $maxRowCount)")
+
+    var query: Query[Users, Users#TableElementType, Seq] = TableQuery[Users]
+    query = query.filter(_.role === UserRole.ADMIN.name)
+
+    query.drop(from).take(maxRowCount).list
+  }
+
+  def countByRoleIsAdmin()(implicit session: SlickSession): Int = {
+    logger.trace(s".countByRoleIsAdmin()")
+
+    var query: Query[Users, Users#TableElementType, Seq] = TableQuery[Users]
+    query = query.filter(_.role === UserRole.ADMIN.name)
+
+    query.length.run
   }
 
 }

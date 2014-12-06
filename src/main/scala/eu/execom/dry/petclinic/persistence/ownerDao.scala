@@ -13,14 +13,18 @@ import scala.slick.jdbc.JdbcBackend.{Session => SlickSession}
 
 case class owner(private var _id: Int, private var _firstName: String, private var _lastName: String, private var _address: String, private var _city: String, private var _telephone: String) {
 
-  var id_persisted: Int = id
+  private var id_persisted: Int = id
+  def idPersisted: Int = id_persisted
+
   def id: Int = _id
   def id_=(newId: Int)(implicit session: SlickSession): Any = if (newId != id) {
 
     _id = newId
   }
 
-  var firstName_persisted: String = firstName
+  private var firstName_persisted: String = firstName
+  def firstNamePersisted: String = firstName_persisted
+
   def firstName: String = _firstName
   def firstName_=(newFirstName: String)(implicit session: SlickSession): Any = if (newFirstName != firstName) {
 
@@ -31,7 +35,9 @@ case class owner(private var _id: Int, private var _firstName: String, private v
     _firstName = newFirstName
   }
 
-  var lastName_persisted: String = lastName
+  private var lastName_persisted: String = lastName
+  def lastNamePersisted: String = lastName_persisted
+
   def lastName: String = _lastName
   def lastName_=(newLastName: String)(implicit session: SlickSession): Any = if (newLastName != lastName) {
 
@@ -42,7 +48,9 @@ case class owner(private var _id: Int, private var _firstName: String, private v
     _lastName = newLastName
   }
 
-  var address_persisted: String = address
+  private var address_persisted: String = address
+  def addressPersisted: String = address_persisted
+
   def address: String = _address
   def address_=(newAddress: String)(implicit session: SlickSession): Any = if (newAddress != address) {
 
@@ -53,7 +61,9 @@ case class owner(private var _id: Int, private var _firstName: String, private v
     _address = newAddress
   }
 
-  var city_persisted: String = city
+  private var city_persisted: String = city
+  def cityPersisted: String = city_persisted
+
   def city: String = _city
   def city_=(newCity: String)(implicit session: SlickSession): Any = if (newCity != city) {
 
@@ -64,7 +74,9 @@ case class owner(private var _id: Int, private var _firstName: String, private v
     _city = newCity
   }
 
-  var telephone_persisted: String = telephone
+  private var telephone_persisted: String = telephone
+  def telephonePersisted: String = telephone_persisted
+
   def telephone: String = _telephone
   def telephone_=(newTelephone: String)(implicit session: SlickSession): Any = if (newTelephone != telephone) {
 

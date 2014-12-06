@@ -92,6 +92,21 @@
             });
         };
 
+        /** AdminUsers (secured)
+         *
+         * Api URL: /api/adminUsers?from:Int&maxRowCount:Int
+         *"Request": AdminUsersDto {
+         *    "from": Int,
+         *    "maxRowCount": Int
+         *}
+         *"Response": SearchResultDto[AdminUsersResponseDto]
+         */
+        this.adminUsers = function (from, maxRowCount, model, successCallback, errorCallback) {
+            successCallback({
+                //TODO fill up mocked data values
+            });
+        };
+
         /** SignUp
          *
          * Api URL: /api/signUp?

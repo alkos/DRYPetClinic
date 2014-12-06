@@ -13,21 +13,27 @@ import scala.slick.jdbc.JdbcBackend.{Session => SlickSession}
 
 case class VetSpecialties(private var _id: Int, private var _vetId: Int, private var _specialtyId: Int) {
 
-  var id_persisted: Int = id
+  private var id_persisted: Int = id
+  def idPersisted: Int = id_persisted
+
   def id: Int = _id
   def id_=(newId: Int)(implicit session: SlickSession): Any = if (newId != id) {
 
     _id = newId
   }
 
-  var vetId_persisted: Int = vetId
+  private var vetId_persisted: Int = vetId
+  def vetIdPersisted: Int = vetId_persisted
+
   def vetId: Int = _vetId
   def vetId_=(newVetId: Int)(implicit session: SlickSession): Any = if (newVetId != vetId) {
 
     _vetId = newVetId
   }
 
-  var specialtyId_persisted: Int = specialtyId
+  private var specialtyId_persisted: Int = specialtyId
+  def specialtyIdPersisted: Int = specialtyId_persisted
+
   def specialtyId: Int = _specialtyId
   def specialtyId_=(newSpecialtyId: Int)(implicit session: SlickSession): Any = if (newSpecialtyId != specialtyId) {
 

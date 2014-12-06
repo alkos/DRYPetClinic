@@ -13,14 +13,18 @@ import scala.slick.jdbc.JdbcBackend.{Session => SlickSession}
 
 case class PetType(private var _id: Int, private var _name: String) {
 
-  var id_persisted: Int = id
+  private var id_persisted: Int = id
+  def idPersisted: Int = id_persisted
+
   def id: Int = _id
   def id_=(newId: Int)(implicit session: SlickSession): Any = if (newId != id) {
 
     _id = newId
   }
 
-  var name_persisted: String = name
+  private var name_persisted: String = name
+  def namePersisted: String = name_persisted
+
   def name: String = _name
   def name_=(newName: String)(implicit session: SlickSession): Any = if (newName != name) {
 

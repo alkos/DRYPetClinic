@@ -24,8 +24,8 @@ class AuthenticationApi(val userDao: UserDao, val securedService: SecuredService
   }
 
   def signOut(authenticationCode: String)(implicit slickSession: SlickSession): Try[Unit] = Try {
+    logger.trace(s".signOut(authenticationCode: $authenticationCode)")
     secure(authenticationCode) { implicit user: User =>
-      logger.trace(s".signOut(authenticationCode: $authenticationCode)")
 
       securedService.signOut(authenticationCode)
     }

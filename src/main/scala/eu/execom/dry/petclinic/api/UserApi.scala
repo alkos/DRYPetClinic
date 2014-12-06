@@ -10,8 +10,8 @@ import scala.util._
 class UserApi(val userDao: UserDao, val userService: UserService, val securedService: SecuredService) extends SecuredApi with Logging {
 
   def readUser(requestDto: ReadUserDto, authenticationCode: String)(implicit slickSession: SlickSession): Try[ReadUserResponseDto] = Try {
+    logger.trace(s".readUser(requestDto: $requestDto, authenticationCode: $authenticationCode)")
     secure(authenticationCode, UserRole.ADMIN :: Nil) { implicit user: User =>
-      logger.trace(s".readUser(requestDto: $requestDto, authenticationCode: $authenticationCode)")
 
       val result: Option[User] = userDao.findById(requestDto.id)
 
@@ -23,8 +23,8 @@ class UserApi(val userDao: UserDao, val userService: UserService, val securedSer
   }
 
   def createUser(saveDto: CreateUserDto, authenticationCode: String)(implicit slickSession: SlickSession): Try[ReadUserResponseDto] = Try {
+    logger.trace(s".createUser(saveDto: $saveDto, authenticationCode: $authenticationCode)")
     secure(authenticationCode, UserRole.ADMIN :: Nil) { implicit user: User =>
-      logger.trace(s".createUser(saveDto: $saveDto, authenticationCode: $authenticationCode)")
 
       val entity: User = new User()
       entity.role = UserRole.USER
@@ -39,8 +39,8 @@ class UserApi(val userDao: UserDao, val userService: UserService, val securedSer
   }
 
   def updateUser(updateDto: UpdateUserDto, authenticationCode: String)(implicit slickSession: SlickSession): Try[ReadUserResponseDto] = Try {
+    logger.trace(s".updateUser(updateDto: $updateDto, authenticationCode: $authenticationCode)")
     secure(authenticationCode, UserRole.ADMIN :: Nil) { implicit user: User =>
-      logger.trace(s".updateUser(updateDto: $updateDto, authenticationCode: $authenticationCode)")
 
       val entity: User = userDao.getById(updateDto.id)
       entity.role = UserRole.USER
@@ -54,8 +54,8 @@ class UserApi(val userDao: UserDao, val userService: UserService, val securedSer
   }
 
   def deleteUser(deleteDto: ReadUserDto, authenticationCode: String)(implicit slickSession: SlickSession): Try[Unit] = Try {
+    logger.trace(s".deleteUser(deleteDto: $deleteDto, authenticationCode: $authenticationCode)")
     secure(authenticationCode, UserRole.ADMIN :: Nil) { implicit user: User =>
-      logger.trace(s".deleteUser(deleteDto: $deleteDto, authenticationCode: $authenticationCode)")
 
       val entity: User = userDao.getById(deleteDto.id)
 
@@ -64,14 +64,26 @@ class UserApi(val userDao: UserDao, val userService: UserService, val securedSer
   }
 
   def users(requestDto: UsersDto, authenticationCode: String)(implicit slickSession: SlickSession): Try[SearchResultDto[UsersResponseDto]] = Try {
+    logger.trace(s".users(requestDto: $requestDto, authenticationCode: $authenticationCode)")
     secure(authenticationCode) { implicit user: User =>
-      logger.trace(s".users(requestDto: $requestDto, authenticationCode: $authenticationCode)")
 
       val result: List[User] = userDao.findAllPaged(requestDto.from, requestDto.maxRowCount)
 
       new SearchResultDto(
         result.map(r => new UsersResponseDto(r.id, r.username, r.role)),
         userDao.countAll())
+    }
+  }
+
+  def adminUsers(requestDto: AdminUsersDto, authenticationCode: String)(implicit slickSession: SlickSession): Try[SearchResultDto[AdminUsersResponseDto]] = Try {
+    logger.trace(s".adminUsers(requestDto: $requestDto, authenticationCode: $authenticationCode)")
+    secure(authenticationCode) { implicit user: User =>
+
+      val result: List[User] = userDao.findByRoleIsAdminPaged(requestDto.from, requestDto.maxRowCount)
+
+      new SearchResultDto(
+        result.map(r => new AdminUsersResponseDto(r.id, r.username, r.role)),
+        userDao.countByRoleIsAdmin())
     }
   }
 
@@ -116,6 +128,21 @@ object UsersDto {
 case class UsersResponseDto(id: Int, username: String, role: UserRole)
 
 object UsersResponseDto {
+  val ID: String = "id"
+  val USERNAME: String = "username"
+  val ROLE: String = "role"
+}
+
+case class AdminUsersDto(from: Int, maxRowCount: Int)
+
+object AdminUsersDto {
+  val FROM: String = "from"
+  val MAXROWCOUNT: String = "maxRowCount"
+}
+
+case class AdminUsersResponseDto(id: Int, username: String, role: UserRole)
+
+object AdminUsersResponseDto {
   val ID: String = "id"
   val USERNAME: String = "username"
   val ROLE: String = "role"

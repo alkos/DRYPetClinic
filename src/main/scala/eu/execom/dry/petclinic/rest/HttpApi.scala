@@ -95,6 +95,23 @@ class HttpApi(val slickDb: Database, val authenticationApi: AuthenticationApi, v
     }
   }
 
+  get("/adminUsers") {
+    slickDb.withSession {  implicit session: SlickSession =>
+      logger.trace("Rest url: /adminUsers type: GET")
+      noCache()
+
+      val from: Int = params.as[Int]("from")
+      logger.trace("From:" + from)
+      val maxRowCount: Int = params.as[Int]("maxRowCount")
+      logger.trace("MaxRowCount:" + maxRowCount)
+      val authenticationCode: String = securityToken
+
+      val response = userApi.adminUsers(new AdminUsersDto(from, maxRowCount), authenticationCode).get
+      logger.trace(s"Response: $response")
+      response
+    }
+  }
+
   case class SignUpBodyDTO(username: String, passwordHash: String)
   post("/signUp") {
     slickDb.withSession {  implicit session: SlickSession =>

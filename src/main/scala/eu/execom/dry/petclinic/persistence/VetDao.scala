@@ -13,14 +13,18 @@ import scala.slick.jdbc.JdbcBackend.{Session => SlickSession}
 
 case class Vet(private var _id: Int, private var _firstName: String, private var _lastName: String) {
 
-  var id_persisted: Int = id
+  private var id_persisted: Int = id
+  def idPersisted: Int = id_persisted
+
   def id: Int = _id
   def id_=(newId: Int)(implicit session: SlickSession): Any = if (newId != id) {
 
     _id = newId
   }
 
-  var firstName_persisted: String = firstName
+  private var firstName_persisted: String = firstName
+  def firstNamePersisted: String = firstName_persisted
+
   def firstName: String = _firstName
   def firstName_=(newFirstName: String)(implicit session: SlickSession): Any = if (newFirstName != firstName) {
 
@@ -31,7 +35,9 @@ case class Vet(private var _id: Int, private var _firstName: String, private var
     _firstName = newFirstName
   }
 
-  var lastName_persisted: String = lastName
+  private var lastName_persisted: String = lastName
+  def lastNamePersisted: String = lastName_persisted
+
   def lastName: String = _lastName
   def lastName_=(newLastName: String)(implicit session: SlickSession): Any = if (newLastName != lastName) {
 

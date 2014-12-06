@@ -13,14 +13,18 @@ import scala.slick.jdbc.JdbcBackend.{Session => SlickSession}
 
 case class Pet(private var _id: Int, private var _name: String, private var _birthDate: Date, private var _ownerId: Int, private var _petTypeId: Int) {
 
-  var id_persisted: Int = id
+  private var id_persisted: Int = id
+  def idPersisted: Int = id_persisted
+
   def id: Int = _id
   def id_=(newId: Int)(implicit session: SlickSession): Any = if (newId != id) {
 
     _id = newId
   }
 
-  var name_persisted: String = name
+  private var name_persisted: String = name
+  def namePersisted: String = name_persisted
+
   def name: String = _name
   def name_=(newName: String)(implicit session: SlickSession): Any = if (newName != name) {
 
@@ -31,7 +35,9 @@ case class Pet(private var _id: Int, private var _name: String, private var _bir
     _name = newName
   }
 
-  var birthDate_persisted: DateTime = birthDate
+  private var birthDate_persisted: DateTime = birthDate
+  def birthDatePersisted: DateTime = birthDate_persisted
+
   def birthDate: DateTime = new org.joda.time.DateTime(_birthDate)
   def birthDate_=(newBirthDate: DateTime)(implicit session: SlickSession): Any = if (newBirthDate != birthDate) {
 
@@ -40,14 +46,18 @@ case class Pet(private var _id: Int, private var _name: String, private var _bir
     _birthDate = new java.sql.Date(newBirthDate.getMillis)
   }
 
-  var ownerId_persisted: Int = ownerId
+  private var ownerId_persisted: Int = ownerId
+  def ownerIdPersisted: Int = ownerId_persisted
+
   def ownerId: Int = _ownerId
   def ownerId_=(newOwnerId: Int)(implicit session: SlickSession): Any = if (newOwnerId != ownerId) {
 
     _ownerId = newOwnerId
   }
 
-  var petTypeId_persisted: Int = petTypeId
+  private var petTypeId_persisted: Int = petTypeId
+  def petTypeIdPersisted: Int = petTypeId_persisted
+
   def petTypeId: Int = _petTypeId
   def petTypeId_=(newPetTypeId: Int)(implicit session: SlickSession): Any = if (newPetTypeId != petTypeId) {
 

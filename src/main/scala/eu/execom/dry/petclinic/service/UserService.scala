@@ -18,10 +18,10 @@ class UserService(val userDao: UserDao, val eventBus: EventBus) extends Logging 
   def update(user: User)(implicit session: SlickSession): Unit = {
     logger.trace(s".update(user: $user)")
 
-    val authenticationCodeChange = if (user.authenticationCode.equals(user.authenticationCode_persisted)) None else Some(user.authenticationCode, user.authenticationCode_persisted)
-    val roleChange = if (user.role.equals(user.role_persisted)) None else Some(user.role, user.role_persisted)
-    val usernameChange = if (user.username.equals(user.username_persisted)) None else Some(user.username, user.username_persisted)
-    val passwordHashChange = if (user.passwordHash.equals(user.passwordHash_persisted)) None else Some(user.passwordHash, user.passwordHash_persisted)
+    val authenticationCodeChange = if (user.authenticationCode.equals(user.authenticationCodePersisted)) None else Some(user.authenticationCode, user.authenticationCodePersisted)
+    val roleChange = if (user.role.equals(user.rolePersisted)) None else Some(user.role, user.rolePersisted)
+    val usernameChange = if (user.username.equals(user.usernamePersisted)) None else Some(user.username, user.usernamePersisted)
+    val passwordHashChange = if (user.passwordHash.equals(user.passwordHashPersisted)) None else Some(user.passwordHash, user.passwordHashPersisted)
 
     userDao.update(user)
 
