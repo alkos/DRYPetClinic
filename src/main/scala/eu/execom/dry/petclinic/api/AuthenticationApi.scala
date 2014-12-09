@@ -3,6 +3,7 @@ package eu.execom.dry.petclinic.api
 import eu.execom.dry.petclinic.persistence._
 import eu.execom.dry.petclinic.service._
 import eu.execom.dry.petclinic.util.Logging
+import org.joda.time._
 
 import scala.slick.jdbc.JdbcBackend.{Session => SlickSession}
 import scala.util._

@@ -5,6 +5,29 @@ import eu.execom.dry.petclinic.persistence._
 
 case class EventBus(hazelcast: HazelcastInstance) {
 
+  private val publishOnReceive = new ThreadLocal[Boolean]
+  private val delayedEvents = new ThreadLocal[List[ServiceEvent]]
+
+  def startSession(): Unit = publishOnReceive.set(true)
+  def startTransaction(): Unit = publishOnReceive.set(false)
+
+  private def delayEvent(event: ServiceEvent): Unit = delayedEvents.set(event :: delayedEvents.get)
+
+  def publishPending(): Unit = {
+    publishOnReceive.set(true)
+
+    delayedEvents.get().foreach({
+      case event: UserPasswordHashUpdateEvent => publish(event)
+      case event: UserCreateEvent => publish(event)
+      case event: UserDeleteEvent => publish(event)
+      case event: UserUpdateEvent => publish(event)
+    })
+
+    delayedEvents.set(Nil)
+  }
+
+  def rollback(): Unit = delayedEvents.set(Nil)
+
   def userPasswordHashUpdateEventTopic(id: Int): ITopic[UserPasswordHashUpdateEvent] = {
     hazelcast.getTopic[UserPasswordHashUpdateEvent](s"user/$id/passwordHash/update")
   }
@@ -20,10 +43,12 @@ case class EventBus(hazelcast: HazelcastInstance) {
     () => topic.removeMessageListener(registrationId) // unsubscribe method
   }
 
-  def publish(event:UserPasswordHashUpdateEvent):Unit = {
+  def publish(event: UserPasswordHashUpdateEvent): Unit = if (publishOnReceive.get) {
     val topic = userPasswordHashUpdateEventTopic(event.id)
 
     topic.publish(event)
+  } else {
+    delayEvent(event)
   }
 
   def userCreateEventTopic(): ITopic[UserCreateEvent] = {
@@ -41,10 +66,12 @@ case class EventBus(hazelcast: HazelcastInstance) {
     () => topic.removeMessageListener(registrationId) // unsubscribe method
   }
 
-  def publish(event:UserCreateEvent):Unit = {
+  def publish(event: UserCreateEvent): Unit = if (publishOnReceive.get) {
     val topic = userCreateEventTopic()
 
     topic.publish(event)
+  } else {
+    delayEvent(event)
   }
 
   def userDeleteEventTopic(id: Int): ITopic[UserDeleteEvent] = {
@@ -62,10 +89,12 @@ case class EventBus(hazelcast: HazelcastInstance) {
     () => topic.removeMessageListener(registrationId) // unsubscribe method
   }
 
-  def publish(event:UserDeleteEvent):Unit = {
+  def publish(event: UserDeleteEvent): Unit = if (publishOnReceive.get) {
     val topic = userDeleteEventTopic(event.id)
 
     topic.publish(event)
+  } else {
+    delayEvent(event)
   }
 
   def userUpdateEventTopic(id: Int): ITopic[UserUpdateEvent] = {
@@ -83,10 +112,12 @@ case class EventBus(hazelcast: HazelcastInstance) {
     () => topic.removeMessageListener(registrationId) // unsubscribe method
   }
 
-  def publish(event:UserUpdateEvent):Unit = {
+  def publish(event: UserUpdateEvent): Unit = if (publishOnReceive.get) {
     val topic = userUpdateEventTopic(event.id)
 
     topic.publish(event)
+  } else {
+    delayEvent(event)
   }
 }
 

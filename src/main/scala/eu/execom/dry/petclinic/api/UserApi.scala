@@ -3,6 +3,7 @@ package eu.execom.dry.petclinic.api
 import eu.execom.dry.petclinic.persistence._
 import eu.execom.dry.petclinic.service._
 import eu.execom.dry.petclinic.util.Logging
+import org.joda.time._
 
 import scala.slick.jdbc.JdbcBackend.{Session => SlickSession}
 import scala.util._
@@ -43,7 +44,7 @@ class UserApi(val userDao: UserDao, val userService: UserService, val securedSer
     secure(authenticationCode, UserRole.ADMIN :: Nil) { implicit user: User =>
 
       val entity: User = userDao.getById(updateDto.id)
-      entity.role = UserRole.USER
+      entity.role = updateDto.role
       if (updateDto.password.isDefined) entity.passwordHash = updateDto.password.get
       userService.update(entity)
 

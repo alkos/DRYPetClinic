@@ -54,7 +54,7 @@ class AppConfiguration extends LifeCycle with ApiConfiguration {
     //TODO do cleanup
   }
 
-  lazy val httpAPI = new HttpApi(slickDb, authenticationApi, userApi)
+  lazy val httpAPI = new HttpApi(slickDb, eventBus, authenticationApi, userApi)
 
   override def init(context: ServletContext) {
 

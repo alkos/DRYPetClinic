@@ -2,6 +2,7 @@ package eu.execom.dry.petclinic.rest
 
 import eu.execom.dry.petclinic.api._
 import eu.execom.dry.petclinic.persistence._
+import eu.execom.dry.petclinic.service.EventBus
 import org.joda.time.DateTime
 import org.json4s._
 import org.scalatra.GZipSupport
@@ -10,7 +11,7 @@ import org.scalatra.json._
 import scala.slick.jdbc.JdbcBackend.{Session => SlickSession}
 import scala.slick.jdbc.JdbcBackend.Database
 
-class HttpApi(val slickDb: Database, val authenticationApi: AuthenticationApi, val userApi: UserApi) extends AbstractSecuredServlet with JacksonJsonSupport with GZipSupport with CacheControlSupport {
+class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationApi: AuthenticationApi, val userApi: UserApi) extends AbstractSecuredServlet with ApiCaller with JacksonJsonSupport with GZipSupport with CacheControlSupport {
 
   before() {
     contentType = formats("json")
@@ -19,21 +20,21 @@ class HttpApi(val slickDb: Database, val authenticationApi: AuthenticationApi, v
 
   case class CreateUserBodyDTO(username: String, password: String)
   post("/users") {
-    slickDb.withTransaction {  implicit session: SlickSession =>
+    transaction  { (slickSession: SlickSession) =>
       logger.trace("Rest url: /users type: POST")
 
       val body:CreateUserBodyDTO = parsedBody.extract[CreateUserBodyDTO]
       logger.trace("Body:" + body)
       val authenticationCode: String = securityToken
 
-      val response = userApi.createUser(new CreateUserDto(body.username, body.password), authenticationCode).get
+      val response = userApi.createUser(new CreateUserDto(body.username, body.password), authenticationCode)(slickSession).get
       logger.trace(s"Response: $response")
       response
     }
   }
 
   get("/users/:id") {
-    slickDb.withSession {  implicit session: SlickSession =>
+    session  { (slickSession: SlickSession) =>
       logger.trace("Rest url: /users/:id type: GET")
       noCache()
 
@@ -41,7 +42,7 @@ class HttpApi(val slickDb: Database, val authenticationApi: AuthenticationApi, v
       logger.trace("Id:" + id)
       val authenticationCode: String = securityToken
 
-      val response = userApi.readUser(new ReadUserDto(id), authenticationCode).get
+      val response = userApi.readUser(new ReadUserDto(id), authenticationCode)(slickSession).get
       logger.trace(s"Response: $response")
       response
     }
@@ -49,7 +50,7 @@ class HttpApi(val slickDb: Database, val authenticationApi: AuthenticationApi, v
 
   case class UpdateUserBodyDTO(role: UserRole, password: Option[String])
   put("/users/:id") {
-    slickDb.withTransaction {  implicit session: SlickSession =>
+    transaction  { (slickSession: SlickSession) =>
       logger.trace("Rest url: /users/:id type: PUT")
 
       val id: Int = params.as[Int]("id")
@@ -58,28 +59,28 @@ class HttpApi(val slickDb: Database, val authenticationApi: AuthenticationApi, v
       logger.trace("Body:" + body)
       val authenticationCode: String = securityToken
 
-      val response = userApi.updateUser(new UpdateUserDto(id, body.role, body.password), authenticationCode).get
+      val response = userApi.updateUser(new UpdateUserDto(id, body.role, body.password), authenticationCode)(slickSession).get
       logger.trace(s"Response: $response")
       response
     }
   }
 
   delete("/users/:id") {
-    slickDb.withTransaction {  implicit session: SlickSession =>
+    transaction  { (slickSession: SlickSession) =>
       logger.trace("Rest url: /users/:id type: DELETE")
 
       val id: Int = params.as[Int]("id")
       logger.trace("Id:" + id)
       val authenticationCode: String = securityToken
 
-      val response = userApi.deleteUser(new ReadUserDto(id), authenticationCode).get
+      val response = userApi.deleteUser(new ReadUserDto(id), authenticationCode)(slickSession).get
       logger.trace(s"Response: $response")
       response
     }
   }
 
   get("/users") {
-    slickDb.withSession {  implicit session: SlickSession =>
+    session  { (slickSession: SlickSession) =>
       logger.trace("Rest url: /users type: GET")
       noCache()
 
@@ -89,14 +90,14 @@ class HttpApi(val slickDb: Database, val authenticationApi: AuthenticationApi, v
       logger.trace("MaxRowCount:" + maxRowCount)
       val authenticationCode: String = securityToken
 
-      val response = userApi.users(new UsersDto(from, maxRowCount), authenticationCode).get
+      val response = userApi.users(new UsersDto(from, maxRowCount), authenticationCode)(slickSession).get
       logger.trace(s"Response: $response")
       response
     }
   }
 
   get("/adminUsers") {
-    slickDb.withSession {  implicit session: SlickSession =>
+    session  { (slickSession: SlickSession) =>
       logger.trace("Rest url: /adminUsers type: GET")
       noCache()
 
@@ -106,7 +107,7 @@ class HttpApi(val slickDb: Database, val authenticationApi: AuthenticationApi, v
       logger.trace("MaxRowCount:" + maxRowCount)
       val authenticationCode: String = securityToken
 
-      val response = userApi.adminUsers(new AdminUsersDto(from, maxRowCount), authenticationCode).get
+      val response = userApi.adminUsers(new AdminUsersDto(from, maxRowCount), authenticationCode)(slickSession).get
       logger.trace(s"Response: $response")
       response
     }
@@ -114,13 +115,13 @@ class HttpApi(val slickDb: Database, val authenticationApi: AuthenticationApi, v
 
   case class SignUpBodyDTO(username: String, passwordHash: String)
   post("/signUp") {
-    slickDb.withSession {  implicit session: SlickSession =>
+    session  { (slickSession: SlickSession) =>
       logger.trace("Rest url: /signUp type: POST")
 
       val body:SignUpBodyDTO = parsedBody.extract[SignUpBodyDTO]
       logger.trace("Body:" + body)
 
-      val response = authenticationApi.signUp(new SignUpDto(body.username, body.passwordHash)).get
+      val response = authenticationApi.signUp(new SignUpDto(body.username, body.passwordHash))(slickSession).get
       logger.trace(s"Response: $response")
       securityToken = response.authenticationCode
       response
@@ -129,13 +130,13 @@ class HttpApi(val slickDb: Database, val authenticationApi: AuthenticationApi, v
 
   case class SignInBodyDTO(username: String, passwordHash: String)
   post("/signIn") {
-    slickDb.withSession {  implicit session: SlickSession =>
+    session  { (slickSession: SlickSession) =>
       logger.trace("Rest url: /signIn type: POST")
 
       val body:SignInBodyDTO = parsedBody.extract[SignInBodyDTO]
       logger.trace("Body:" + body)
 
-      val response = authenticationApi.signIn(new SignInDto(body.username, body.passwordHash)).get
+      val response = authenticationApi.signIn(new SignInDto(body.username, body.passwordHash))(slickSession).get
       logger.trace(s"Response: $response")
       securityToken = response.authenticationCode
       response
@@ -143,12 +144,12 @@ class HttpApi(val slickDb: Database, val authenticationApi: AuthenticationApi, v
   }
 
   post("/signOut") {
-    slickDb.withTransaction {  implicit session: SlickSession =>
+    transaction  { (slickSession: SlickSession) =>
       logger.trace("Rest url: /signOut type: POST")
 
       val authenticationCode: String = securityToken
 
-      val response = authenticationApi.signOut(authenticationCode).get
+      val response = authenticationApi.signOut(authenticationCode)(slickSession).get
       logger.trace(s"Response: $response")
       securityToken = ""
       response
@@ -157,13 +158,13 @@ class HttpApi(val slickDb: Database, val authenticationApi: AuthenticationApi, v
 
   case class AuthenticateBodyDTO(authenticationCode: String)
   post("/authenticate") {
-    slickDb.withTransaction {  implicit session: SlickSession =>
+    transaction  { (slickSession: SlickSession) =>
       logger.trace("Rest url: /authenticate type: POST")
 
       val body:AuthenticateBodyDTO = parsedBody.extract[AuthenticateBodyDTO]
       logger.trace("Body:" + body)
 
-      val response = authenticationApi.authenticate(new AuthenticationCodeDto(body.authenticationCode)).get
+      val response = authenticationApi.authenticate(new AuthenticationCodeDto(body.authenticationCode))(slickSession).get
       logger.trace(s"Response: $response")
       response
     }

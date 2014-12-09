@@ -43,7 +43,7 @@ abstract class AbstractSecuredServlet extends ScalatraServlet with Logging {
       halt(Unauthorized(reason = "USER_CREDENTIALS_ARE_INVALID"))
   }
 
-  def securityToken_=(token: String) = cookies.set(SECURITY_TOKEN, token)
+  def securityToken_=(token: String): Unit = cookies.set(SECURITY_TOKEN, token)
 
 }
 
