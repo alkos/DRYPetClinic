@@ -40,7 +40,6 @@ abstract class CoreTest extends AbstractFabutTest with IFabutRepositoryTest {
       // simulating transaction
       slickSession.rollback()
       slickSession.close()
-      assertWiserMessages
       // asserting messages
       assertWiserMessages()
     }

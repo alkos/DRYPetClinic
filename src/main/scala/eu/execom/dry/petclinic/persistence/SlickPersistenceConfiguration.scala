@@ -15,20 +15,20 @@ trait SlickPersistenceConfiguration {
   def mysqlURL: String
   def mysqlUserName: String
   def mysqlPassword: String
-  def mysqlCachePrepStmts: String
-  def mysqlPrepStmtCacheSize: String
-  def mysqlPrepStmtCacheSqlLimit: String
-  def mysqlUseServerPrepStmts: String
+  def mysqlCachePrepStmts: Boolean
+  def mysqlPrepStmtCacheSize: Int
+  def mysqlPrepStmtCacheSqlLimit: Int
+  def mysqlUseServerPrepStmts: Boolean
 
   val hikariConfig = new HikariConfig()
   hikariConfig.setDriverClassName(mysqlDriver)
   hikariConfig.setJdbcUrl(mysqlURL)
   hikariConfig.setUsername(mysqlUserName)
   hikariConfig.setPassword(mysqlPassword)
-  hikariConfig.addDataSourceProperty("cachePrepStmts", mysqlCachePrepStmts)
-  hikariConfig.addDataSourceProperty("prepStmtCacheSize", mysqlPrepStmtCacheSize)
-  hikariConfig.addDataSourceProperty("prepStmtCacheSqlLimit", mysqlPrepStmtCacheSize)
-  hikariConfig.addDataSourceProperty("useServerPrepStmts", mysqlUseServerPrepStmts)
+  hikariConfig.addDataSourceProperty("cachePrepStmts", mysqlCachePrepStmts.toString)
+  hikariConfig.addDataSourceProperty("prepStmtCacheSize", mysqlPrepStmtCacheSize.toString)
+  hikariConfig.addDataSourceProperty("prepStmtCacheSqlLimit", mysqlPrepStmtCacheSize.toString)
+  hikariConfig.addDataSourceProperty("useServerPrepStmts", mysqlUseServerPrepStmts.toString)
 
   val dataSource = new HikariDataSource(hikariConfig)
 

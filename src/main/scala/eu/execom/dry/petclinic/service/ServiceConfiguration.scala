@@ -7,17 +7,17 @@ import eu.execom.dry.petclinic.util._
 
 trait ServiceConfiguration extends SlickPersistenceConfiguration {
 
-  def smtpUrl:String
-  def smtpPort:String
-  def smtpUserName:String
-  def smtpPassword:String
-  lazy val mailSender = new MailSender(smtpUrl, smtpPort.toInt, smtpUserName, smtpPassword)
+  def smtpUrl: String
+  def smtpPort: Int
+  def smtpUserName: String
+  def smtpPassword: String
+  lazy val mailSender = new MailSender(smtpUrl, smtpPort, smtpUserName, smtpPassword)
 
   lazy val passwordEncoder = new PasswordEncoder
 
-  def appEmail:String
-  def appName:String
-  def appUrl:String
+  def appEmail: String
+  def appName: String
+  def appUrl: String
   lazy val securedService: SecuredService = new SecuredService(userDao, passwordEncoder, mailSender, appEmail, appName, appUrl)
 
   def hazelcastGroupName:String

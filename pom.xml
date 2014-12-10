@@ -220,7 +220,7 @@
         </repository>
         <repository>
             <id>vesin-repo</id>
-            <url>http://execom-eu.github.com/repositiry/repo/</url>
+            <url>http://execom-eu.github.io/repository/repo/</url>
         </repository>
     </repositories>
 </project>
