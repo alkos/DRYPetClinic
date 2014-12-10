@@ -11,20 +11,21 @@ import scala.slick.jdbc.JdbcBackend._
 
 trait SlickPersistenceConfiguration {
 
-  def mysqlDriver: String
-  def mysqlURL: String
-  def mysqlUserName: String
+  def mysqlUsername: String
   def mysqlPassword: String
+  def mysqlDatabaseName: String
+  def mysqlServerName: String
   def mysqlCachePrepStmts: Boolean
   def mysqlPrepStmtCacheSize: Int
   def mysqlPrepStmtCacheSqlLimit: Int
   def mysqlUseServerPrepStmts: Boolean
 
   val hikariConfig = new HikariConfig()
-  hikariConfig.setDriverClassName(mysqlDriver)
-  hikariConfig.setJdbcUrl(mysqlURL)
-  hikariConfig.setUsername(mysqlUserName)
-  hikariConfig.setPassword(mysqlPassword)
+  hikariConfig.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource")
+  hikariConfig.addDataSourceProperty("databaseName", mysqlDatabaseName)
+  hikariConfig.addDataSourceProperty("serverName", mysqlServerName)
+  hikariConfig.addDataSourceProperty("user", mysqlUsername)
+  hikariConfig.addDataSourceProperty("password", mysqlPassword)
   hikariConfig.addDataSourceProperty("cachePrepStmts", mysqlCachePrepStmts.toString)
   hikariConfig.addDataSourceProperty("prepStmtCacheSize", mysqlPrepStmtCacheSize.toString)
   hikariConfig.addDataSourceProperty("prepStmtCacheSqlLimit", mysqlPrepStmtCacheSize.toString)

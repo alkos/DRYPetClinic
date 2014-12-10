@@ -15,10 +15,10 @@ object AppTestConfiguration extends ApiConfiguration {
     properties
   }
 
-  lazy val mysqlDriver: String = properties.getProperty("mysql.driver")
-  lazy val mysqlURL: String = properties.getProperty("mysql.url")
-  lazy val mysqlUserName: String = properties.getProperty("mysql.username")
+  lazy val mysqlUsername: String = properties.getProperty("mysql.username")
   lazy val mysqlPassword: String = properties.getProperty("mysql.password")
+  lazy val mysqlDatabaseName: String = properties.getProperty("mysql.database.name")
+  lazy val mysqlServerName: String = properties.getProperty("mysql.server.name")
   lazy val mysqlCachePrepStmts: Boolean = properties.getProperty("mysql.cachePrepStmts").toBoolean
   lazy val mysqlPrepStmtCacheSize: Int = properties.getProperty("mysql.prepStmtCacheSize").toInt
   lazy val mysqlPrepStmtCacheSqlLimit: Int = properties.getProperty("mysql.prepStmtCacheSqlLimit").toInt

@@ -17,8 +17,6 @@ class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationA
     contentType = formats("json")
   }
 
-
-  case class CreateUserBodyDTO(username: String, password: String)
   post("/users") {
     transaction  { (slickSession: SlickSession) =>
       logger.trace("Rest url: /users type: POST")
@@ -48,7 +46,6 @@ class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationA
     }
   }
 
-  case class UpdateUserBodyDTO(role: UserRole, password: Option[String])
   put("/users/:id") {
     transaction  { (slickSession: SlickSession) =>
       logger.trace("Rest url: /users/:id type: PUT")
@@ -113,7 +110,6 @@ class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationA
     }
   }
 
-  case class SignUpBodyDTO(username: String, passwordHash: String)
   post("/signUp") {
     session  { (slickSession: SlickSession) =>
       logger.trace("Rest url: /signUp type: POST")
@@ -128,7 +124,6 @@ class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationA
     }
   }
 
-  case class SignInBodyDTO(username: String, passwordHash: String)
   post("/signIn") {
     session  { (slickSession: SlickSession) =>
       logger.trace("Rest url: /signIn type: POST")
@@ -156,7 +151,6 @@ class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationA
     }
   }
 
-  case class AuthenticateBodyDTO(authenticationCode: String)
   post("/authenticate") {
     transaction  { (slickSession: SlickSession) =>
       logger.trace("Rest url: /authenticate type: POST")
@@ -170,3 +164,13 @@ class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationA
     }
   }
 }
+
+case class CreateUserBodyDTO(username: String, password: String)
+
+case class UpdateUserBodyDTO(role: UserRole, password: Option[String])
+
+case class SignUpBodyDTO(username: String, passwordHash: String)
+
+case class SignInBodyDTO(username: String, passwordHash: String)
+
+case class AuthenticateBodyDTO(authenticationCode: String)
