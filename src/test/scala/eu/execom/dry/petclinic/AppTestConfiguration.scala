@@ -25,6 +25,7 @@ object AppTestConfiguration extends ApiConfiguration {
   lazy val mysqlUseServerPrepStmts: Boolean = properties.getProperty("mysql.useServerPrepStmts").toBoolean
   lazy val hazelcastGroupName: String = properties.getProperty("hazelcast.group.name")
   lazy val hazelcastGroupPassword: String = properties.getProperty("hazelcast.group.password")
+  lazy val hazelcastLoggingType: String = properties.getProperty("hazelcast.logging.type")
   lazy val smtpUrl: String = properties.getProperty("smtp.url")
   lazy val smtpPort: Int = properties.getProperty("smtp.port").toInt
   lazy val smtpUserName: String = properties.getProperty("smtp.username")

@@ -3,6 +3,7 @@ package eu.execom.dry.petclinic.rest
 import eu.execom.dry.petclinic.api._
 import eu.execom.dry.petclinic.persistence._
 import eu.execom.dry.petclinic.service.EventBus
+import eu.execom.dry.petclinic.util._
 import org.joda.time.DateTime
 import org.json4s._
 import org.scalatra.GZipSupport
@@ -10,6 +11,8 @@ import org.scalatra.json._
 
 import scala.slick.jdbc.JdbcBackend.{Session => SlickSession}
 import scala.slick.jdbc.JdbcBackend.Database
+
+object JSON_REQUEST_REQUIRED_EXCEPTION extends BadRequestException("JSON_REQUEST_REQUIRED_EXCEPTION")
 
 class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationApi: AuthenticationApi, val userApi: UserApi) extends AbstractSecuredServlet with ApiCaller with JacksonJsonSupport with GZipSupport with CacheControlSupport {
 
@@ -21,11 +24,15 @@ class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationA
     transaction  { (slickSession: SlickSession) =>
       logger.trace("Rest url: /users type: POST")
 
-      val body:CreateUserBodyDTO = parsedBody.extract[CreateUserBodyDTO]
+      if (requestFormat !="json") throw JSON_REQUEST_REQUIRED_EXCEPTION
+      val body:CreateUserDto = parsedBody match {
+        case JNothing => throw JSON_REQUEST_REQUIRED_EXCEPTION
+        case jsonBody => jsonBody.extract[CreateUserDto]
+      }
       logger.trace("Body:" + body)
       val authenticationCode: String = securityToken
 
-      val response = userApi.createUser(new CreateUserDto(body.username, body.password), authenticationCode)(slickSession).get
+      val response = userApi.createUser(body, authenticationCode)(slickSession).get
       logger.trace(s"Response: $response")
       response
     }
@@ -52,7 +59,11 @@ class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationA
 
       val id: Int = params.as[Int]("id")
       logger.trace("Id:" + id)
-      val body:UpdateUserBodyDTO = parsedBody.extract[UpdateUserBodyDTO]
+      if (requestFormat !="json") throw JSON_REQUEST_REQUIRED_EXCEPTION
+      val body:UpdateUserBodyDTO = parsedBody match {
+        case JNothing => throw JSON_REQUEST_REQUIRED_EXCEPTION
+        case jsonBody => jsonBody.extract[UpdateUserBodyDTO]
+      }
       logger.trace("Body:" + body)
       val authenticationCode: String = securityToken
 
@@ -114,10 +125,14 @@ class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationA
     session  { (slickSession: SlickSession) =>
       logger.trace("Rest url: /signUp type: POST")
 
-      val body:SignUpBodyDTO = parsedBody.extract[SignUpBodyDTO]
+      if (requestFormat !="json") throw JSON_REQUEST_REQUIRED_EXCEPTION
+      val body:SignUpDto = parsedBody match {
+        case JNothing => throw JSON_REQUEST_REQUIRED_EXCEPTION
+        case jsonBody => jsonBody.extract[SignUpDto]
+      }
       logger.trace("Body:" + body)
 
-      val response = authenticationApi.signUp(new SignUpDto(body.username, body.passwordHash))(slickSession).get
+      val response = authenticationApi.signUp(body)(slickSession).get
       logger.trace(s"Response: $response")
       securityToken = response.authenticationCode
       response
@@ -128,10 +143,14 @@ class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationA
     session  { (slickSession: SlickSession) =>
       logger.trace("Rest url: /signIn type: POST")
 
-      val body:SignInBodyDTO = parsedBody.extract[SignInBodyDTO]
+      if (requestFormat !="json") throw JSON_REQUEST_REQUIRED_EXCEPTION
+      val body:SignInDto = parsedBody match {
+        case JNothing => throw JSON_REQUEST_REQUIRED_EXCEPTION
+        case jsonBody => jsonBody.extract[SignInDto]
+      }
       logger.trace("Body:" + body)
 
-      val response = authenticationApi.signIn(new SignInDto(body.username, body.passwordHash))(slickSession).get
+      val response = authenticationApi.signIn(body)(slickSession).get
       logger.trace(s"Response: $response")
       securityToken = response.authenticationCode
       response
@@ -155,22 +174,18 @@ class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationA
     transaction  { (slickSession: SlickSession) =>
       logger.trace("Rest url: /authenticate type: POST")
 
-      val body:AuthenticateBodyDTO = parsedBody.extract[AuthenticateBodyDTO]
+      if (requestFormat !="json") throw JSON_REQUEST_REQUIRED_EXCEPTION
+      val body:AuthenticationCodeDto = parsedBody match {
+        case JNothing => throw JSON_REQUEST_REQUIRED_EXCEPTION
+        case jsonBody => jsonBody.extract[AuthenticationCodeDto]
+      }
       logger.trace("Body:" + body)
 
-      val response = authenticationApi.authenticate(new AuthenticationCodeDto(body.authenticationCode))(slickSession).get
+      val response = authenticationApi.authenticate(body)(slickSession).get
       logger.trace(s"Response: $response")
       response
     }
   }
 }
 
-case class CreateUserBodyDTO(username: String, password: String)
-
 case class UpdateUserBodyDTO(role: UserRole, password: Option[String])
-
-case class SignUpBodyDTO(username: String, passwordHash: String)
-
-case class SignInBodyDTO(username: String, passwordHash: String)
-
-case class AuthenticateBodyDTO(authenticationCode: String)

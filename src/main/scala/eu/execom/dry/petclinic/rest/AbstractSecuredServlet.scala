@@ -12,7 +12,7 @@ import sun.misc.BASE64Encoder
 
 abstract class AbstractSecuredServlet extends ScalatraServlet with Logging {
 
-  val SECURITY_TOKEN = "X-SPORT-AUTH"
+  val SECURITY_TOKEN = "X-PETCLINIC-AUTH"
 
   protected implicit val jsonFormats: Formats = DefaultFormats + new ArrayByteSerializer + DateTimeSerializer + new UUIDSerializer + new SortOrderSerializer + new UserRoleSerializer
 
@@ -26,6 +26,9 @@ abstract class AbstractSecuredServlet extends ScalatraServlet with Logging {
     case UnauthorizedException(code) =>
       logger.trace("Unauthorized error occurred with code: " + code)
       halt(Unauthorized(body = code))
+    case e:MappingException =>
+      logger.warn(s"Bad data request, json object invalid format, ${e.msg}")
+      halt(BadRequest(body = s"Bad data request, json object invalid format, ${e.msg}"))
     case e =>
       logger.error("Unknown error occurred", e)
       halt(InternalServerError(reason = e.toString))

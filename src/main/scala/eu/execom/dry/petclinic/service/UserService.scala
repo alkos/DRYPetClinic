@@ -13,6 +13,7 @@ class UserService(val userDao: UserDao, val eventBus: EventBus) extends Logging 
     userDao.save(user)
 
     eventBus.publish(UserCreateEvent(user.id, user.authenticationCode, user.role, user.username, user.passwordHash))
+    eventBus.publish(user.id ,UserCreateEvent(user.id, user.authenticationCode, user.role, user.username, user.passwordHash))
   }
 
   def update(user: User)(implicit session: SlickSession): Unit = {
@@ -25,9 +26,16 @@ class UserService(val userDao: UserDao, val eventBus: EventBus) extends Logging 
 
     userDao.update(user)
 
-    if (passwordHashChange.isDefined)  eventBus.publish(UserPasswordHashUpdateEvent(user.id, passwordHashChange.get))
+    if (usernameChange.isDefined) {
+       eventBus.publish(UserUsernameUpdateEvent(user.id, usernameChange.get))
+    }
+    if (passwordHashChange.isDefined) {
+       eventBus.publish(UserPasswordHashUpdateEvent(user.id, passwordHashChange.get))
+       eventBus.publish(user.role ,UserPasswordHashUpdateEvent(user.id, passwordHashChange.get))
+    }
 
     eventBus.publish(UserUpdateEvent(user.id, authenticationCodeChange, roleChange, usernameChange, passwordHashChange))
+    eventBus.publish(user.username ,UserUpdateEvent(user.id, authenticationCodeChange, roleChange, usernameChange, passwordHashChange))
   }
 
   def delete(user: User)(implicit session: SlickSession): Unit = {
@@ -36,6 +44,7 @@ class UserService(val userDao: UserDao, val eventBus: EventBus) extends Logging 
     userDao.deleteById(user.id)
 
     eventBus.publish(UserDeleteEvent(user.id, user.authenticationCode, user.role, user.username, user.passwordHash))
+    eventBus.publish(user.authenticationCode ,UserDeleteEvent(user.id, user.authenticationCode, user.role, user.username, user.passwordHash))
   }
 
 }

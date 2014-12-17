@@ -15,8 +15,10 @@ object PetClinicProject extends Project("eu.execom.dry", "petclinic") {
   val userId = user.int("id").primaryKey
   val (userAuthCode, userRole) = user.roleSecured("role", userRoleEnum)
   val (userUsername, userPassword) = user.signInWithUserName("username", "passwordHash")
-  userPassword.triggerOnChange
-  user.triggerOnCreate.triggerOnDelete.triggerOnUpdate
+  userPassword.triggerOnChange().triggerOnChange(userRole)
+  userUsername.triggerOnChange()
+  user.triggerOnCreate().triggerOnDelete().triggerOnUpdate()
+  user.triggerOnCreate(userId).triggerOnDelete(userAuthCode).triggerOnUpdate(userUsername)
 
   val owner = sqlModel("owner")
   val ownerId = owner.int("id").primaryKey

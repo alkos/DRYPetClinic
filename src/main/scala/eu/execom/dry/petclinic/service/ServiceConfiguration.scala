@@ -1,6 +1,7 @@
 package eu.execom.dry.petclinic.service
 
 import com.hazelcast.config.Config
+import com.hazelcast.config.GroupConfig
 import com.hazelcast.core.Hazelcast
 import eu.execom.dry.petclinic.persistence.SlickPersistenceConfiguration
 import eu.execom.dry.petclinic.util._
@@ -20,10 +21,18 @@ trait ServiceConfiguration extends SlickPersistenceConfiguration {
   def appUrl: String
   lazy val securedService: SecuredService = new SecuredService(userDao, passwordEncoder, mailSender, appEmail, appName, appUrl)
 
-  def hazelcastGroupName:String
-  def hazelcastGroupPassword:String
-  val hazelCastConfig = new Config()
-  lazy val hazelcast = Hazelcast.newHazelcastInstance(hazelCastConfig)
+  def hazelcastGroupName: String
+  def hazelcastGroupPassword: String
+  def hazelcastLoggingType: String
+
+  val hazelcastGroupConfig = new GroupConfig()
+  hazelcastGroupConfig.setName(hazelcastGroupName)
+  hazelcastGroupConfig.setName(hazelcastGroupPassword)
+  val hazelcastConfig = new Config()
+  hazelcastConfig.setGroupConfig(hazelcastGroupConfig)
+  hazelcastConfig.setProperty("hazelcast.logging.type", hazelcastLoggingType)
+  lazy val hazelcast = Hazelcast.newHazelcastInstance(hazelcastConfig)
+
   lazy val eventBus = new EventBus(hazelcast)
 
   //services
