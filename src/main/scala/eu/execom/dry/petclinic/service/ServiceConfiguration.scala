@@ -12,7 +12,8 @@ trait ServiceConfiguration extends SlickPersistenceConfiguration {
   def smtpPort: Int
   def smtpUserName: String
   def smtpPassword: String
-  lazy val mailSender = new MailSender(smtpUrl, smtpPort, smtpUserName, smtpPassword)
+  def smtpSslOnConnect: Boolean
+  lazy val mailSender = new MailSender(smtpUrl, smtpPort, smtpUserName, smtpPassword, smtpSslOnConnect)
 
   lazy val passwordEncoder = new PasswordEncoder
 

@@ -43,6 +43,7 @@ class AppConfiguration extends LifeCycle with ApiConfiguration {
   lazy val smtpPort: Int = properties.getProperty("smtp.port").toInt
   lazy val smtpUserName: String = properties.getProperty("smtp.username")
   lazy val smtpPassword: String = properties.getProperty("smtp.password")
+  lazy val smtpSslOnConnect: Boolean = properties.getProperty("smtp.sslonconnect").toBoolean
   lazy val appEmail: String = properties.getProperty("app.email")
   lazy val appName: String = properties.getProperty("app.name")
   lazy val appUrl: String = properties.getProperty("app.url")

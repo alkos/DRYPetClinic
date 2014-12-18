@@ -5,15 +5,15 @@ import org.apache.commons.mail.HtmlEmail
 
 import scala.util.Try
 
-class MailSender(val smtpUrl: String, val smtpPort: Int, val smtpUserName: String, val smtpPassword: String) extends Logging {
+class MailSender(val smtpUrl: String, val smtpPort: Int, val smtpUserName: String, val smtpPassword: String, val smtpSslOnConnect: Boolean) extends Logging {
 
-  def sendEmail(toAddress: String, toName: String, fromAddress: String, fromName: String, subject: String, content: String): Try[Unit] = Try {
+  def sendEmail(toAddress: String, toName: String, fromAddress: String, fromName: String, subject: String, content: String): Unit =  {
 
     val email = new HtmlEmail()
     email.setHostName(smtpUrl)
     email.setSmtpPort(smtpPort)
-    email.setAuthentication(smtpUserName, smtpPassword)
-
+    if (smtpUserName.nonEmpty && smtpPassword.nonEmpty)  email.setAuthentication(smtpUserName, smtpPassword)
+    email.setSSLOnConnect(smtpSslOnConnect)
     email.addTo(toAddress, toName)
     email.setFrom(fromAddress, "")
     email.setSubject(subject)

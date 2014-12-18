@@ -1,5 +1,5 @@
 import eu.execom.dry.generator.Project
-import eu.execom.dry.generator.api.CrudProperty
+import eu.execom.dry.generator.server.api.CrudProperty
 
 object PetClinicProject extends Project("eu.execom.dry", "petclinic") {
 
