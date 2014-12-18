@@ -93,8 +93,4 @@ object PetClinicProject extends Project("eu.execom.dry", "petclinic") {
   val userApiListView = web.apiListView(allUsersApi, "user", Some("usersApiListView"))
   val userListView = web.listView(allUsersApi.responseDto.get, "user", Some("usersListView"))
 
-  def main(args: Array[String]) {
-    generate()
-  }
-
 }
