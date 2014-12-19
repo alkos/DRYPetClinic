@@ -109,13 +109,15 @@ class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationA
       logger.trace("Rest url: /adminUsers type: GET")
       noCache()
 
+      val role: Int = params.as[Int]("role")
+      logger.trace("Role:" + role)
       val from: Int = params.as[Int]("from")
       logger.trace("From:" + from)
       val maxRowCount: Int = params.as[Int]("maxRowCount")
       logger.trace("MaxRowCount:" + maxRowCount)
       val authenticationCode: String = securityToken
 
-      val response = userApi.adminUsers(new AdminUsersDto(from, maxRowCount), authenticationCode)(slickSession).get
+      val response = userApi.adminUsers(new AdminUsersDto(role, from, maxRowCount), authenticationCode)(slickSession).get
       logger.trace(s"Response: $response")
       response
     }
@@ -188,4 +190,4 @@ class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationA
   }
 }
 
-case class UpdateUserBodyDTO(role: UserRole, password: Option[String])
+case class UpdateUserBodyDTO(role: Int, password: Option[String])

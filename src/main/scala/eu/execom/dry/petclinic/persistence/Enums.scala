@@ -25,3 +25,14 @@ object UserRole {
 
   def withName(name:String):UserRole = values.find(_.name == name).get
 }
+
+case class AccessRight(name: String) extends Enum
+
+object AccessRight {
+  val ADD_USER = AccessRight("ADD_USER")
+  val EDIT_USER = AccessRight("EDIT_USER")
+  val DELETE_USER = AccessRight("DELETE_USER")
+  val values: List[AccessRight] = ADD_USER :: EDIT_USER :: DELETE_USER :: Nil
+
+  def withName(name:String):AccessRight = values.find(_.name == name).get
+}

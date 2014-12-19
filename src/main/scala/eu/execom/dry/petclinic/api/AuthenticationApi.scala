@@ -8,20 +8,20 @@ import org.joda.time._
 import scala.slick.jdbc.JdbcBackend.{Session => SlickSession}
 import scala.util._
 
-class AuthenticationApi(val userDao: UserDao, val securedService: SecuredService) extends SecuredApi with Logging {
+class AuthenticationApi(val userDao: UserDao, val securedService: SecuredService, val permissionDao: PermissionDao) extends SecuredApi with Logging {
 
   def signUp(signUpDto: SignUpDto)(implicit slickSession: SlickSession): Try[AuthenticationResponseDto] = Try {
     logger.trace(s".signUp(signUpDto: $signUpDto)")
 
     val user = securedService.signUp(signUpDto.username, signUpDto.passwordHash).get
-    new AuthenticationResponseDto(user.username, user.role, user.authenticationCode.get)
+    new AuthenticationResponseDto(user.username, user.roleId, user.authenticationCode.get)
   }
 
   def signIn(signInDto: SignInDto)(implicit slickSession: SlickSession): Try[AuthenticationResponseDto] = Try {
     logger.trace(s".signIn(signInDto: $signInDto)")
 
     val user = securedService.signIn(signInDto.username, signInDto.passwordHash).get
-    new AuthenticationResponseDto(user.username, user.role, user.authenticationCode.get)
+    new AuthenticationResponseDto(user.username, user.roleId, user.authenticationCode.get)
   }
 
   def signOut(authenticationCode: String)(implicit slickSession: SlickSession): Try[Unit] = Try {
@@ -36,16 +36,16 @@ class AuthenticationApi(val userDao: UserDao, val securedService: SecuredService
     logger.trace(s".authenticate(authenticationDto: $authenticationDto)")
 
     val user = securedService.authenticate(authenticationDto.authenticationCode).get
-    new AuthenticationResponseDto(user.username, user.role, user.authenticationCode.get)
+    new AuthenticationResponseDto(user.username, user.roleId, user.authenticationCode.get)
   }
 
 }
 
-case class AuthenticationResponseDto(username: String, role: UserRole, authenticationCode: String)
+case class AuthenticationResponseDto(username: String, roleId: Int, authenticationCode: String)
 
 object AuthenticationResponseDto {
   val USERNAME: String = "username"
-  val ROLE: String = "role"
+  val ROLEID: String = "roleId"
   val AUTHENTICATIONCODE: String = "authenticationCode"
 }
 

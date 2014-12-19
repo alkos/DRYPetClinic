@@ -10,10 +10,16 @@ object PetClinicProject extends Project("eu.execom.dry", "petclinic") {
   val ADMIN = userRoleEnum.value("ADMIN")
   val USER = userRoleEnum.value("USER")
 
-  //model
-  val user = sqlModel("User")
+  val accessRight = enumeration("AccessRight")
+  val ADD_USER = accessRight.value("ADD_USER")
+  accessRight.value("EDIT_USER")
+  accessRight.values("DELETE_USER")
+
+
+  val user = securedSqlModel("User")
   val userId = user.int("id").primaryKey
-  val (userAuthCode, userRole) = user.roleSecured("role", userRoleEnum)
+//  val (userAuthCode, userRole) = user.roleSecured("role", userRoleEnum)
+  val (userAuthCode, userRole, role, permission) = user.accessRightSecured("Role", "Permission", accessRight)
   val (userUsername, userPassword) = user.signInWithUserName("username", "passwordHash")
   userPassword.triggerOnChange().triggerOnChange(userRole)
   userUsername.triggerOnChange()
@@ -63,23 +69,25 @@ object PetClinicProject extends Project("eu.execom.dry", "petclinic") {
   val userAPI = api("UserApi")
 
   val userCrudApi = userAPI.crud("user", user,
-    new CrudProperty("role", userRole).defaultSave(USER),
+    new CrudProperty("role", userRole),
     new CrudProperty("username", userUsername).noUpdate,
     new CrudProperty("password", userPassword).optionalUpdate.noOverview
-  ).roleSecured(ADMIN).rest()
+//  ).secured(ADMIN).rest()
+  ).secured(ADD_USER).rest()
 
   val allUsersApi = userAPI.pagedFind("users",
     user.query.
       response(userId).
       response(userUsername).
-      response(userRole)).secured.restGet("users")
+      response(userRole)).secured().restGet("users")
 
   val adminUsersApi = userAPI.pagedFind("adminUsers",
     user.query.
-      equals("role", userRole, Some(ADMIN)).
+//      equals("role", userRole, Some(ADMIN)).
+      equals("role", userRole).
       response(userId).
       response(userUsername).
-      response(userRole)).secured.restGet("adminUsers")
+      response(userRole)).secured().restGet("adminUsers")
 
   //WEB
   val roleEnumDropDown = web.enumDropDown(userRoleEnum)
@@ -92,5 +100,8 @@ object PetClinicProject extends Project("eu.execom.dry", "petclinic") {
 
   val userApiListView = web.apiListView(allUsersApi, "user", Some("usersApiListView"))
   val userListView = web.listView(allUsersApi.responseDto.get, "user", Some("usersListView"))
+
+  // android
+//  androidApp
 
 }

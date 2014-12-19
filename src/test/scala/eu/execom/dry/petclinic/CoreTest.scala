@@ -45,13 +45,15 @@ abstract class CoreTest extends AbstractFabutTest with IFabutRepositoryTest {
     }
   }
 
-  override def getEntityTypes: java.util.List[Class[_]] = classOf[User] :: classOf[owner] :: classOf[PetType] :: classOf[Pet] :: classOf[VetSpecialty] :: classOf[Vet] :: classOf[VetSpecialties] :: classOf[Visit] :: Nil
+  override def getEntityTypes: java.util.List[Class[_]] = classOf[User] :: classOf[Role] :: classOf[Permission] :: classOf[owner] :: classOf[PetType] :: classOf[Pet] :: classOf[VetSpecialty] :: classOf[Vet] :: classOf[VetSpecialties] :: classOf[Visit] :: Nil
   override def getComplexTypes: java.util.List[Class[_]] = Nil
   override def getIgnoredTypes: java.util.List[Class[_]] = Nil
 
 
   override def findById(entityClass: Class[_], id: AnyRef): AnyRef =
     if (entityClass == classOf[User]) userDao.findById(id.asInstanceOf[Int]).orNull
+    else if (entityClass == classOf[Role]) roleDao.findById(id.asInstanceOf[Int]).orNull
+    else if (entityClass == classOf[Permission]) permissionDao.findById(id.asInstanceOf[Int]).orNull
     else if (entityClass == classOf[owner]) ownerDao.findById(id.asInstanceOf[Int]).orNull
     else if (entityClass == classOf[PetType]) petTypeDao.findById(id.asInstanceOf[Int]).orNull
     else if (entityClass == classOf[Pet]) petDao.findById(id.asInstanceOf[Int]).orNull
@@ -64,6 +66,8 @@ abstract class CoreTest extends AbstractFabutTest with IFabutRepositoryTest {
 
   override def findAll(entityClass: Class[_]): java.util.List[_] =
     if (entityClass == classOf[User]) userDao.findAll
+    else if (entityClass == classOf[Role]) roleDao.findAll
+    else if (entityClass == classOf[Permission]) permissionDao.findAll
     else if (entityClass == classOf[owner]) ownerDao.findAll
     else if (entityClass == classOf[PetType]) petTypeDao.findAll
     else if (entityClass == classOf[Pet]) petDao.findAll

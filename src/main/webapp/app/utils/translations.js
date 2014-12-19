@@ -27,12 +27,14 @@
             USERROLEDROPDOWN_USER: 'User',
             USERROLEDROPDOWN_SELECT_ONE: 'Select one',
             USERCREATEAPIFORM_SUBMIT: 'Submit',
+            USERCREATEAPIFORM_ROLE_REQUIRED: 'Role is required.',
             USERCREATEAPIFORM_PASSWORD: 'password',
             USERCREATEAPIFORM_USERNAME_MINLENGTH: 'Username max size is {{minlength}}.',
             USERCREATEAPIFORM_USERNAME_MAXLENGTH: 'Username max size is {{maxlength}}.',
             USERCREATEAPIFORM_PASSWORD_MAXLENGTH: 'Password max size is {{maxlength}}.',
             USERCREATEAPIFORM_USERNAME_REQUIRED: 'Username is required.',
             USERCREATEAPIFORM_USERNAME: 'username',
+            USERCREATEAPIFORM_ROLE: 'role',
             USERCREATEAPIFORM_PASSWORD_REQUIRED: 'Password is required.',
             USERCREATEAPIFORM_PASSWORD_MINLENGTH: 'Password max size is {{minlength}}.',
             USERUPDATEFORM_PASSWORD: 'password',
@@ -48,10 +50,10 @@
             USERVIEW_USERNAME: 'username',
             USERSAPILISTVIEWITEM_ID: 'id',
             USERSAPILISTVIEWITEM_USERNAME: 'username',
-            USERSAPILISTVIEWITEM_ROLE: 'role',
+            USERSAPILISTVIEWITEM_ROLE_ID: 'roleId',
             USERSLISTVIEWITEM_ID: 'id',
             USERSLISTVIEWITEM_USERNAME: 'username',
-            USERSLISTVIEWITEM_ROLE: 'role'
+            USERSLISTVIEWITEM_ROLE_ID: 'roleId'
         });
         $translateProvider.preferredLanguage('en');
     });

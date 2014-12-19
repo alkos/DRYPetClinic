@@ -7,13 +7,14 @@
          *
          * Api URL: /api/users?
          *"Request": CreateUserDto {
+         *    "role": Int,
          *    "username": String,
          *    "password": String
          *}
          *
          *"Response": ReadUserResponseDto {
          *    "id": Int,
-         *    "role": UserRole,
+         *    "role": Int,
          *    "username": String
          *}
          */
@@ -32,7 +33,7 @@
          *
          *"Response": ReadUserResponseDto {
          *    "id": Int,
-         *    "role": UserRole,
+         *    "role": Int,
          *    "username": String
          *}
          */
@@ -47,13 +48,13 @@
          * Api URL: /api/users/:id?
          *"Request": UpdateUserDto {
          *    "id": Int,
-         *    "role": UserRole,
+         *    "role": Int,
          *    "password": Option[String]
          *}
          *
          *"Response": ReadUserResponseDto {
          *    "id": Int,
-         *    "role": UserRole,
+         *    "role": Int,
          *    "username": String
          *}
          */
@@ -94,14 +95,15 @@
 
         /** AdminUsers (secured)
          *
-         * Api URL: /api/adminUsers?from:Int&maxRowCount:Int
+         * Api URL: /api/adminUsers?role:Int&from:Int&maxRowCount:Int
          *"Request": AdminUsersDto {
+         *    "role": Int,
          *    "from": Int,
          *    "maxRowCount": Int
          *}
          *"Response": SearchResultDto[AdminUsersResponseDto]
          */
-        this.adminUsers = function (from, maxRowCount, model, successCallback, errorCallback) {
+        this.adminUsers = function (role, from, maxRowCount, model, successCallback, errorCallback) {
             successCallback({
                 //TODO fill up mocked data values
             });
@@ -117,7 +119,7 @@
          *
          *"Response": AuthenticationResponseDto {
          *    "username": String,
-         *    "role": UserRole,
+         *    "roleId": Int,
          *    "authenticationCode": String
          *}
          */
@@ -137,7 +139,7 @@
          *
          *"Response": AuthenticationResponseDto {
          *    "username": String,
-         *    "role": UserRole,
+         *    "roleId": Int,
          *    "authenticationCode": String
          *}
          */
@@ -167,7 +169,7 @@
          *
          *"Response": AuthenticationResponseDto {
          *    "username": String,
-         *    "role": UserRole,
+         *    "roleId": Int,
          *    "authenticationCode": String
          *}
          */

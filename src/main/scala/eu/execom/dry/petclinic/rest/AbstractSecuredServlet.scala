@@ -14,7 +14,7 @@ abstract class AbstractSecuredServlet extends ScalatraServlet with Logging {
 
   val SECURITY_TOKEN = "X-PETCLINIC-AUTH"
 
-  protected implicit val jsonFormats: Formats = DefaultFormats + new ArrayByteSerializer + DateTimeSerializer + new UUIDSerializer + new SortOrderSerializer + new UserRoleSerializer
+  protected implicit val jsonFormats: Formats = DefaultFormats + new ArrayByteSerializer + DateTimeSerializer + new UUIDSerializer + new SortOrderSerializer + new UserRoleSerializer + new AccessRightSerializer
 
   error {
     case BadRequestException(code) =>
@@ -117,5 +117,20 @@ class UserRoleSerializer extends Serializer[UserRole] {
 
   def serialize(implicit formats: Formats): PartialFunction[Any, JValue] = {
     case x: UserRole => JString(x.name)
+  }
+}
+
+class AccessRightSerializer extends Serializer[AccessRight] {
+  private val MyClassClass = classOf[AccessRight]
+
+  def deserialize(implicit format: Formats): PartialFunction[(TypeInfo, JValue), AccessRight] = {
+    case (TypeInfo(MyClassClass, _), json) => json match {
+      case JString(content) => AccessRight.withName(content)
+      case x => throw new MappingException("Can't deserialize " + x + " to AccessRight")
+    }
+  }
+
+  def serialize(implicit formats: Formats): PartialFunction[Any, JValue] = {
+    case x: AccessRight => JString(x.name)
   }
 }

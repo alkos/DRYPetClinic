@@ -38,6 +38,8 @@ trait ServiceConfiguration extends SlickPersistenceConfiguration {
 
   //services
   lazy val userService: UserService = new UserService(userDao, eventBus)
+  lazy val roleService: RoleService = new RoleService(roleDao)
+  lazy val permissionService: PermissionService = new PermissionService(permissionDao)
   lazy val ownerService: ownerService = new ownerService(ownerDao)
   lazy val petTypeService: PetTypeService = new PetTypeService(petTypeDao)
   lazy val petService: PetService = new PetService(petDao)

@@ -13,7 +13,7 @@
             <column name="authenticationCode" type="VARCHAR(128)">
                 <constraints nullable="true"/>
             </column>
-            <column name="role" type="VARCHAR(255)">
+            <column name="roleId" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
             <column name="username" type="VARCHAR(1024)">
@@ -27,6 +27,33 @@
         <addUniqueConstraint tableName="User" columnNames="id"></addUniqueConstraint>
         <addUniqueConstraint tableName="User" columnNames="authenticationCode"></addUniqueConstraint>
         <addUniqueConstraint tableName="User" columnNames="username"></addUniqueConstraint>
+
+        <createTable tableName="Role">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint tableName="Role" columnNames="id"></addUniqueConstraint>
+        <addUniqueConstraint tableName="Role" columnNames="name"></addUniqueConstraint>
+
+        <createTable tableName="Permission">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="roleId" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="accessRight" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint tableName="Permission" columnNames="id"></addUniqueConstraint>
+        <addUniqueConstraint tableName="Permission" columnNames="roleId, accessRight"></addUniqueConstraint>
 
         <createTable tableName="owner">
             <column autoIncrement="true" name="id" type="BIGINT">
@@ -139,7 +166,19 @@
         <addUniqueConstraint tableName="Visit" columnNames="id"></addUniqueConstraint>
 
         <!-- USER -->
+        <addForeignKeyConstraint baseTableName="User" baseColumnNames="roleId"
+                                 constraintName="FK_User.roleId_Role.id"
+                                 referencedTableName="Role" referencedColumnNames="id"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"/>
+        <!-- ROLE -->
 
+        <!-- PERMISSION -->
+        <addForeignKeyConstraint baseTableName="Permission" baseColumnNames="roleId"
+                                 constraintName="FK_Permission.roleId_Role.id"
+                                 referencedTableName="Role" referencedColumnNames="id"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"/>
         <!-- OWNER -->
 
         <!-- PETTYPE -->

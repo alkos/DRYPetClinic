@@ -12,9 +12,11 @@
         </div>
     </div>
     <div class="form-group">
-        <label>{{'USERUPDATEFORM_ROLE' | translate}}</label>
-        <user-role-drop-down name="role" selected="ctrl.viewModel.user.role"
-        required></user-role-drop-down>
+        <label for="role">{{'USERUPDATEFORM_ROLE' | translate}}</label>
+        <input type="number" id="role" class="form-control" name="role" ng-model="ctrl.viewModel.user.role"
+               ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0 } }"
+               placeholder="{{'USERUPDATEFORM_ROLE' | translate}}"
+                 required>
 
         <div ng-messages="userUpdateForm.role.$error" ng-if="userUpdateForm.role.$touched">
             <div ng-message="required">{{'USERUPDATEFORM_ROLE_REQUIRED' | translate}}</div>
