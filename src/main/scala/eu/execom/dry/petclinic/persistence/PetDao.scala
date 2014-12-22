@@ -73,6 +73,14 @@ case class Pet(private var _id: Int, private var _name: String, private var _bir
 
   def this() = this(0, "", new java.sql.Date(DateTime.now(DateTimeZone.UTC).getMillis), 0, 0)
 
+  def this(name: String, birthDate: DateTime, ownerId: Int, petTypeId: Int)(implicit session: SlickSession) = {
+    this()
+    this.name_=(name)(session)
+    this.birthDate_=(birthDate)(session)
+    this.ownerId_=(ownerId)(session)
+    this.petTypeId_=(petTypeId)(session)
+  }
+
   def this(name: String, birthDate: DateTime, owner: owner, petType: PetType)(implicit session: SlickSession) = {
     this()
     this.name_=(name)(session)

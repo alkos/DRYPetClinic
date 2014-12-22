@@ -77,6 +77,14 @@ case class User(private var _id: Int, private var _authenticationCode: Option[St
 
   def this() = this(0, None, 0, "", "")
 
+  def this(authenticationCode: Option[String], roleId: Int, username: String, passwordHash: String)(implicit session: SlickSession) = {
+    this()
+    this.authenticationCode_=(authenticationCode)(session)
+    this.roleId_=(roleId)(session)
+    this.username_=(username)(session)
+    this.passwordHash_=(passwordHash)(session)
+  }
+
   def this(authenticationCode: Option[String], role: Role, username: String, passwordHash: String)(implicit session: SlickSession) = {
     this()
     this.authenticationCode_=(authenticationCode)(session)

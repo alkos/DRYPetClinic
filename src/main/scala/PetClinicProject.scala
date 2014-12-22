@@ -40,10 +40,10 @@ object PetClinicProject extends Project("eu.execom.dry", "petclinic") {
 
   val pet = sqlModel("Pet")
   val petId = pet.int("id").primaryKey
-  val petName = pet.text("name").minSize(2).maxSize(40)
-  val petBirthDate = pet.date("birthDate")
-  val petOwner = pet.reference("owner", ownerId)
-  val petPetType = pet.reference("petType", petTypeId)
+  val petName = pet.text("name").minSize(2).maxSize(40).trackHistory
+  val petBirthDate = pet.date("birthDate").trackHistory
+  val petOwner = pet.reference("owner", ownerId).trackHistory
+  val petPetType = pet.reference("petType", petTypeId).trackHistory
 
   val vetSpecialty = sqlModel("VetSpecialty")
   val vetSpecialtyId = vetSpecialty.int("id").primaryKey

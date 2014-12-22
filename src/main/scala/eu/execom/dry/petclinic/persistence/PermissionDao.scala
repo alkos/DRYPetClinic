@@ -48,6 +48,12 @@ case class Permission(private var _id: Int, private var _roleId: Int, private va
 
   def this() = this(0, 0, AccessRight.ADD_USER.name)
 
+  def this(roleId: Int, accessRight: AccessRight)(implicit session: SlickSession) = {
+    this()
+    this.roleId_=(roleId)(session)
+    this.accessRight_=(accessRight)(session)
+  }
+
   def this(role: Role, accessRight: AccessRight)(implicit session: SlickSession) = {
     this()
     this.role_=(role)(session)

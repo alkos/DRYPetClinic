@@ -61,6 +61,13 @@ case class Visit(private var _id: Int, private var _date: Date, private var _des
 
   def this() = this(0, new java.sql.Date(DateTime.now(DateTimeZone.UTC).getMillis), "", 0)
 
+  def this(date: DateTime, description: String, petId: Int)(implicit session: SlickSession) = {
+    this()
+    this.date_=(date)(session)
+    this.description_=(description)(session)
+    this.petId_=(petId)(session)
+  }
+
   def this(date: DateTime, description: String, pet: Pet)(implicit session: SlickSession) = {
     this()
     this.date_=(date)(session)

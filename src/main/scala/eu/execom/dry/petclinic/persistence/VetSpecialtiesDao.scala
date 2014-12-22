@@ -49,6 +49,12 @@ case class VetSpecialties(private var _id: Int, private var _vetId: Int, private
 
   def this() = this(0, 0, 0)
 
+  def this(vetId: Int, specialtyId: Int)(implicit session: SlickSession) = {
+    this()
+    this.vetId_=(vetId)(session)
+    this.specialtyId_=(specialtyId)(session)
+  }
+
   def this(vet: Vet, specialty: VetSpecialty)(implicit session: SlickSession) = {
     this()
     this.vet_=(vet)(session)

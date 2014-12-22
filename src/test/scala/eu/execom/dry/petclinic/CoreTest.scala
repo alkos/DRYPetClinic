@@ -45,7 +45,7 @@ abstract class CoreTest extends AbstractFabutTest with IFabutRepositoryTest {
     }
   }
 
-  override def getEntityTypes: java.util.List[Class[_]] = classOf[User] :: classOf[Role] :: classOf[Permission] :: classOf[owner] :: classOf[PetType] :: classOf[Pet] :: classOf[VetSpecialty] :: classOf[Vet] :: classOf[VetSpecialties] :: classOf[Visit] :: Nil
+  override def getEntityTypes: java.util.List[Class[_]] = classOf[User] :: classOf[Role] :: classOf[Permission] :: classOf[owner] :: classOf[PetType] :: classOf[Pet] :: classOf[PetHistory] :: classOf[VetSpecialty] :: classOf[Vet] :: classOf[VetSpecialties] :: classOf[Visit] :: Nil
   override def getComplexTypes: java.util.List[Class[_]] = Nil
   override def getIgnoredTypes: java.util.List[Class[_]] = Nil
 
@@ -57,6 +57,7 @@ abstract class CoreTest extends AbstractFabutTest with IFabutRepositoryTest {
     else if (entityClass == classOf[owner]) ownerDao.findById(id.asInstanceOf[Int]).orNull
     else if (entityClass == classOf[PetType]) petTypeDao.findById(id.asInstanceOf[Int]).orNull
     else if (entityClass == classOf[Pet]) petDao.findById(id.asInstanceOf[Int]).orNull
+    else if (entityClass == classOf[PetHistory]) petHistoryDao.findById(id.asInstanceOf[Int]).orNull
     else if (entityClass == classOf[VetSpecialty]) vetSpecialtyDao.findById(id.asInstanceOf[Int]).orNull
     else if (entityClass == classOf[Vet]) vetDao.findById(id.asInstanceOf[Int]).orNull
     else if (entityClass == classOf[VetSpecialties]) vetSpecialtiesDao.findById(id.asInstanceOf[Int]).orNull
@@ -71,6 +72,7 @@ abstract class CoreTest extends AbstractFabutTest with IFabutRepositoryTest {
     else if (entityClass == classOf[owner]) ownerDao.findAll
     else if (entityClass == classOf[PetType]) petTypeDao.findAll
     else if (entityClass == classOf[Pet]) petDao.findAll
+    else if (entityClass == classOf[PetHistory]) petHistoryDao.findAll
     else if (entityClass == classOf[VetSpecialty]) vetSpecialtyDao.findAll
     else if (entityClass == classOf[Vet]) vetDao.findAll
     else if (entityClass == classOf[VetSpecialties]) vetSpecialtiesDao.findAll
