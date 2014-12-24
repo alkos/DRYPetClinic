@@ -30,6 +30,8 @@ trait SlickPersistenceConfiguration {
   hikariConfig.addDataSourceProperty("prepStmtCacheSize", mysqlPrepStmtCacheSize.toString)
   hikariConfig.addDataSourceProperty("prepStmtCacheSqlLimit", mysqlPrepStmtCacheSize.toString)
   hikariConfig.addDataSourceProperty("useServerPrepStmts", mysqlUseServerPrepStmts.toString)
+  hikariConfig.addDataSourceProperty("characterEncoding", "utf8")
+  hikariConfig.addDataSourceProperty("useUnicode", "true")
 
   val dataSource = new HikariDataSource(hikariConfig)
 
