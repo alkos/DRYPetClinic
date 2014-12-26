@@ -1,8 +1,9 @@
 package eu.execom.dry.petclinic.api
 
+import eu.execom.dry.petclinic._
 import eu.execom.dry.petclinic.persistence._
 import eu.execom.dry.petclinic.service._
-import eu.execom.dry.petclinic.util.Logging
+import eu.execom.dry.petclinic.util._
 import org.joda.time._
 
 import scala.slick.jdbc.JdbcBackend.{Session => SlickSession}
@@ -96,7 +97,13 @@ object ReadUserDto {
   val ID: String = "id"
 }
 
-case class ReadUserResponseDto(id: Int, role: Int, username: String)
+case class ReadUserResponseDto(id: Int, role: Int, username: String) {
+      
+    if (username == null) throw READUSERRESPONSEDTO_USERNAME_IS_REQUIRED
+
+    if (username.size < 0) throw READUSERRESPONSEDTO_USERNAME_MIN_SIZE
+    if (username.size > 1024) throw READUSERRESPONSEDTO_USERNAME_MAX_SIZE
+}
 
 object ReadUserResponseDto {
   val ID: String = "id"
@@ -104,7 +111,23 @@ object ReadUserResponseDto {
   val USERNAME: String = "username"
 }
 
-case class CreateUserDto(role: Int, username: String, password: String)
+object READUSERRESPONSEDTO_USERNAME_MIN_SIZE extends DataConstraintException("READUSERRESPONSEDTO_USERNAME_MIN_SIZE")
+
+object READUSERRESPONSEDTO_USERNAME_MAX_SIZE extends DataConstraintException("READUSERRESPONSEDTO_USERNAME_MAX_SIZE")
+
+object READUSERRESPONSEDTO_USERNAME_IS_REQUIRED extends DataConstraintException("READUSERRESPONSEDTO_USERNAME_IS_REQUIRED")
+
+case class CreateUserDto(role: Int, username: String, password: String) {
+      
+    if (username == null) throw CREATEUSERDTO_USERNAME_IS_REQUIRED
+
+    if (username.size < 0) throw CREATEUSERDTO_USERNAME_MIN_SIZE
+    if (username.size > 1024) throw CREATEUSERDTO_USERNAME_MAX_SIZE    
+    if (password == null) throw CREATEUSERDTO_PASSWORD_IS_REQUIRED
+
+    if (password.size < 0) throw CREATEUSERDTO_PASSWORD_MIN_SIZE
+    if (password.size > 1024) throw CREATEUSERDTO_PASSWORD_MAX_SIZE
+}
 
 object CreateUserDto {
   val ROLE: String = "role"
@@ -112,13 +135,34 @@ object CreateUserDto {
   val PASSWORD: String = "password"
 }
 
-case class UpdateUserDto(id: Int, role: Int, password: Option[String])
+object CREATEUSERDTO_USERNAME_MIN_SIZE extends DataConstraintException("CREATEUSERDTO_USERNAME_MIN_SIZE")
+
+object CREATEUSERDTO_USERNAME_MAX_SIZE extends DataConstraintException("CREATEUSERDTO_USERNAME_MAX_SIZE")
+
+object CREATEUSERDTO_USERNAME_IS_REQUIRED extends DataConstraintException("CREATEUSERDTO_USERNAME_IS_REQUIRED")
+
+object CREATEUSERDTO_PASSWORD_MIN_SIZE extends DataConstraintException("CREATEUSERDTO_PASSWORD_MIN_SIZE")
+
+object CREATEUSERDTO_PASSWORD_MAX_SIZE extends DataConstraintException("CREATEUSERDTO_PASSWORD_MAX_SIZE")
+
+object CREATEUSERDTO_PASSWORD_IS_REQUIRED extends DataConstraintException("CREATEUSERDTO_PASSWORD_IS_REQUIRED")
+
+case class UpdateUserDto(id: Int, role: Int, password: Option[String]) {
+      if (password.isDefined) {
+      if (password.get.size < 0) throw UPDATEUSERDTO_PASSWORD_MIN_SIZE
+      if (password.get.size > 1024) throw UPDATEUSERDTO_PASSWORD_MAX_SIZE
+    }
+}
 
 object UpdateUserDto {
   val ID: String = "id"
   val ROLE: String = "role"
   val PASSWORD: String = "password"
 }
+
+object UPDATEUSERDTO_PASSWORD_MIN_SIZE extends DataConstraintException("UPDATEUSERDTO_PASSWORD_MIN_SIZE")
+
+object UPDATEUSERDTO_PASSWORD_MAX_SIZE extends DataConstraintException("UPDATEUSERDTO_PASSWORD_MAX_SIZE")
 
 case class UsersDto(from: Int, maxRowCount: Int)
 
@@ -127,13 +171,25 @@ object UsersDto {
   val MAXROWCOUNT: String = "maxRowCount"
 }
 
-case class UsersResponseDto(id: Int, username: String, roleId: Int)
+case class UsersResponseDto(id: Int, username: String, roleId: Int) {
+      
+    if (username == null) throw USERSRESPONSEDTO_USERNAME_IS_REQUIRED
+
+    if (username.size < 0) throw USERSRESPONSEDTO_USERNAME_MIN_SIZE
+    if (username.size > 1024) throw USERSRESPONSEDTO_USERNAME_MAX_SIZE
+}
 
 object UsersResponseDto {
   val ID: String = "id"
   val USERNAME: String = "username"
   val ROLEID: String = "roleId"
 }
+
+object USERSRESPONSEDTO_USERNAME_MIN_SIZE extends DataConstraintException("USERSRESPONSEDTO_USERNAME_MIN_SIZE")
+
+object USERSRESPONSEDTO_USERNAME_MAX_SIZE extends DataConstraintException("USERSRESPONSEDTO_USERNAME_MAX_SIZE")
+
+object USERSRESPONSEDTO_USERNAME_IS_REQUIRED extends DataConstraintException("USERSRESPONSEDTO_USERNAME_IS_REQUIRED")
 
 case class AdminUsersDto(role: Int, from: Int, maxRowCount: Int)
 
@@ -143,10 +199,22 @@ object AdminUsersDto {
   val MAXROWCOUNT: String = "maxRowCount"
 }
 
-case class AdminUsersResponseDto(id: Int, username: String, roleId: Int)
+case class AdminUsersResponseDto(id: Int, username: String, roleId: Int) {
+      
+    if (username == null) throw ADMINUSERSRESPONSEDTO_USERNAME_IS_REQUIRED
+
+    if (username.size < 0) throw ADMINUSERSRESPONSEDTO_USERNAME_MIN_SIZE
+    if (username.size > 1024) throw ADMINUSERSRESPONSEDTO_USERNAME_MAX_SIZE
+}
 
 object AdminUsersResponseDto {
   val ID: String = "id"
   val USERNAME: String = "username"
   val ROLEID: String = "roleId"
 }
+
+object ADMINUSERSRESPONSEDTO_USERNAME_MIN_SIZE extends DataConstraintException("ADMINUSERSRESPONSEDTO_USERNAME_MIN_SIZE")
+
+object ADMINUSERSRESPONSEDTO_USERNAME_MAX_SIZE extends DataConstraintException("ADMINUSERSRESPONSEDTO_USERNAME_MAX_SIZE")
+
+object ADMINUSERSRESPONSEDTO_USERNAME_IS_REQUIRED extends DataConstraintException("ADMINUSERSRESPONSEDTO_USERNAME_IS_REQUIRED")

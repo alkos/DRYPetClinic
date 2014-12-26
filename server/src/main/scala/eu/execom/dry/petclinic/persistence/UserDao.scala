@@ -118,13 +118,13 @@ object USER_USERNAME_MIN_SIZE extends DataConstraintException("USER_USERNAME_MIN
 
 object USER_USERNAME_MAX_SIZE extends DataConstraintException("USER_USERNAME_MAX_SIZE")
 
-object USER_USERNAME_IS_REQUIRED extends BadRequestException("USER_USERNAME_IS_REQUIRED")
+object USER_USERNAME_IS_REQUIRED extends DataConstraintException("USER_USERNAME_IS_REQUIRED")
 
 object USER_PASSWORDHASH_MIN_SIZE extends DataConstraintException("USER_PASSWORDHASH_MIN_SIZE")
 
 object USER_PASSWORDHASH_MAX_SIZE extends DataConstraintException("USER_PASSWORDHASH_MAX_SIZE")
 
-object USER_PASSWORDHASH_IS_REQUIRED extends BadRequestException("USER_PASSWORDHASH_IS_REQUIRED")
+object USER_PASSWORDHASH_IS_REQUIRED extends DataConstraintException("USER_PASSWORDHASH_IS_REQUIRED")
 
 object USER_DOESNT_EXIST extends DataConstraintException("USER_DOESNT_EXIST")
 

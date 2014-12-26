@@ -76,13 +76,13 @@ object VET_FIRSTNAME_MIN_SIZE extends DataConstraintException("VET_FIRSTNAME_MIN
 
 object VET_FIRSTNAME_MAX_SIZE extends DataConstraintException("VET_FIRSTNAME_MAX_SIZE")
 
-object VET_FIRSTNAME_IS_REQUIRED extends BadRequestException("VET_FIRSTNAME_IS_REQUIRED")
+object VET_FIRSTNAME_IS_REQUIRED extends DataConstraintException("VET_FIRSTNAME_IS_REQUIRED")
 
 object VET_LASTNAME_MIN_SIZE extends DataConstraintException("VET_LASTNAME_MIN_SIZE")
 
 object VET_LASTNAME_MAX_SIZE extends DataConstraintException("VET_LASTNAME_MAX_SIZE")
 
-object VET_LASTNAME_IS_REQUIRED extends BadRequestException("VET_LASTNAME_IS_REQUIRED")
+object VET_LASTNAME_IS_REQUIRED extends DataConstraintException("VET_LASTNAME_IS_REQUIRED")
 
 object VET_DOESNT_EXIST extends DataConstraintException("VET_DOESNT_EXIST")
 

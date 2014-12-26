@@ -1,3 +1,12 @@
 petclinic.iml
 target
 server.iml
+android/android.iml
+android/AndroidManifest.xml
+android/ant.properties
+android/build.xml
+android/local.properties
+android/proguard-project.txt
+android/project.properties
+android/gen/*
+android/res/*

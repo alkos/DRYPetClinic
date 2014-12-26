@@ -110,9 +110,9 @@ object PET_NAME_MIN_SIZE extends DataConstraintException("PET_NAME_MIN_SIZE")
 
 object PET_NAME_MAX_SIZE extends DataConstraintException("PET_NAME_MAX_SIZE")
 
-object PET_NAME_IS_REQUIRED extends BadRequestException("PET_NAME_IS_REQUIRED")
+object PET_NAME_IS_REQUIRED extends DataConstraintException("PET_NAME_IS_REQUIRED")
 
-object PET_BIRTHDATE_IS_REQUIRED extends BadRequestException("PET_BIRTHDATE_IS_REQUIRED")
+object PET_BIRTHDATE_IS_REQUIRED extends DataConstraintException("PET_BIRTHDATE_IS_REQUIRED")
 
 object PET_DOESNT_EXIST extends DataConstraintException("PET_DOESNT_EXIST")
 

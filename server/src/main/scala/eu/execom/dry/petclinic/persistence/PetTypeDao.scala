@@ -60,7 +60,7 @@ object PETTYPE_NAME_MIN_SIZE extends DataConstraintException("PETTYPE_NAME_MIN_S
 
 object PETTYPE_NAME_MAX_SIZE extends DataConstraintException("PETTYPE_NAME_MAX_SIZE")
 
-object PETTYPE_NAME_IS_REQUIRED extends BadRequestException("PETTYPE_NAME_IS_REQUIRED")
+object PETTYPE_NAME_IS_REQUIRED extends DataConstraintException("PETTYPE_NAME_IS_REQUIRED")
 
 object PETTYPE_DOESNT_EXIST extends DataConstraintException("PETTYPE_DOESNT_EXIST")
 

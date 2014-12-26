@@ -137,15 +137,15 @@ object PetHistory {
   val PETTYPEID: String = "_petTypeId"
 }
 
-object PETHISTORY_TIME_IS_REQUIRED extends BadRequestException("PETHISTORY_TIME_IS_REQUIRED")
+object PETHISTORY_TIME_IS_REQUIRED extends DataConstraintException("PETHISTORY_TIME_IS_REQUIRED")
 
 object PETHISTORY_NAME_MIN_SIZE extends DataConstraintException("PETHISTORY_NAME_MIN_SIZE")
 
 object PETHISTORY_NAME_MAX_SIZE extends DataConstraintException("PETHISTORY_NAME_MAX_SIZE")
 
-object PETHISTORY_NAME_IS_REQUIRED extends BadRequestException("PETHISTORY_NAME_IS_REQUIRED")
+object PETHISTORY_NAME_IS_REQUIRED extends DataConstraintException("PETHISTORY_NAME_IS_REQUIRED")
 
-object PETHISTORY_BIRTHDATE_IS_REQUIRED extends BadRequestException("PETHISTORY_BIRTHDATE_IS_REQUIRED")
+object PETHISTORY_BIRTHDATE_IS_REQUIRED extends DataConstraintException("PETHISTORY_BIRTHDATE_IS_REQUIRED")
 
 object PETHISTORY_DOESNT_EXIST extends DataConstraintException("PETHISTORY_DOESNT_EXIST")
 

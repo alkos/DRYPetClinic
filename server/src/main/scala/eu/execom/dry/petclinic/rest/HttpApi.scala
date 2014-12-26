@@ -43,7 +43,7 @@ class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationA
       logger.trace("Rest url: /users/:id type: GET")
       noCache()
 
-      val id: Int = params.as[Int]("id")
+      val id: Int = params.getAs[Int]("id").getOrElse(throw new BadRequestException("MISSING_ID_PROPERTY"))
       logger.trace("Id:" + id)
       val authenticationCode: String = securityToken
 
@@ -57,7 +57,7 @@ class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationA
     transaction  { (slickSession: SlickSession) =>
       logger.trace("Rest url: /users/:id type: PUT")
 
-      val id: Int = params.as[Int]("id")
+      val id: Int = params.getAs[Int]("id").getOrElse(throw new BadRequestException("MISSING_ID_PROPERTY"))
       logger.trace("Id:" + id)
       if (requestFormat !="json") throw JSON_REQUEST_REQUIRED_EXCEPTION
       val body:UpdateUserBodyDTO = parsedBody match {
@@ -77,7 +77,7 @@ class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationA
     transaction  { (slickSession: SlickSession) =>
       logger.trace("Rest url: /users/:id type: DELETE")
 
-      val id: Int = params.as[Int]("id")
+      val id: Int = params.getAs[Int]("id").getOrElse(throw new BadRequestException("MISSING_ID_PROPERTY"))
       logger.trace("Id:" + id)
       val authenticationCode: String = securityToken
 
@@ -92,9 +92,9 @@ class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationA
       logger.trace("Rest url: /users type: GET")
       noCache()
 
-      val from: Int = params.as[Int]("from")
+      val from: Int = params.getAs[Int]("from").getOrElse(throw new BadRequestException("MISSING_FROM_PROPERTY"))
       logger.trace("From:" + from)
-      val maxRowCount: Int = params.as[Int]("maxRowCount")
+      val maxRowCount: Int = params.getAs[Int]("maxRowCount").getOrElse(throw new BadRequestException("MISSING_MAXROWCOUNT_PROPERTY"))
       logger.trace("MaxRowCount:" + maxRowCount)
       val authenticationCode: String = securityToken
 
@@ -109,11 +109,11 @@ class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationA
       logger.trace("Rest url: /adminUsers type: GET")
       noCache()
 
-      val role: Int = params.as[Int]("role")
+      val role: Int = params.getAs[Int]("role").getOrElse(throw new BadRequestException("MISSING_ROLE_PROPERTY"))
       logger.trace("Role:" + role)
-      val from: Int = params.as[Int]("from")
+      val from: Int = params.getAs[Int]("from").getOrElse(throw new BadRequestException("MISSING_FROM_PROPERTY"))
       logger.trace("From:" + from)
-      val maxRowCount: Int = params.as[Int]("maxRowCount")
+      val maxRowCount: Int = params.getAs[Int]("maxRowCount").getOrElse(throw new BadRequestException("MISSING_MAXROWCOUNT_PROPERTY"))
       logger.trace("MaxRowCount:" + maxRowCount)
       val authenticationCode: String = securityToken
 
@@ -190,4 +190,18 @@ class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationA
   }
 }
 
-case class UpdateUserBodyDTO(role: Int, password: Option[String])
+case class UpdateUserBodyDTO(role: Int, password: Option[String]) {
+      if (password.isDefined) {
+      if (password.get.size < 0) throw UPDATEUSERBODYDTO_PASSWORD_MIN_SIZE
+      if (password.get.size > 1024) throw UPDATEUSERBODYDTO_PASSWORD_MAX_SIZE
+    }
+}
+
+object UpdateUserBodyDTO {
+  val ROLE: String = "role"
+  val PASSWORD: String = "password"
+}
+
+object UPDATEUSERBODYDTO_PASSWORD_MIN_SIZE extends DataConstraintException("UPDATEUSERBODYDTO_PASSWORD_MIN_SIZE")
+
+object UPDATEUSERBODYDTO_PASSWORD_MAX_SIZE extends DataConstraintException("UPDATEUSERBODYDTO_PASSWORD_MAX_SIZE")

@@ -61,7 +61,7 @@ object ROLE_NAME_MIN_SIZE extends DataConstraintException("ROLE_NAME_MIN_SIZE")
 
 object ROLE_NAME_MAX_SIZE extends DataConstraintException("ROLE_NAME_MAX_SIZE")
 
-object ROLE_NAME_IS_REQUIRED extends BadRequestException("ROLE_NAME_IS_REQUIRED")
+object ROLE_NAME_IS_REQUIRED extends DataConstraintException("ROLE_NAME_IS_REQUIRED")
 
 object ROLE_DOESNT_EXIST extends DataConstraintException("ROLE_DOESNT_EXIST")
 

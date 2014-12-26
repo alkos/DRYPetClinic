@@ -73,7 +73,7 @@ object Permission {
   val ACCESSRIGHT: String = "_accessRight"
 }
 
-object PERMISSION_ACCESSRIGHT_IS_REQUIRED extends BadRequestException("PERMISSION_ACCESSRIGHT_IS_REQUIRED")
+object PERMISSION_ACCESSRIGHT_IS_REQUIRED extends DataConstraintException("PERMISSION_ACCESSRIGHT_IS_REQUIRED")
 
 object PERMISSION_DOESNT_EXIST extends DataConstraintException("PERMISSION_DOESNT_EXIST")
 

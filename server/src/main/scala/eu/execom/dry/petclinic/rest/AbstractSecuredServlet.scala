@@ -19,19 +19,23 @@ abstract class AbstractSecuredServlet extends ScalatraServlet with Logging {
   error {
     case BadRequestException(code) =>
       logger.trace("BadRequest error occurred with code: " + code)
-      halt(BadRequest(body = code))
+      halt(BadRequest(body = errorJson(code, "BadRequest error occurred with code")))
     case DataConstraintException(code) =>
       logger.trace("Data constraint error occurred with code: " + code)
-      halt(BadRequest(body = code))
+      halt(BadRequest(body = errorJson(code, "Data constraint error occurred with code")))
     case UnauthorizedException(code) =>
       logger.trace("Unauthorized error occurred with code: " + code)
-      halt(Unauthorized(body = code))
+      halt(Unauthorized(body = errorJson(code, "Unauthorized error occurred with code")))
     case e:MappingException =>
       logger.warn(s"Bad data request, json object invalid format, ${e.msg}")
-      halt(BadRequest(body = s"Bad data request, json object invalid format, ${e.msg}"))
+      halt(BadRequest(body = errorJson("JSON_MAPPING_EXCEPTION", s"Bad data request, json object invalid format, ${e.msg}")))
     case e =>
       logger.error("Unknown error occurred", e)
       halt(InternalServerError(reason = e.toString))
+  }
+
+  def errorJson(code:String, message: String) = {
+    s"""{ "code": "$code", "message": "$message" }""".stripMargin
   }
 
   def securityToken: String = (cookies.get(SECURITY_TOKEN), request.header(SECURITY_TOKEN)) match {

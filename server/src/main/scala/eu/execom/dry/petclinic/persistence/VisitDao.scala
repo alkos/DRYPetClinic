@@ -90,13 +90,13 @@ object Visit {
   val PETID: String = "_petId"
 }
 
-object VISIT_DATE_IS_REQUIRED extends BadRequestException("VISIT_DATE_IS_REQUIRED")
+object VISIT_DATE_IS_REQUIRED extends DataConstraintException("VISIT_DATE_IS_REQUIRED")
 
 object VISIT_DESCRIPTION_MIN_SIZE extends DataConstraintException("VISIT_DESCRIPTION_MIN_SIZE")
 
 object VISIT_DESCRIPTION_MAX_SIZE extends DataConstraintException("VISIT_DESCRIPTION_MAX_SIZE")
 
-object VISIT_DESCRIPTION_IS_REQUIRED extends BadRequestException("VISIT_DESCRIPTION_IS_REQUIRED")
+object VISIT_DESCRIPTION_IS_REQUIRED extends DataConstraintException("VISIT_DESCRIPTION_IS_REQUIRED")
 
 object VISIT_DOESNT_EXIST extends DataConstraintException("VISIT_DOESNT_EXIST")
 
