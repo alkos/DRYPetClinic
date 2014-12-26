@@ -41,7 +41,7 @@ case class Pet(private var _id: Int, private var _name: String, private var _bir
   def birthDate: DateTime = new org.joda.time.DateTime(_birthDate)
   def birthDate_=(newBirthDate: DateTime)(implicit session: SlickSession): Any = if (newBirthDate != birthDate) {
 
-    if (newBirthDate == null) throw PET_BIRTHDATE_IS_REQUIRED
+    if (newBirthDate == null) throw PET_BIRTH_DATE_IS_REQUIRED
 
     _birthDate = new java.sql.Date(newBirthDate.getMillis)
   }
@@ -112,7 +112,7 @@ object PET_NAME_MAX_SIZE extends DataConstraintException("PET_NAME_MAX_SIZE")
 
 object PET_NAME_IS_REQUIRED extends DataConstraintException("PET_NAME_IS_REQUIRED")
 
-object PET_BIRTHDATE_IS_REQUIRED extends DataConstraintException("PET_BIRTHDATE_IS_REQUIRED")
+object PET_BIRTH_DATE_IS_REQUIRED extends DataConstraintException("PET_BIRTH_DATE_IS_REQUIRED")
 
 object PET_DOESNT_EXIST extends DataConstraintException("PET_DOESNT_EXIST")
 

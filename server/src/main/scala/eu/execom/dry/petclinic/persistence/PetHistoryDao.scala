@@ -28,7 +28,7 @@ case class PetHistory(private var _id: Int, private var _time: Timestamp, privat
   def time: DateTime = new org.joda.time.DateTime(_time)
   def time_=(newTime: DateTime)(implicit session: SlickSession): Any = if (newTime != time) {
 
-    if (newTime == null) throw PETHISTORY_TIME_IS_REQUIRED
+    if (newTime == null) throw PET_HISTORY_TIME_IS_REQUIRED
 
     _time = new java.sql.Timestamp(newTime.getMillis)
   }
@@ -48,9 +48,9 @@ case class PetHistory(private var _id: Int, private var _time: Timestamp, privat
   def name: String = _name
   def name_=(newName: String)(implicit session: SlickSession): Any = if (newName != name) {
 
-    if (newName == null) throw PETHISTORY_NAME_IS_REQUIRED
-    if (newName.size < 0) throw PETHISTORY_NAME_MIN_SIZE
-    if (newName.size > 1024) throw PETHISTORY_NAME_MAX_SIZE
+    if (newName == null) throw PET_HISTORY_NAME_IS_REQUIRED
+    if (newName.size < 0) throw PET_HISTORY_NAME_MIN_SIZE
+    if (newName.size > 1024) throw PET_HISTORY_NAME_MAX_SIZE
 
     _name = newName
   }
@@ -61,7 +61,7 @@ case class PetHistory(private var _id: Int, private var _time: Timestamp, privat
   def birthDate: DateTime = new org.joda.time.DateTime(_birthDate)
   def birthDate_=(newBirthDate: DateTime)(implicit session: SlickSession): Any = if (newBirthDate != birthDate) {
 
-    if (newBirthDate == null) throw PETHISTORY_BIRTHDATE_IS_REQUIRED
+    if (newBirthDate == null) throw PET_HISTORY_BIRTH_DATE_IS_REQUIRED
 
     _birthDate = new java.sql.Date(newBirthDate.getMillis)
   }
@@ -137,19 +137,19 @@ object PetHistory {
   val PETTYPEID: String = "_petTypeId"
 }
 
-object PETHISTORY_TIME_IS_REQUIRED extends DataConstraintException("PETHISTORY_TIME_IS_REQUIRED")
+object PET_HISTORY_TIME_IS_REQUIRED extends DataConstraintException("PET_HISTORY_TIME_IS_REQUIRED")
 
-object PETHISTORY_NAME_MIN_SIZE extends DataConstraintException("PETHISTORY_NAME_MIN_SIZE")
+object PET_HISTORY_NAME_MIN_SIZE extends DataConstraintException("PET_HISTORY_NAME_MIN_SIZE")
 
-object PETHISTORY_NAME_MAX_SIZE extends DataConstraintException("PETHISTORY_NAME_MAX_SIZE")
+object PET_HISTORY_NAME_MAX_SIZE extends DataConstraintException("PET_HISTORY_NAME_MAX_SIZE")
 
-object PETHISTORY_NAME_IS_REQUIRED extends DataConstraintException("PETHISTORY_NAME_IS_REQUIRED")
+object PET_HISTORY_NAME_IS_REQUIRED extends DataConstraintException("PET_HISTORY_NAME_IS_REQUIRED")
 
-object PETHISTORY_BIRTHDATE_IS_REQUIRED extends DataConstraintException("PETHISTORY_BIRTHDATE_IS_REQUIRED")
+object PET_HISTORY_BIRTH_DATE_IS_REQUIRED extends DataConstraintException("PET_HISTORY_BIRTH_DATE_IS_REQUIRED")
 
 object PETHISTORY_DOESNT_EXIST extends DataConstraintException("PETHISTORY_DOESNT_EXIST")
 
-object PETHISTORY_ID_IS_NOT_UNIQUE extends DataConstraintException("PETHISTORY_ID_IS_NOT_UNIQUE")
+object PET_HISTORY_ID_IS_NOT_UNIQUE extends DataConstraintException("PET_HISTORY_ID_IS_NOT_UNIQUE")
 
 class PetHistorys(tag: Tag) extends Table[PetHistory](tag, "PetHistory") {
 

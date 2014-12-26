@@ -28,9 +28,9 @@ case class Vet(private var _id: Int, private var _firstName: String, private var
   def firstName: String = _firstName
   def firstName_=(newFirstName: String)(implicit session: SlickSession): Any = if (newFirstName != firstName) {
 
-    if (newFirstName == null) throw VET_FIRSTNAME_IS_REQUIRED
-    if (newFirstName.size < 1) throw VET_FIRSTNAME_MIN_SIZE
-    if (newFirstName.size > 40) throw VET_FIRSTNAME_MAX_SIZE
+    if (newFirstName == null) throw VET_FIRST_NAME_IS_REQUIRED
+    if (newFirstName.size < 1) throw VET_FIRST_NAME_MIN_SIZE
+    if (newFirstName.size > 40) throw VET_FIRST_NAME_MAX_SIZE
 
     _firstName = newFirstName
   }
@@ -41,9 +41,9 @@ case class Vet(private var _id: Int, private var _firstName: String, private var
   def lastName: String = _lastName
   def lastName_=(newLastName: String)(implicit session: SlickSession): Any = if (newLastName != lastName) {
 
-    if (newLastName == null) throw VET_LASTNAME_IS_REQUIRED
-    if (newLastName.size < 1) throw VET_LASTNAME_MIN_SIZE
-    if (newLastName.size > 60) throw VET_LASTNAME_MAX_SIZE
+    if (newLastName == null) throw VET_LAST_NAME_IS_REQUIRED
+    if (newLastName.size < 1) throw VET_LAST_NAME_MIN_SIZE
+    if (newLastName.size > 60) throw VET_LAST_NAME_MAX_SIZE
 
     _lastName = newLastName
   }
@@ -72,17 +72,17 @@ object Vet {
   val LASTNAME: String = "_lastName"
 }
 
-object VET_FIRSTNAME_MIN_SIZE extends DataConstraintException("VET_FIRSTNAME_MIN_SIZE")
+object VET_FIRST_NAME_MIN_SIZE extends DataConstraintException("VET_FIRST_NAME_MIN_SIZE")
 
-object VET_FIRSTNAME_MAX_SIZE extends DataConstraintException("VET_FIRSTNAME_MAX_SIZE")
+object VET_FIRST_NAME_MAX_SIZE extends DataConstraintException("VET_FIRST_NAME_MAX_SIZE")
 
-object VET_FIRSTNAME_IS_REQUIRED extends DataConstraintException("VET_FIRSTNAME_IS_REQUIRED")
+object VET_FIRST_NAME_IS_REQUIRED extends DataConstraintException("VET_FIRST_NAME_IS_REQUIRED")
 
-object VET_LASTNAME_MIN_SIZE extends DataConstraintException("VET_LASTNAME_MIN_SIZE")
+object VET_LAST_NAME_MIN_SIZE extends DataConstraintException("VET_LAST_NAME_MIN_SIZE")
 
-object VET_LASTNAME_MAX_SIZE extends DataConstraintException("VET_LASTNAME_MAX_SIZE")
+object VET_LAST_NAME_MAX_SIZE extends DataConstraintException("VET_LAST_NAME_MAX_SIZE")
 
-object VET_LASTNAME_IS_REQUIRED extends DataConstraintException("VET_LASTNAME_IS_REQUIRED")
+object VET_LAST_NAME_IS_REQUIRED extends DataConstraintException("VET_LAST_NAME_IS_REQUIRED")
 
 object VET_DOESNT_EXIST extends DataConstraintException("VET_DOESNT_EXIST")
 

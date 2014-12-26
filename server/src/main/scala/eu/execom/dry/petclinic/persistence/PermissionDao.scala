@@ -37,7 +37,7 @@ case class Permission(private var _id: Int, private var _roleId: Int, private va
   def accessRight: AccessRight = AccessRight.withName(_accessRight)
   def accessRight_=(newAccessRight: AccessRight)(implicit session: SlickSession): Any = if (newAccessRight != accessRight) {
 
-    if (newAccessRight == null) throw PERMISSION_ACCESSRIGHT_IS_REQUIRED
+    if (newAccessRight == null) throw PERMISSION_ACCESS_RIGHT_IS_REQUIRED
 
     _accessRight = newAccessRight.name
   }
@@ -73,13 +73,13 @@ object Permission {
   val ACCESSRIGHT: String = "_accessRight"
 }
 
-object PERMISSION_ACCESSRIGHT_IS_REQUIRED extends DataConstraintException("PERMISSION_ACCESSRIGHT_IS_REQUIRED")
+object PERMISSION_ACCESS_RIGHT_IS_REQUIRED extends DataConstraintException("PERMISSION_ACCESS_RIGHT_IS_REQUIRED")
 
 object PERMISSION_DOESNT_EXIST extends DataConstraintException("PERMISSION_DOESNT_EXIST")
 
 object PERMISSION_ID_IS_NOT_UNIQUE extends DataConstraintException("PERMISSION_ID_IS_NOT_UNIQUE")
 
-object PERMISSION_ROLEID_ACCESSRIGHT_IS_NOT_UNIQUE extends DataConstraintException("PERMISSION_ROLEID_ACCESSRIGHT_IS_NOT_UNIQUE")
+object PERMISSION_ROLE_ID_ACCESS_RIGHT_IS_NOT_UNIQUE extends DataConstraintException("PERMISSION_ROLE_ID_ACCESS_RIGHT_IS_NOT_UNIQUE")
 
 class Permissions(tag: Tag) extends Table[Permission](tag, "Permission") {
 

@@ -28,9 +28,9 @@ case class PetType(private var _id: Int, private var _name: String) {
   def name: String = _name
   def name_=(newName: String)(implicit session: SlickSession): Any = if (newName != name) {
 
-    if (newName == null) throw PETTYPE_NAME_IS_REQUIRED
-    if (newName.size < 1) throw PETTYPE_NAME_MIN_SIZE
-    if (newName.size > 30) throw PETTYPE_NAME_MAX_SIZE
+    if (newName == null) throw PET_TYPE_NAME_IS_REQUIRED
+    if (newName.size < 1) throw PET_TYPE_NAME_MIN_SIZE
+    if (newName.size > 30) throw PET_TYPE_NAME_MAX_SIZE
 
     _name = newName
   }
@@ -56,15 +56,15 @@ object PetType {
   val NAME: String = "_name"
 }
 
-object PETTYPE_NAME_MIN_SIZE extends DataConstraintException("PETTYPE_NAME_MIN_SIZE")
+object PET_TYPE_NAME_MIN_SIZE extends DataConstraintException("PET_TYPE_NAME_MIN_SIZE")
 
-object PETTYPE_NAME_MAX_SIZE extends DataConstraintException("PETTYPE_NAME_MAX_SIZE")
+object PET_TYPE_NAME_MAX_SIZE extends DataConstraintException("PET_TYPE_NAME_MAX_SIZE")
 
-object PETTYPE_NAME_IS_REQUIRED extends DataConstraintException("PETTYPE_NAME_IS_REQUIRED")
+object PET_TYPE_NAME_IS_REQUIRED extends DataConstraintException("PET_TYPE_NAME_IS_REQUIRED")
 
 object PETTYPE_DOESNT_EXIST extends DataConstraintException("PETTYPE_DOESNT_EXIST")
 
-object PETTYPE_ID_IS_NOT_UNIQUE extends DataConstraintException("PETTYPE_ID_IS_NOT_UNIQUE")
+object PET_TYPE_ID_IS_NOT_UNIQUE extends DataConstraintException("PET_TYPE_ID_IS_NOT_UNIQUE")
 
 class PetTypes(tag: Tag) extends Table[PetType](tag, "PetType") {
 

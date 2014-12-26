@@ -28,9 +28,9 @@ case class owner(private var _id: Int, private var _firstName: String, private v
   def firstName: String = _firstName
   def firstName_=(newFirstName: String)(implicit session: SlickSession): Any = if (newFirstName != firstName) {
 
-    if (newFirstName == null) throw OWNER_FIRSTNAME_IS_REQUIRED
-    if (newFirstName.size < 1) throw OWNER_FIRSTNAME_MIN_SIZE
-    if (newFirstName.size > 40) throw OWNER_FIRSTNAME_MAX_SIZE
+    if (newFirstName == null) throw OWNER_FIRST_NAME_IS_REQUIRED
+    if (newFirstName.size < 1) throw OWNER_FIRST_NAME_MIN_SIZE
+    if (newFirstName.size > 40) throw OWNER_FIRST_NAME_MAX_SIZE
 
     _firstName = newFirstName
   }
@@ -41,9 +41,9 @@ case class owner(private var _id: Int, private var _firstName: String, private v
   def lastName: String = _lastName
   def lastName_=(newLastName: String)(implicit session: SlickSession): Any = if (newLastName != lastName) {
 
-    if (newLastName == null) throw OWNER_LASTNAME_IS_REQUIRED
-    if (newLastName.size < 1) throw OWNER_LASTNAME_MIN_SIZE
-    if (newLastName.size > 60) throw OWNER_LASTNAME_MAX_SIZE
+    if (newLastName == null) throw OWNER_LAST_NAME_IS_REQUIRED
+    if (newLastName.size < 1) throw OWNER_LAST_NAME_MIN_SIZE
+    if (newLastName.size > 60) throw OWNER_LAST_NAME_MAX_SIZE
 
     _lastName = newLastName
   }
@@ -120,17 +120,17 @@ object owner {
   val TELEPHONE: String = "_telephone"
 }
 
-object OWNER_FIRSTNAME_MIN_SIZE extends DataConstraintException("OWNER_FIRSTNAME_MIN_SIZE")
+object OWNER_FIRST_NAME_MIN_SIZE extends DataConstraintException("OWNER_FIRST_NAME_MIN_SIZE")
 
-object OWNER_FIRSTNAME_MAX_SIZE extends DataConstraintException("OWNER_FIRSTNAME_MAX_SIZE")
+object OWNER_FIRST_NAME_MAX_SIZE extends DataConstraintException("OWNER_FIRST_NAME_MAX_SIZE")
 
-object OWNER_FIRSTNAME_IS_REQUIRED extends DataConstraintException("OWNER_FIRSTNAME_IS_REQUIRED")
+object OWNER_FIRST_NAME_IS_REQUIRED extends DataConstraintException("OWNER_FIRST_NAME_IS_REQUIRED")
 
-object OWNER_LASTNAME_MIN_SIZE extends DataConstraintException("OWNER_LASTNAME_MIN_SIZE")
+object OWNER_LAST_NAME_MIN_SIZE extends DataConstraintException("OWNER_LAST_NAME_MIN_SIZE")
 
-object OWNER_LASTNAME_MAX_SIZE extends DataConstraintException("OWNER_LASTNAME_MAX_SIZE")
+object OWNER_LAST_NAME_MAX_SIZE extends DataConstraintException("OWNER_LAST_NAME_MAX_SIZE")
 
-object OWNER_LASTNAME_IS_REQUIRED extends DataConstraintException("OWNER_LASTNAME_IS_REQUIRED")
+object OWNER_LAST_NAME_IS_REQUIRED extends DataConstraintException("OWNER_LAST_NAME_IS_REQUIRED")
 
 object OWNER_ADDRESS_MIN_SIZE extends DataConstraintException("OWNER_ADDRESS_MIN_SIZE")
 

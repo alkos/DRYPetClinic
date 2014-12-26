@@ -28,9 +28,9 @@ case class VetSpecialty(private var _id: Int, private var _name: String) {
   def name: String = _name
   def name_=(newName: String)(implicit session: SlickSession): Any = if (newName != name) {
 
-    if (newName == null) throw VETSPECIALTY_NAME_IS_REQUIRED
-    if (newName.size < 3) throw VETSPECIALTY_NAME_MIN_SIZE
-    if (newName.size > 50) throw VETSPECIALTY_NAME_MAX_SIZE
+    if (newName == null) throw VET_SPECIALTY_NAME_IS_REQUIRED
+    if (newName.size < 3) throw VET_SPECIALTY_NAME_MIN_SIZE
+    if (newName.size > 50) throw VET_SPECIALTY_NAME_MAX_SIZE
 
     _name = newName
   }
@@ -56,15 +56,15 @@ object VetSpecialty {
   val NAME: String = "_name"
 }
 
-object VETSPECIALTY_NAME_MIN_SIZE extends DataConstraintException("VETSPECIALTY_NAME_MIN_SIZE")
+object VET_SPECIALTY_NAME_MIN_SIZE extends DataConstraintException("VET_SPECIALTY_NAME_MIN_SIZE")
 
-object VETSPECIALTY_NAME_MAX_SIZE extends DataConstraintException("VETSPECIALTY_NAME_MAX_SIZE")
+object VET_SPECIALTY_NAME_MAX_SIZE extends DataConstraintException("VET_SPECIALTY_NAME_MAX_SIZE")
 
-object VETSPECIALTY_NAME_IS_REQUIRED extends DataConstraintException("VETSPECIALTY_NAME_IS_REQUIRED")
+object VET_SPECIALTY_NAME_IS_REQUIRED extends DataConstraintException("VET_SPECIALTY_NAME_IS_REQUIRED")
 
 object VETSPECIALTY_DOESNT_EXIST extends DataConstraintException("VETSPECIALTY_DOESNT_EXIST")
 
-object VETSPECIALTY_ID_IS_NOT_UNIQUE extends DataConstraintException("VETSPECIALTY_ID_IS_NOT_UNIQUE")
+object VET_SPECIALTY_ID_IS_NOT_UNIQUE extends DataConstraintException("VET_SPECIALTY_ID_IS_NOT_UNIQUE")
 
 class VetSpecialtys(tag: Tag) extends Table[VetSpecialty](tag, "VetSpecialty") {
 

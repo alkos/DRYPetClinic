@@ -28,9 +28,9 @@ case class User(private var _id: Int, private var _authenticationCode: Option[St
   def authenticationCode: Option[String] = _authenticationCode
   def authenticationCode_=(newAuthenticationCode: Option[String])(implicit session: SlickSession): Any = if (newAuthenticationCode != authenticationCode) {
     if (newAuthenticationCode.isDefined) {
-      if (TableQuery[Users].filter(_.authenticationCode === newAuthenticationCode.get).exists.run) throw USER_AUTHENTICATIONCODE_IS_NOT_UNIQUE
-      if (newAuthenticationCode.get.size < 0) throw USER_AUTHENTICATIONCODE_MIN_SIZE
-      if (newAuthenticationCode.get.size > 128) throw USER_AUTHENTICATIONCODE_MAX_SIZE
+      if (TableQuery[Users].filter(_.authenticationCode === newAuthenticationCode.get).exists.run) throw USER_AUTHENTICATION_CODE_IS_NOT_UNIQUE
+      if (newAuthenticationCode.get.size < 0) throw USER_AUTHENTICATION_CODE_MIN_SIZE
+      if (newAuthenticationCode.get.size > 128) throw USER_AUTHENTICATION_CODE_MAX_SIZE
     }
     _authenticationCode = newAuthenticationCode
   }
@@ -64,9 +64,9 @@ case class User(private var _id: Int, private var _authenticationCode: Option[St
   def passwordHash: String = _passwordHash
   def passwordHash_=(newPasswordHash: String)(implicit session: SlickSession): Any = if (newPasswordHash != passwordHash) {
 
-    if (newPasswordHash == null) throw USER_PASSWORDHASH_IS_REQUIRED
-    if (newPasswordHash.size < 0) throw USER_PASSWORDHASH_MIN_SIZE
-    if (newPasswordHash.size > 1024) throw USER_PASSWORDHASH_MAX_SIZE
+    if (newPasswordHash == null) throw USER_PASSWORD_HASH_IS_REQUIRED
+    if (newPasswordHash.size < 0) throw USER_PASSWORD_HASH_MIN_SIZE
+    if (newPasswordHash.size > 1024) throw USER_PASSWORD_HASH_MAX_SIZE
 
     _passwordHash = newPasswordHash
   }
@@ -110,9 +110,9 @@ object User {
   val PASSWORDHASH: String = "_passwordHash"
 }
 
-object USER_AUTHENTICATIONCODE_MIN_SIZE extends DataConstraintException("USER_AUTHENTICATIONCODE_MIN_SIZE")
+object USER_AUTHENTICATION_CODE_MIN_SIZE extends DataConstraintException("USER_AUTHENTICATION_CODE_MIN_SIZE")
 
-object USER_AUTHENTICATIONCODE_MAX_SIZE extends DataConstraintException("USER_AUTHENTICATIONCODE_MAX_SIZE")
+object USER_AUTHENTICATION_CODE_MAX_SIZE extends DataConstraintException("USER_AUTHENTICATION_CODE_MAX_SIZE")
 
 object USER_USERNAME_MIN_SIZE extends DataConstraintException("USER_USERNAME_MIN_SIZE")
 
@@ -120,17 +120,17 @@ object USER_USERNAME_MAX_SIZE extends DataConstraintException("USER_USERNAME_MAX
 
 object USER_USERNAME_IS_REQUIRED extends DataConstraintException("USER_USERNAME_IS_REQUIRED")
 
-object USER_PASSWORDHASH_MIN_SIZE extends DataConstraintException("USER_PASSWORDHASH_MIN_SIZE")
+object USER_PASSWORD_HASH_MIN_SIZE extends DataConstraintException("USER_PASSWORD_HASH_MIN_SIZE")
 
-object USER_PASSWORDHASH_MAX_SIZE extends DataConstraintException("USER_PASSWORDHASH_MAX_SIZE")
+object USER_PASSWORD_HASH_MAX_SIZE extends DataConstraintException("USER_PASSWORD_HASH_MAX_SIZE")
 
-object USER_PASSWORDHASH_IS_REQUIRED extends DataConstraintException("USER_PASSWORDHASH_IS_REQUIRED")
+object USER_PASSWORD_HASH_IS_REQUIRED extends DataConstraintException("USER_PASSWORD_HASH_IS_REQUIRED")
 
 object USER_DOESNT_EXIST extends DataConstraintException("USER_DOESNT_EXIST")
 
 object USER_ID_IS_NOT_UNIQUE extends DataConstraintException("USER_ID_IS_NOT_UNIQUE")
 
-object USER_AUTHENTICATIONCODE_IS_NOT_UNIQUE extends DataConstraintException("USER_AUTHENTICATIONCODE_IS_NOT_UNIQUE")
+object USER_AUTHENTICATION_CODE_IS_NOT_UNIQUE extends DataConstraintException("USER_AUTHENTICATION_CODE_IS_NOT_UNIQUE")
 
 object USER_USERNAME_IS_NOT_UNIQUE extends DataConstraintException("USER_USERNAME_IS_NOT_UNIQUE")
 

@@ -76,7 +76,7 @@ object VetSpecialties {
 
 object VETSPECIALTIES_DOESNT_EXIST extends DataConstraintException("VETSPECIALTIES_DOESNT_EXIST")
 
-object VETSPECIALTIES_ID_IS_NOT_UNIQUE extends DataConstraintException("VETSPECIALTIES_ID_IS_NOT_UNIQUE")
+object VET_SPECIALTIES_ID_IS_NOT_UNIQUE extends DataConstraintException("VET_SPECIALTIES_ID_IS_NOT_UNIQUE")
 
 class VetSpecialtiess(tag: Tag) extends Table[VetSpecialties](tag, "VetSpecialties") {
 

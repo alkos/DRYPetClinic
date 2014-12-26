@@ -192,8 +192,8 @@ class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationA
 
 case class UpdateUserBodyDTO(role: Int, password: Option[String]) {
       if (password.isDefined) {
-      if (password.get.size < 0) throw UPDATEUSERBODYDTO_PASSWORD_MIN_SIZE
-      if (password.get.size > 1024) throw UPDATEUSERBODYDTO_PASSWORD_MAX_SIZE
+      if (password.get.size < 0) throw UPDATE_USER_BODY_DTO_PASSWORD_MIN_SIZE
+      if (password.get.size > 1024) throw UPDATE_USER_BODY_DTO_PASSWORD_MAX_SIZE
     }
 }
 
@@ -202,6 +202,6 @@ object UpdateUserBodyDTO {
   val PASSWORD: String = "password"
 }
 
-object UPDATEUSERBODYDTO_PASSWORD_MIN_SIZE extends DataConstraintException("UPDATEUSERBODYDTO_PASSWORD_MIN_SIZE")
+object UPDATE_USER_BODY_DTO_PASSWORD_MIN_SIZE extends DataConstraintException("UPDATE_USER_BODY_DTO_PASSWORD_MIN_SIZE")
 
-object UPDATEUSERBODYDTO_PASSWORD_MAX_SIZE extends DataConstraintException("UPDATEUSERBODYDTO_PASSWORD_MAX_SIZE")
+object UPDATE_USER_BODY_DTO_PASSWORD_MAX_SIZE extends DataConstraintException("UPDATE_USER_BODY_DTO_PASSWORD_MAX_SIZE")
