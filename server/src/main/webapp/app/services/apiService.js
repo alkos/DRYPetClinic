@@ -168,7 +168,8 @@
          *"Response": AuthenticationResponseDto {
          *    "username": String,
          *    "roleId": Int,
-         *    "authenticationCode": String
+         *    "accessToken": String,
+         *    "refreshToken": String
          *}
          */
         this.signUp = function (model, successCallback, errorCallback) {
@@ -197,7 +198,8 @@
          *"Response": AuthenticationResponseDto {
          *    "username": String,
          *    "roleId": Int,
-         *    "authenticationCode": String
+         *    "accessToken": String,
+         *    "refreshToken": String
          *}
          */
         this.signIn = function (model, successCallback, errorCallback) {
@@ -234,14 +236,15 @@
         /** Authenticate
          *
          * Api URL: /api/authenticate?
-         *"Request": AuthenticationCodeDto {
-         *    "authenticationCode": String
+         *"Request": AccessTokenDto {
+         *    "accessToken": String
          *}
          *
          *"Response": AuthenticationResponseDto {
          *    "username": String,
          *    "roleId": Int,
-         *    "authenticationCode": String
+         *    "accessToken": String,
+         *    "refreshToken": String
          *}
          */
         this.authenticate = function (model, successCallback, errorCallback) {
@@ -249,7 +252,35 @@
                 method: 'POST',
                 url: '/api/authenticate',
                 data: {
-                  authenticationCode: model.authenticationCode
+                  accessToken: model.accessToken
+                }
+            }).success(function (data) {
+                successCallback(data);
+            }).error(function (data, header, status, config) {
+                apiErrorHandlerService(data, header, status, config, errorCallback);
+            });
+        };
+
+        /** RefreshToken
+         *
+         * Api URL: /api/refreshToken?
+         *"Request": RefreshTokenDto {
+         *    "refreshToken": String
+         *}
+         *
+         *"Response": AuthenticationResponseDto {
+         *    "username": String,
+         *    "roleId": Int,
+         *    "accessToken": String,
+         *    "refreshToken": String
+         *}
+         */
+        this.refreshToken = function (model, successCallback, errorCallback) {
+            $http({
+                method: 'POST',
+                url: '/api/refreshToken',
+                data: {
+                  refreshToken: model.refreshToken
                 }
             }).success(function (data) {
                 successCallback(data);

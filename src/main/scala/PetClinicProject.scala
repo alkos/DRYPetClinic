@@ -17,14 +17,14 @@ object PetClinicProject extends Project("eu.execom.dry", "petclinic") {
 
 
   val user = securedSqlModel("User")
-  val userId = user.int("id").primaryKey
+  val userId = user.idProperty
 //  val (userAuthCode, userRole) = user.roleSecured("role", userRoleEnum)
-  val (userAuthCode, userRole, role, permission) = user.accessRightSecured("Role", "Permission", accessRight)
+  val (clientModel, userRole, role, permission) = user.permissionsSecured("Role", "Permission", accessRight)
   val (userUsername, userPassword) = user.signInWithUserName("username", "passwordHash")
   userPassword.triggerOnChange().triggerOnChange(userRole)
   userUsername.triggerOnChange()
   user.triggerOnCreate().triggerOnDelete().triggerOnUpdate()
-  user.triggerOnCreate(userId).triggerOnDelete(userAuthCode).triggerOnUpdate(userUsername)
+  user.triggerOnCreate(userId).triggerOnUpdate(userUsername)
 
   val owner = sqlModel("owner")
   val ownerId = owner.int("id").primaryKey

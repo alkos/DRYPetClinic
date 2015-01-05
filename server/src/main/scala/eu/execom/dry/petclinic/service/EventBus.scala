@@ -169,30 +169,6 @@ case class EventBus(hazelcast: HazelcastInstance) {
     delayEvent(event)
   }
 
-
-  def userDeleteEventTopic(authenticationCode: Option[String]): ITopic[UserDeleteEvent] = {
-    hazelcast.getTopic[UserDeleteEvent](s"user/delete?authenticationCode=$authenticationCode")
-  }
-
-  def subscribeOnUserDeleteEvent(authenticationCode: Option[String], callback: (UserDeleteEvent) => Unit): () => Unit = {
-    val topic = userDeleteEventTopic(authenticationCode)
-
-    val registrationId = topic.addMessageListener(new MessageListener[UserDeleteEvent]() {
-
-      override def onMessage(message: Message[UserDeleteEvent]): Unit = callback(message.getMessageObject)
-    })
-
-    () => topic.removeMessageListener(registrationId) // unsubscribe method
-  }
-
-  def publish(authenticationCode: Option[String], event: UserDeleteEvent): Unit = if (publishOnReceive.get) {
-    val topic = userDeleteEventTopic(authenticationCode)
-
-    topic.publish(event)
-  } else {
-    delayEvent(event)
-  }
-
   def userUpdateEventTopic(): ITopic[UserUpdateEvent] = {
     hazelcast.getTopic[UserUpdateEvent](s"user/update")
   }
@@ -247,12 +223,12 @@ case class UserPasswordHashUpdateEvent(id: Int, passwordHash: (String, String)) 
 
 case class UserUsernameUpdateEvent(id: Int, username: (String, String)) extends ServiceEvent
 
-case class UserCreateEvent(id: Int, authenticationCode: Option[String], roleId: Int, username: String, passwordHash: String) extends ServiceEvent
+case class UserCreateEvent(id: Int, roleId: Int, username: String, passwordHash: String) extends ServiceEvent
 
-case class UserDeleteEvent(id: Int, authenticationCode: Option[String], roleId: Int, username: String, passwordHash: String) extends ServiceEvent
+case class UserDeleteEvent(id: Int, roleId: Int, username: String, passwordHash: String) extends ServiceEvent
 
-case class UserUpdateEvent(id: Int, authenticationCode: Option[(Option[String], Option[String])], roleId: Option[(Int, Int)], username: Option[(String, String)], passwordHash: Option[(String, String)]) extends ServiceEvent {
+case class UserUpdateEvent(id: Int, roleId: Option[(Int, Int)], username: Option[(String, String)], passwordHash: Option[(String, String)]) extends ServiceEvent {
 
-  val changes: Map[String, ((Any,Any))] = Map(User.AUTHENTICATIONCODE -> authenticationCode, User.ROLEID -> roleId, User.USERNAME -> username, User.PASSWORDHASH -> passwordHash).filter(_._2.isDefined).
+  val changes: Map[String, ((Any,Any))] = Map(User.ROLEID -> roleId, User.USERNAME -> username, User.PASSWORDHASH -> passwordHash).filter(_._2.isDefined).
     map(change => change._1 -> change._2.get)
 }

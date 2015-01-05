@@ -136,7 +136,7 @@ class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationA
 
       val response = authenticationApi.signUp(body)(slickSession).get
       logger.trace(s"Response: $response")
-      securityToken = response.authenticationCode
+      securityToken = response.accessToken
       response
     }
   }
@@ -154,7 +154,7 @@ class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationA
 
       val response = authenticationApi.signIn(body)(slickSession).get
       logger.trace(s"Response: $response")
-      securityToken = response.authenticationCode
+      securityToken = response.accessToken
       response
     }
   }
@@ -177,9 +177,9 @@ class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationA
       logger.trace("Rest url: /authenticate type: POST")
 
       if (requestFormat !="json") throw JSON_REQUEST_REQUIRED_EXCEPTION
-      val body:AuthenticationCodeDto = parsedBody match {
+      val body:AccessTokenDto = parsedBody match {
         case JNothing => throw JSON_REQUEST_REQUIRED_EXCEPTION
-        case jsonBody => jsonBody.extract[AuthenticationCodeDto]
+        case jsonBody => jsonBody.extract[AccessTokenDto]
       }
       logger.trace("Body:" + body)
 
@@ -188,13 +188,32 @@ class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationA
       response
     }
   }
+
+  post("/refreshToken") {
+    transaction  { (slickSession: SlickSession) =>
+      logger.trace("Rest url: /refreshToken type: POST")
+
+      if (requestFormat !="json") throw JSON_REQUEST_REQUIRED_EXCEPTION
+      val body:RefreshTokenDto = parsedBody match {
+        case JNothing => throw JSON_REQUEST_REQUIRED_EXCEPTION
+        case jsonBody => jsonBody.extract[RefreshTokenDto]
+      }
+      logger.trace("Body:" + body)
+
+      val response = authenticationApi.refreshToken(body)(slickSession).get
+      logger.trace(s"Response: $response")
+      securityToken = response.accessToken
+      response
+    }
+  }
 }
 
 case class UpdateUserBodyDTO(role: Int, password: Option[String]) {
-      if (password.isDefined) {
-      if (password.get.size < 0) throw UPDATE_USER_BODY_DTO_PASSWORD_MIN_SIZE
-      if (password.get.size > 1024) throw UPDATE_USER_BODY_DTO_PASSWORD_MAX_SIZE
-    }
+
+if (password.isDefined) {
+    if (password.get.size < 0) throw UPDATE_USER_BODY_DTO_PASSWORD_MIN_SIZE
+    if (password.get.size > 1024) throw UPDATE_USER_BODY_DTO_PASSWORD_MAX_SIZE
+  }
 }
 
 object UpdateUserBodyDTO {

@@ -43,6 +43,7 @@ trait SlickPersistenceConfiguration {
 
   //DAO
   val userDao: UserDao = new UserDao
+  val clientDao: ClientDao = new ClientDao
   val roleDao: RoleDao = new RoleDao
   val permissionDao: PermissionDao = new PermissionDao
   val ownerDao: ownerDao = new ownerDao

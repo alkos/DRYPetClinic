@@ -11,7 +11,9 @@ trait SecuredApi {
   val permissionDao: PermissionDao
 
   def secure[T](authCode: String, accessRights: AccessRight*)(f: User => T)(implicit slickSession: SlickSession): T = {
-    val user = securedService.authenticate(authCode).getOrElse(throw CREDENTIALS_ARE_INVALID)
+    val (user, client) = securedService.authenticate(authCode).getOrElse(throw CREDENTIALS_ARE_INVALID)
+
+    if (client.accessTokenExpires.isAfterNow) throw ACCESS_TOKEN_IS_EXPIRED
     if (accessRights.nonEmpty && permissionDao.findByRoleAccessRights(user.roleId, accessRights.toList).isEmpty) throw INSUFFICIENT_RIGHTS
     f(user)
   }

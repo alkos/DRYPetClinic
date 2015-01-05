@@ -11,7 +11,7 @@ import org.joda.time._
 import scala.slick.driver.MySQLDriver.simple._
 import scala.slick.jdbc.JdbcBackend.{Session => SlickSession}
 
-case class PetHistory(private var _id: Int, private var _time: Timestamp, private var _petId: Int, private var _name: String, private var _birthDate: Date, private var _ownerId: Int, private var _petTypeId: Int) {
+case class PetHistory(private var _id: Int, private var _history_change_time: Timestamp, private var _petId: Int, private var _name: String, private var _birthDate: Date, private var _ownerId: Int, private var _petTypeId: Int) {
 
   private var id_persisted: Int = id
   def idPersisted: Int = id_persisted
@@ -22,15 +22,15 @@ case class PetHistory(private var _id: Int, private var _time: Timestamp, privat
     _id = newId
   }
 
-  private var time_persisted: DateTime = time
-  def timePersisted: DateTime = time_persisted
+  private var history_change_time_persisted: DateTime = history_change_time
+  def history_change_timePersisted: DateTime = history_change_time_persisted
 
-  def time: DateTime = new org.joda.time.DateTime(_time)
-  def time_=(newTime: DateTime)(implicit session: SlickSession): Any = if (newTime != time) {
+  def history_change_time: DateTime = new org.joda.time.DateTime(_history_change_time)
+  def history_change_time_=(newHistory_change_time: DateTime)(implicit session: SlickSession): Any = if (newHistory_change_time != history_change_time) {
 
-    if (newTime == null) throw PET_HISTORY_TIME_IS_REQUIRED
+    if (newHistory_change_time == null) throw PET_HISTORY_HISTORY__CHANGE__TIME_IS_REQUIRED
 
-    _time = new java.sql.Timestamp(newTime.getMillis)
+    _history_change_time = new java.sql.Timestamp(newHistory_change_time.getMillis)
   }
 
   private var petId_persisted: Int = petId
@@ -92,13 +92,13 @@ case class PetHistory(private var _id: Int, private var _time: Timestamp, privat
   def petType(implicit session: SlickSession): PetType = TableQuery[PetTypes].filter(_.id === petTypeId).first
   def petType_=(petType: PetType)(implicit session: SlickSession) = petTypeId = petType.id
 
-  def this(entity: PetHistory) = this(entity._id, entity._time, entity._petId, entity._name, entity._birthDate, entity._ownerId, entity._petTypeId)
+  def this(entity: PetHistory) = this(entity._id, entity._history_change_time, entity._petId, entity._name, entity._birthDate, entity._ownerId, entity._petTypeId)
 
   def this() = this(0, new java.sql.Timestamp(DateTime.now(DateTimeZone.UTC).getMillis), 0, "", new java.sql.Date(DateTime.now(DateTimeZone.UTC).getMillis), 0, 0)
 
-  def this(time: DateTime, petId: Int, name: String, birthDate: DateTime, ownerId: Int, petTypeId: Int)(implicit session: SlickSession) = {
+  def this(history_change_time: DateTime, petId: Int, name: String, birthDate: DateTime, ownerId: Int, petTypeId: Int)(implicit session: SlickSession) = {
     this()
-    this.time_=(time)(session)
+    this.history_change_time_=(history_change_time)(session)
     this.petId_=(petId)(session)
     this.name_=(name)(session)
     this.birthDate_=(birthDate)(session)
@@ -106,9 +106,9 @@ case class PetHistory(private var _id: Int, private var _time: Timestamp, privat
     this.petTypeId_=(petTypeId)(session)
   }
 
-  def this(time: DateTime, pet: Pet, name: String, birthDate: DateTime, owner: owner, petType: PetType)(implicit session: SlickSession) = {
+  def this(history_change_time: DateTime, pet: Pet, name: String, birthDate: DateTime, owner: owner, petType: PetType)(implicit session: SlickSession) = {
     this()
-    this.time_=(time)(session)
+    this.history_change_time_=(history_change_time)(session)
     this.pet_=(pet)(session)
     this.name_=(name)(session)
     this.birthDate_=(birthDate)(session)
@@ -118,7 +118,7 @@ case class PetHistory(private var _id: Int, private var _time: Timestamp, privat
 
   def persisted() = {
     id_persisted = id
-    time_persisted = time
+    history_change_time_persisted = history_change_time
     petId_persisted = petId
     name_persisted = name
     birthDate_persisted = birthDate
@@ -129,7 +129,7 @@ case class PetHistory(private var _id: Int, private var _time: Timestamp, privat
 
 object PetHistory {
   val ID: String = "_id"
-  val TIME: String = "_time"
+  val HISTORY_CHANGE_TIME: String = "_history_change_time"
   val PETID: String = "_petId"
   val NAME: String = "_name"
   val BIRTHDATE: String = "_birthDate"
@@ -137,13 +137,13 @@ object PetHistory {
   val PETTYPEID: String = "_petTypeId"
 }
 
-object PET_HISTORY_TIME_IS_REQUIRED extends DataConstraintException("PET_HISTORY_TIME_IS_REQUIRED")
+object PET_HISTORY_HISTORY__CHANGE__TIME_IS_REQUIRED extends DataConstraintException("PET_HISTORY_HISTORY__CHANGE__TIME_IS_REQUIRED")
+
+object PET_HISTORY_NAME_IS_REQUIRED extends DataConstraintException("PET_HISTORY_NAME_IS_REQUIRED")
 
 object PET_HISTORY_NAME_MIN_SIZE extends DataConstraintException("PET_HISTORY_NAME_MIN_SIZE")
 
 object PET_HISTORY_NAME_MAX_SIZE extends DataConstraintException("PET_HISTORY_NAME_MAX_SIZE")
-
-object PET_HISTORY_NAME_IS_REQUIRED extends DataConstraintException("PET_HISTORY_NAME_IS_REQUIRED")
 
 object PET_HISTORY_BIRTH_DATE_IS_REQUIRED extends DataConstraintException("PET_HISTORY_BIRTH_DATE_IS_REQUIRED")
 
@@ -154,7 +154,7 @@ object PET_HISTORY_ID_IS_NOT_UNIQUE extends DataConstraintException("PET_HISTORY
 class PetHistorys(tag: Tag) extends Table[PetHistory](tag, "PetHistory") {
 
   def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
-  def time = column[Timestamp]("time")
+  def history_change_time = column[Timestamp]("history_change_time")
   def petId = column[Int]("petId")
   def name = column[String]("name")
   def birthDate = column[Date]("birthDate")
@@ -162,8 +162,8 @@ class PetHistorys(tag: Tag) extends Table[PetHistory](tag, "PetHistory") {
   def petTypeId = column[Int]("petTypeId")
 
   val create = PetHistory.apply _
-  def * = (id, time, petId, name, birthDate, ownerId, petTypeId) <> (create.tupled, PetHistory.unapply)
-  def ? = (id.?, time.?, petId.?, name.?, birthDate.?, ownerId.?, petTypeId.?).shaped.<>({r=>import r._; _1.map(_=> create.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+  def * = (id, history_change_time, petId, name, birthDate, ownerId, petTypeId) <> (create.tupled, PetHistory.unapply)
+  def ? = (id.?, history_change_time.?, petId.?, name.?, birthDate.?, ownerId.?, petTypeId.?).shaped.<>({r=>import r._; _1.map(_=> create.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
   def pet= foreignKey("PETHISTORY_PET_FK", petId, TableQuery[Pets])(_.id)
   def owner= foreignKey("PETHISTORY_OWNER_FK", ownerId, TableQuery[owners])(_.id)
@@ -243,11 +243,11 @@ class PetHistoryDao extends GenericSlickDao[PetHistory] {
     query.firstOption
   }
 
-  def findByTime(time: DateTime)(implicit session: SlickSession): List[PetHistory] = {
-    logger.trace(s".findByTime(time: $time)")
+  def findByHistory_change_time(history_change_time: DateTime)(implicit session: SlickSession): List[PetHistory] = {
+    logger.trace(s".findByHistory_change_time(history_change_time: $history_change_time)")
 
     var query: Query[PetHistorys, PetHistorys#TableElementType, Seq] = TableQuery[PetHistorys]
-    query = query.filter(_.time === new java.sql.Timestamp(time.getMillis))
+    query = query.filter(_.history_change_time === new java.sql.Timestamp(history_change_time.getMillis))
 
     query.list
   }

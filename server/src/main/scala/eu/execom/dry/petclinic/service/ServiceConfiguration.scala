@@ -20,7 +20,7 @@ trait ServiceConfiguration extends SlickPersistenceConfiguration {
   def appEmail: String
   def appName: String
   def appUrl: String
-  lazy val securedService: SecuredService = new SecuredService(userDao, passwordEncoder, mailSender, appEmail, appName, appUrl)
+  lazy val securedService: SecuredService = new SecuredService(userDao, clientDao, passwordEncoder, mailSender, appEmail, appName, appUrl)
 
   def hazelcastGroupName: String
   def hazelcastGroupPassword: String
@@ -38,6 +38,7 @@ trait ServiceConfiguration extends SlickPersistenceConfiguration {
 
   //services
   lazy val userService: UserService = new UserService(userDao, eventBus)
+  lazy val clientService: ClientService = new ClientService(clientDao)
   lazy val roleService: RoleService = new RoleService(roleDao)
   lazy val permissionService: PermissionService = new PermissionService(permissionDao)
   lazy val ownerService: ownerService = new ownerService(ownerDao)

@@ -97,8 +97,14 @@ class ApiService {
         post(url, headers, null, Void.class, listener, errorListener, tag);
     }
 
-    public void authenticate(AuthenticationCodeDto requestDto, Response.Listener<AuthenticationResponseDto> listener, Response.ErrorListener errorListener, String tag) {
+    public void authenticate(AccessTokenDto requestDto, Response.Listener<AuthenticationResponseDto> listener, Response.ErrorListener errorListener, String tag) {
         String url = serverHost + "/" + "authenticate";
+
+        post(url, null, requestDto, AuthenticationResponseDto.class, listener, errorListener, tag);
+    }
+
+    public void refreshToken(RefreshTokenDto requestDto, Response.Listener<AuthenticationResponseDto> listener, Response.ErrorListener errorListener, String tag) {
+        String url = serverHost + "/" + "refreshToken";
 
         post(url, null, requestDto, AuthenticationResponseDto.class, listener, errorListener, tag);
     }

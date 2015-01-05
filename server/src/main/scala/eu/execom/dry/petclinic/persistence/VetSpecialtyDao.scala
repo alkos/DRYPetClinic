@@ -56,11 +56,11 @@ object VetSpecialty {
   val NAME: String = "_name"
 }
 
+object VET_SPECIALTY_NAME_IS_REQUIRED extends DataConstraintException("VET_SPECIALTY_NAME_IS_REQUIRED")
+
 object VET_SPECIALTY_NAME_MIN_SIZE extends DataConstraintException("VET_SPECIALTY_NAME_MIN_SIZE")
 
 object VET_SPECIALTY_NAME_MAX_SIZE extends DataConstraintException("VET_SPECIALTY_NAME_MAX_SIZE")
-
-object VET_SPECIALTY_NAME_IS_REQUIRED extends DataConstraintException("VET_SPECIALTY_NAME_IS_REQUIRED")
 
 object VETSPECIALTY_DOESNT_EXIST extends DataConstraintException("VETSPECIALTY_DOESNT_EXIST")
 

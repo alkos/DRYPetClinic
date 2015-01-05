@@ -5,12 +5,14 @@ import eu.execom.dry.petclinic.api.enumeration.*;
 public class AuthenticationResponseDto {
     private String username;
     private Integer roleId;
-    private String authenticationCode;
+    private String accessToken;
+    private String refreshToken;
 
-    public AuthenticationResponseDto(String username, Integer roleId, String authenticationCode) {
+    public AuthenticationResponseDto(String username, Integer roleId, String accessToken, String refreshToken) {
         this.username = username;
         this.roleId = roleId;
-        this.authenticationCode = authenticationCode;
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
     }
 
     public AuthenticationResponseDto() {
@@ -32,11 +34,19 @@ public class AuthenticationResponseDto {
         this.roleId = roleId;
     }
 
-    public String getAuthenticationCode() {
-        return authenticationCode;
+    public String getAccessToken() {
+        return accessToken;
     }
 
-    public void setAuthenticationCode(String authenticationCode) {
-        this.authenticationCode = authenticationCode;
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }

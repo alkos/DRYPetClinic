@@ -120,35 +120,35 @@ object owner {
   val TELEPHONE: String = "_telephone"
 }
 
+object OWNER_FIRST_NAME_IS_REQUIRED extends DataConstraintException("OWNER_FIRST_NAME_IS_REQUIRED")
+
 object OWNER_FIRST_NAME_MIN_SIZE extends DataConstraintException("OWNER_FIRST_NAME_MIN_SIZE")
 
 object OWNER_FIRST_NAME_MAX_SIZE extends DataConstraintException("OWNER_FIRST_NAME_MAX_SIZE")
 
-object OWNER_FIRST_NAME_IS_REQUIRED extends DataConstraintException("OWNER_FIRST_NAME_IS_REQUIRED")
+object OWNER_LAST_NAME_IS_REQUIRED extends DataConstraintException("OWNER_LAST_NAME_IS_REQUIRED")
 
 object OWNER_LAST_NAME_MIN_SIZE extends DataConstraintException("OWNER_LAST_NAME_MIN_SIZE")
 
 object OWNER_LAST_NAME_MAX_SIZE extends DataConstraintException("OWNER_LAST_NAME_MAX_SIZE")
 
-object OWNER_LAST_NAME_IS_REQUIRED extends DataConstraintException("OWNER_LAST_NAME_IS_REQUIRED")
+object OWNER_ADDRESS_IS_REQUIRED extends DataConstraintException("OWNER_ADDRESS_IS_REQUIRED")
 
 object OWNER_ADDRESS_MIN_SIZE extends DataConstraintException("OWNER_ADDRESS_MIN_SIZE")
 
 object OWNER_ADDRESS_MAX_SIZE extends DataConstraintException("OWNER_ADDRESS_MAX_SIZE")
 
-object OWNER_ADDRESS_IS_REQUIRED extends DataConstraintException("OWNER_ADDRESS_IS_REQUIRED")
+object OWNER_CITY_IS_REQUIRED extends DataConstraintException("OWNER_CITY_IS_REQUIRED")
 
 object OWNER_CITY_MIN_SIZE extends DataConstraintException("OWNER_CITY_MIN_SIZE")
 
 object OWNER_CITY_MAX_SIZE extends DataConstraintException("OWNER_CITY_MAX_SIZE")
 
-object OWNER_CITY_IS_REQUIRED extends DataConstraintException("OWNER_CITY_IS_REQUIRED")
+object OWNER_TELEPHONE_IS_REQUIRED extends DataConstraintException("OWNER_TELEPHONE_IS_REQUIRED")
 
 object OWNER_TELEPHONE_MIN_SIZE extends DataConstraintException("OWNER_TELEPHONE_MIN_SIZE")
 
 object OWNER_TELEPHONE_MAX_SIZE extends DataConstraintException("OWNER_TELEPHONE_MAX_SIZE")
-
-object OWNER_TELEPHONE_IS_REQUIRED extends DataConstraintException("OWNER_TELEPHONE_IS_REQUIRED")
 
 object OWNER_DOESNT_EXIST extends DataConstraintException("OWNER_DOESNT_EXIST")
 

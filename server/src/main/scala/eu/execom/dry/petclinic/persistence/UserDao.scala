@@ -11,7 +11,7 @@ import org.joda.time._
 import scala.slick.driver.MySQLDriver.simple._
 import scala.slick.jdbc.JdbcBackend.{Session => SlickSession}
 
-case class User(private var _id: Int, private var _authenticationCode: Option[String], private var _roleId: Int, private var _username: String, private var _passwordHash: String) {
+case class User(private var _id: Int, private var _roleId: Int, private var _username: String, private var _passwordHash: String) {
 
   private var id_persisted: Int = id
   def idPersisted: Int = id_persisted
@@ -20,19 +20,6 @@ case class User(private var _id: Int, private var _authenticationCode: Option[St
   def id_=(newId: Int)(implicit session: SlickSession): Any = if (newId != id) {
 
     _id = newId
-  }
-
-  private var authenticationCode_persisted: Option[String] = authenticationCode
-  def authenticationCodePersisted: Option[String] = authenticationCode_persisted
-
-  def authenticationCode: Option[String] = _authenticationCode
-  def authenticationCode_=(newAuthenticationCode: Option[String])(implicit session: SlickSession): Any = if (newAuthenticationCode != authenticationCode) {
-    if (newAuthenticationCode.isDefined) {
-      if (TableQuery[Users].filter(_.authenticationCode === newAuthenticationCode.get).exists.run) throw USER_AUTHENTICATION_CODE_IS_NOT_UNIQUE
-      if (newAuthenticationCode.get.size < 0) throw USER_AUTHENTICATION_CODE_MIN_SIZE
-      if (newAuthenticationCode.get.size > 128) throw USER_AUTHENTICATION_CODE_MAX_SIZE
-    }
-    _authenticationCode = newAuthenticationCode
   }
 
   private var roleId_persisted: Int = roleId
@@ -73,21 +60,19 @@ case class User(private var _id: Int, private var _authenticationCode: Option[St
   def role(implicit session: SlickSession): Role = TableQuery[Roles].filter(_.id === roleId).first
   def role_=(role: Role)(implicit session: SlickSession) = roleId = role.id
 
-  def this(entity: User) = this(entity._id, entity._authenticationCode, entity._roleId, entity._username, entity._passwordHash)
+  def this(entity: User) = this(entity._id, entity._roleId, entity._username, entity._passwordHash)
 
-  def this() = this(0, None, 0, "", "")
+  def this() = this(0, 0, "", "")
 
-  def this(authenticationCode: Option[String], roleId: Int, username: String, passwordHash: String)(implicit session: SlickSession) = {
+  def this(roleId: Int, username: String, passwordHash: String)(implicit session: SlickSession) = {
     this()
-    this.authenticationCode_=(authenticationCode)(session)
     this.roleId_=(roleId)(session)
     this.username_=(username)(session)
     this.passwordHash_=(passwordHash)(session)
   }
 
-  def this(authenticationCode: Option[String], role: Role, username: String, passwordHash: String)(implicit session: SlickSession) = {
+  def this(role: Role, username: String, passwordHash: String)(implicit session: SlickSession) = {
     this()
-    this.authenticationCode_=(authenticationCode)(session)
     this.role_=(role)(session)
     this.username_=(username)(session)
     this.passwordHash_=(passwordHash)(session)
@@ -95,7 +80,6 @@ case class User(private var _id: Int, private var _authenticationCode: Option[St
 
   def persisted() = {
     id_persisted = id
-    authenticationCode_persisted = authenticationCode
     roleId_persisted = roleId
     username_persisted = username
     passwordHash_persisted = passwordHash
@@ -104,47 +88,39 @@ case class User(private var _id: Int, private var _authenticationCode: Option[St
 
 object User {
   val ID: String = "_id"
-  val AUTHENTICATIONCODE: String = "_authenticationCode"
   val ROLEID: String = "_roleId"
   val USERNAME: String = "_username"
   val PASSWORDHASH: String = "_passwordHash"
 }
 
-object USER_AUTHENTICATION_CODE_MIN_SIZE extends DataConstraintException("USER_AUTHENTICATION_CODE_MIN_SIZE")
-
-object USER_AUTHENTICATION_CODE_MAX_SIZE extends DataConstraintException("USER_AUTHENTICATION_CODE_MAX_SIZE")
+object USER_USERNAME_IS_REQUIRED extends DataConstraintException("USER_USERNAME_IS_REQUIRED")
 
 object USER_USERNAME_MIN_SIZE extends DataConstraintException("USER_USERNAME_MIN_SIZE")
 
 object USER_USERNAME_MAX_SIZE extends DataConstraintException("USER_USERNAME_MAX_SIZE")
 
-object USER_USERNAME_IS_REQUIRED extends DataConstraintException("USER_USERNAME_IS_REQUIRED")
+object USER_PASSWORD_HASH_IS_REQUIRED extends DataConstraintException("USER_PASSWORD_HASH_IS_REQUIRED")
 
 object USER_PASSWORD_HASH_MIN_SIZE extends DataConstraintException("USER_PASSWORD_HASH_MIN_SIZE")
 
 object USER_PASSWORD_HASH_MAX_SIZE extends DataConstraintException("USER_PASSWORD_HASH_MAX_SIZE")
 
-object USER_PASSWORD_HASH_IS_REQUIRED extends DataConstraintException("USER_PASSWORD_HASH_IS_REQUIRED")
-
 object USER_DOESNT_EXIST extends DataConstraintException("USER_DOESNT_EXIST")
 
 object USER_ID_IS_NOT_UNIQUE extends DataConstraintException("USER_ID_IS_NOT_UNIQUE")
-
-object USER_AUTHENTICATION_CODE_IS_NOT_UNIQUE extends DataConstraintException("USER_AUTHENTICATION_CODE_IS_NOT_UNIQUE")
 
 object USER_USERNAME_IS_NOT_UNIQUE extends DataConstraintException("USER_USERNAME_IS_NOT_UNIQUE")
 
 class Users(tag: Tag) extends Table[User](tag, "User") {
 
   def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
-  def authenticationCode = column[Option[String]]("authenticationCode")
   def roleId = column[Int]("roleId")
   def username = column[String]("username")
   def passwordHash = column[String]("passwordHash")
 
   val create = User.apply _
-  def * = (id, authenticationCode, roleId, username, passwordHash) <> (create.tupled, User.unapply)
-  def ? = (id.?, authenticationCode, roleId.?, username.?, passwordHash.?).shaped.<>({r=>import r._; _1.map(_=> create.tupled((_1.get, _2, _3.get, _4.get, _5.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+  def * = (id, roleId, username, passwordHash) <> (create.tupled, User.unapply)
+  def ? = (id.?, roleId.?, username.?, passwordHash.?).shaped.<>({r=>import r._; _1.map(_=> create.tupled((_1.get, _2.get, _3.get, _4.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
   def role= foreignKey("USER_ROLE_FK", roleId, TableQuery[Roles])(_.id)
 }
@@ -218,18 +194,6 @@ class UserDao extends GenericSlickDao[User] {
 
     var query: Query[Users, Users#TableElementType, Seq] = TableQuery[Users]
     query = query.filter(_.id === id)
-
-    query.firstOption
-  }
-
-  def findByAuthenticationCode(authenticationCode: Option[String])(implicit session: SlickSession): Option[User] = {
-    logger.trace(s".findByAuthenticationCode(authenticationCode: $authenticationCode)")
-
-    var query: Query[Users, Users#TableElementType, Seq] = TableQuery[Users]
-    authenticationCode match {
-      case Some(value) => query = query.filter(_.authenticationCode === value)
-      case None => query = query.filter(_.authenticationCode.isEmpty)
-    }
 
     query.firstOption
   }

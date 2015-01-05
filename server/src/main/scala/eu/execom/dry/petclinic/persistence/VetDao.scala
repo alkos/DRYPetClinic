@@ -72,17 +72,17 @@ object Vet {
   val LASTNAME: String = "_lastName"
 }
 
+object VET_FIRST_NAME_IS_REQUIRED extends DataConstraintException("VET_FIRST_NAME_IS_REQUIRED")
+
 object VET_FIRST_NAME_MIN_SIZE extends DataConstraintException("VET_FIRST_NAME_MIN_SIZE")
 
 object VET_FIRST_NAME_MAX_SIZE extends DataConstraintException("VET_FIRST_NAME_MAX_SIZE")
 
-object VET_FIRST_NAME_IS_REQUIRED extends DataConstraintException("VET_FIRST_NAME_IS_REQUIRED")
+object VET_LAST_NAME_IS_REQUIRED extends DataConstraintException("VET_LAST_NAME_IS_REQUIRED")
 
 object VET_LAST_NAME_MIN_SIZE extends DataConstraintException("VET_LAST_NAME_MIN_SIZE")
 
 object VET_LAST_NAME_MAX_SIZE extends DataConstraintException("VET_LAST_NAME_MAX_SIZE")
-
-object VET_LAST_NAME_IS_REQUIRED extends DataConstraintException("VET_LAST_NAME_IS_REQUIRED")
 
 object VET_DOESNT_EXIST extends DataConstraintException("VET_DOESNT_EXIST")
 

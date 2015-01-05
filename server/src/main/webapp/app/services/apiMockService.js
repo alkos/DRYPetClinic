@@ -120,7 +120,8 @@
          *"Response": AuthenticationResponseDto {
          *    "username": String,
          *    "roleId": Int,
-         *    "authenticationCode": String
+         *    "accessToken": String,
+         *    "refreshToken": String
          *}
          */
         this.signUp = function (model, successCallback, errorCallback) {
@@ -140,7 +141,8 @@
          *"Response": AuthenticationResponseDto {
          *    "username": String,
          *    "roleId": Int,
-         *    "authenticationCode": String
+         *    "accessToken": String,
+         *    "refreshToken": String
          *}
          */
         this.signIn = function (model, successCallback, errorCallback) {
@@ -163,17 +165,38 @@
         /** Authenticate
          *
          * Api URL: /api/authenticate?
-         *"Request": AuthenticationCodeDto {
-         *    "authenticationCode": String
+         *"Request": AccessTokenDto {
+         *    "accessToken": String
          *}
          *
          *"Response": AuthenticationResponseDto {
          *    "username": String,
          *    "roleId": Int,
-         *    "authenticationCode": String
+         *    "accessToken": String,
+         *    "refreshToken": String
          *}
          */
         this.authenticate = function (model, successCallback, errorCallback) {
+            successCallback({
+                //TODO fill up mocked data values
+            });
+        };
+
+        /** RefreshToken
+         *
+         * Api URL: /api/refreshToken?
+         *"Request": RefreshTokenDto {
+         *    "refreshToken": String
+         *}
+         *
+         *"Response": AuthenticationResponseDto {
+         *    "username": String,
+         *    "roleId": Int,
+         *    "accessToken": String,
+         *    "refreshToken": String
+         *}
+         */
+        this.refreshToken = function (model, successCallback, errorCallback) {
             successCallback({
                 //TODO fill up mocked data values
             });

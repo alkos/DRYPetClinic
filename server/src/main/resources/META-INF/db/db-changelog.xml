@@ -10,9 +10,6 @@
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="authenticationCode" type="VARCHAR(128)">
-                <constraints nullable="true"/>
-            </column>
             <column name="roleId" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
@@ -25,14 +22,42 @@
         </createTable>
 
         <addUniqueConstraint tableName="User" columnNames="id"></addUniqueConstraint>
-        <addUniqueConstraint tableName="User" columnNames="authenticationCode"></addUniqueConstraint>
         <addUniqueConstraint tableName="User" columnNames="username"></addUniqueConstraint>
+
+        <createTable tableName="Client">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="userId" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="clientId" type="VARCHAR(128)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="accessToken" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="accessTokenExpires" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="refreshToken" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="refreshTokenExpires" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint tableName="Client" columnNames="id"></addUniqueConstraint>
+        <addUniqueConstraint tableName="Client" columnNames="clientId"></addUniqueConstraint>
+        <addUniqueConstraint tableName="Client" columnNames="accessToken"></addUniqueConstraint>
+        <addUniqueConstraint tableName="Client" columnNames="refreshToken"></addUniqueConstraint>
 
         <createTable tableName="Role">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="name" type="VARCHAR(20)">
+            <column name="name" type="VARCHAR(40)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -113,7 +138,7 @@
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-            <column name="time" type="TIME">
+            <column name="history_change_time" type="TIME">
                 <constraints nullable="false"/>
             </column>
             <column name="petId" type="BIGINT">
@@ -195,6 +220,12 @@
         <addForeignKeyConstraint baseTableName="User" baseColumnNames="roleId"
                                  constraintName="FK_User.roleId_Role.id"
                                  referencedTableName="Role" referencedColumnNames="id"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
+                                 onUpdate="NO ACTION"/>
+        <!-- CLIENT -->
+        <addForeignKeyConstraint baseTableName="Client" baseColumnNames="userId"
+                                 constraintName="FK_Client.userId_User.id"
+                                 referencedTableName="User" referencedColumnNames="id"
                                  deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
                                  onUpdate="NO ACTION"/>
         <!-- ROLE -->

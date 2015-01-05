@@ -30,8 +30,8 @@ case class Role(private var _id: Int, private var _name: String) {
 
     if (newName == null) throw ROLE_NAME_IS_REQUIRED
     if (TableQuery[Roles].filter(_.name === newName).exists.run) throw ROLE_NAME_IS_NOT_UNIQUE
-    if (newName.size < 40) throw ROLE_NAME_MIN_SIZE
-    if (newName.size > 20) throw ROLE_NAME_MAX_SIZE
+    if (newName.size < 20) throw ROLE_NAME_MIN_SIZE
+    if (newName.size > 40) throw ROLE_NAME_MAX_SIZE
 
     _name = newName
   }
@@ -57,11 +57,11 @@ object Role {
   val NAME: String = "_name"
 }
 
+object ROLE_NAME_IS_REQUIRED extends DataConstraintException("ROLE_NAME_IS_REQUIRED")
+
 object ROLE_NAME_MIN_SIZE extends DataConstraintException("ROLE_NAME_MIN_SIZE")
 
 object ROLE_NAME_MAX_SIZE extends DataConstraintException("ROLE_NAME_MAX_SIZE")
-
-object ROLE_NAME_IS_REQUIRED extends DataConstraintException("ROLE_NAME_IS_REQUIRED")
 
 object ROLE_DOESNT_EXIST extends DataConstraintException("ROLE_DOESNT_EXIST")
 

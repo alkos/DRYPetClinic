@@ -106,11 +106,11 @@ object Pet {
   val PETTYPEID: String = "_petTypeId"
 }
 
+object PET_NAME_IS_REQUIRED extends DataConstraintException("PET_NAME_IS_REQUIRED")
+
 object PET_NAME_MIN_SIZE extends DataConstraintException("PET_NAME_MIN_SIZE")
 
 object PET_NAME_MAX_SIZE extends DataConstraintException("PET_NAME_MAX_SIZE")
-
-object PET_NAME_IS_REQUIRED extends DataConstraintException("PET_NAME_IS_REQUIRED")
 
 object PET_BIRTH_DATE_IS_REQUIRED extends DataConstraintException("PET_BIRTH_DATE_IS_REQUIRED")
 
