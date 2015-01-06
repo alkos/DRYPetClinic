@@ -162,7 +162,7 @@
          * Api URL: /api/signUp?
          *"Request": SignUpDto {
          *    "username": String,
-         *    "passwordHash": String
+         *    "password": String
          *}
          *
          *"Response": AuthenticationResponseDto {
@@ -178,7 +178,7 @@
                 url: '/api/signUp',
                 data: {
                   username: model.username,
-                  passwordHash: model.passwordHash
+                  password: model.password
                 }
             }).success(function (data) {
                 successCallback(data);

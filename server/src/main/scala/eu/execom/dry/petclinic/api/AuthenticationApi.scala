@@ -13,7 +13,7 @@ class AuthenticationApi(val userDao: UserDao, val securedService: SecuredService
   def signUp(signUpDto: SignUpDto)(implicit slickSession: SlickSession): Try[AuthenticationResponseDto] = Try {
     logger.trace(s".signUp(signUpDto: $signUpDto)")
 
-    val (user, client) = securedService.signUp(signUpDto.username, signUpDto.passwordHash).get
+    val (user, client) = securedService.signUp(signUpDto.username, signUpDto.password).get
     new AuthenticationResponseDto(user.username, user.roleId, client.accessToken, client.refreshToken)
   }
 
@@ -88,20 +88,20 @@ object AUTHENTICATION_RESPONSE_DTO_REFRESH_TOKEN_MIN_SIZE extends DataConstraint
 
 object AUTHENTICATION_RESPONSE_DTO_REFRESH_TOKEN_MAX_SIZE extends DataConstraintException("AUTHENTICATION_RESPONSE_DTO_REFRESH_TOKEN_MAX_SIZE")
 
-case class SignUpDto(username: String, passwordHash: String) {
+case class SignUpDto(username: String, password: String) {
 
   if (username == null) throw SIGN_UP_DTO_USERNAME_IS_REQUIRED
   if (username.size < 0) throw SIGN_UP_DTO_USERNAME_MIN_SIZE
   if (username.size > 1024) throw SIGN_UP_DTO_USERNAME_MAX_SIZE
 
-  if (passwordHash == null) throw SIGN_UP_DTO_PASSWORD_HASH_IS_REQUIRED
-  if (passwordHash.size < 0) throw SIGN_UP_DTO_PASSWORD_HASH_MIN_SIZE
-  if (passwordHash.size > 1024) throw SIGN_UP_DTO_PASSWORD_HASH_MAX_SIZE
+  if (password == null) throw SIGN_UP_DTO_PASSWORD_IS_REQUIRED
+  if (password.size < 0) throw SIGN_UP_DTO_PASSWORD_MIN_SIZE
+  if (password.size > 1024) throw SIGN_UP_DTO_PASSWORD_MAX_SIZE
 }
 
 object SignUpDto {
   val USERNAME: String = "username"
-  val PASSWORDHASH: String = "passwordHash"
+  val PASSWORD: String = "password"
 }
 
 object SIGN_UP_DTO_USERNAME_IS_REQUIRED extends DataConstraintException("SIGN_UP_DTO_USERNAME_IS_REQUIRED")
@@ -110,11 +110,11 @@ object SIGN_UP_DTO_USERNAME_MIN_SIZE extends DataConstraintException("SIGN_UP_DT
 
 object SIGN_UP_DTO_USERNAME_MAX_SIZE extends DataConstraintException("SIGN_UP_DTO_USERNAME_MAX_SIZE")
 
-object SIGN_UP_DTO_PASSWORD_HASH_IS_REQUIRED extends DataConstraintException("SIGN_UP_DTO_PASSWORD_HASH_IS_REQUIRED")
+object SIGN_UP_DTO_PASSWORD_IS_REQUIRED extends DataConstraintException("SIGN_UP_DTO_PASSWORD_IS_REQUIRED")
 
-object SIGN_UP_DTO_PASSWORD_HASH_MIN_SIZE extends DataConstraintException("SIGN_UP_DTO_PASSWORD_HASH_MIN_SIZE")
+object SIGN_UP_DTO_PASSWORD_MIN_SIZE extends DataConstraintException("SIGN_UP_DTO_PASSWORD_MIN_SIZE")
 
-object SIGN_UP_DTO_PASSWORD_HASH_MAX_SIZE extends DataConstraintException("SIGN_UP_DTO_PASSWORD_HASH_MAX_SIZE")
+object SIGN_UP_DTO_PASSWORD_MAX_SIZE extends DataConstraintException("SIGN_UP_DTO_PASSWORD_MAX_SIZE")
 
 case class SignInDto(username: String, passwordHash: String) {
 

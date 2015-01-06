@@ -114,7 +114,7 @@
          * Api URL: /api/signUp?
          *"Request": SignUpDto {
          *    "username": String,
-         *    "passwordHash": String
+         *    "password": String
          *}
          *
          *"Response": AuthenticationResponseDto {

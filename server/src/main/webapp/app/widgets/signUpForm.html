@@ -14,16 +14,16 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="passwordHash">{{'SIGNUPFORM_PASSWORD_HASH' | translate}}</label>
-        <input type="text" id="passwordHash" class="form-control" name="passwordHash" ng-model="ctrl.viewModel.user.passwordHash"
+        <label for="password">{{'SIGNUPFORM_PASSWORD' | translate}}</label>
+        <input type="text" id="password" class="form-control" name="password" ng-model="ctrl.viewModel.user.password"
                ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0 } }"
-               placeholder="{{'SIGNUPFORM_PASSWORD_HASH' | translate}}"
+               placeholder="{{'SIGNUPFORM_PASSWORD' | translate}}"
                minlength="0" maxlength="1024" required>
 
-        <div ng-messages="signUpForm.passwordHash.$error" ng-if="signUpForm.passwordHash.$touched">
-            <div ng-message="required">{{'SIGNUPFORM_PASSWORD_HASH_REQUIRED' | translate}}</div>
-            <div ng-message="minlength">{{'SIGNUPFORM_PASSWORD_HASH_MINLENGTH' | translate:'{ minlength: 0 }'}}</div>
-            <div ng-message="maxlength">{{'SIGNUPFORM_PASSWORD_HASH_MAXLENGTH' | translate:'{ maxlength: 1024 }'}}</div>
+        <div ng-messages="signUpForm.password.$error" ng-if="signUpForm.password.$touched">
+            <div ng-message="required">{{'SIGNUPFORM_PASSWORD_REQUIRED' | translate}}</div>
+            <div ng-message="minlength">{{'SIGNUPFORM_PASSWORD_MINLENGTH' | translate:'{ minlength: 0 }'}}</div>
+            <div ng-message="maxlength">{{'SIGNUPFORM_PASSWORD_MAXLENGTH' | translate:'{ maxlength: 1024 }'}}</div>
         </div>
     </div>
 

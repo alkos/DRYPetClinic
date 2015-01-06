@@ -4,11 +4,11 @@ import eu.execom.dry.petclinic.api.enumeration.*;
 
 public class SignUpDto {
     private String username;
-    private String passwordHash;
+    private String password;
 
-    public SignUpDto(String username, String passwordHash) {
+    public SignUpDto(String username, String password) {
         this.username = username;
-        this.passwordHash = passwordHash;
+        this.password = password;
     }
 
     public SignUpDto() {
@@ -22,11 +22,11 @@ public class SignUpDto {
         this.username = username;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

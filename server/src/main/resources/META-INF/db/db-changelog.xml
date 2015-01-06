@@ -24,15 +24,12 @@
         <addUniqueConstraint tableName="User" columnNames="id"></addUniqueConstraint>
         <addUniqueConstraint tableName="User" columnNames="username"></addUniqueConstraint>
 
-        <createTable tableName="Client">
+        <createTable tableName="UserSession">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="userId" type="BIGINT">
                 <constraints nullable="false"/>
-            </column>
-            <column name="clientId" type="VARCHAR(128)">
-                <constraints nullable="true"/>
             </column>
             <column name="accessToken" type="VARCHAR(128)">
                 <constraints nullable="false"/>
@@ -48,10 +45,9 @@
             </column>
         </createTable>
 
-        <addUniqueConstraint tableName="Client" columnNames="id"></addUniqueConstraint>
-        <addUniqueConstraint tableName="Client" columnNames="clientId"></addUniqueConstraint>
-        <addUniqueConstraint tableName="Client" columnNames="accessToken"></addUniqueConstraint>
-        <addUniqueConstraint tableName="Client" columnNames="refreshToken"></addUniqueConstraint>
+        <addUniqueConstraint tableName="UserSession" columnNames="id"></addUniqueConstraint>
+        <addUniqueConstraint tableName="UserSession" columnNames="accessToken"></addUniqueConstraint>
+        <addUniqueConstraint tableName="UserSession" columnNames="refreshToken"></addUniqueConstraint>
 
         <createTable tableName="Role">
             <column autoIncrement="true" name="id" type="BIGINT">
@@ -222,9 +218,9 @@
                                  referencedTableName="Role" referencedColumnNames="id"
                                  deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
                                  onUpdate="NO ACTION"/>
-        <!-- CLIENT -->
-        <addForeignKeyConstraint baseTableName="Client" baseColumnNames="userId"
-                                 constraintName="FK_Client.userId_User.id"
+        <!-- USERSESSION -->
+        <addForeignKeyConstraint baseTableName="UserSession" baseColumnNames="userId"
+                                 constraintName="FK_UserSession.userId_User.id"
                                  referencedTableName="User" referencedColumnNames="id"
                                  deferrable="false" initiallyDeferred="false" onDelete="NO ACTION"
                                  onUpdate="NO ACTION"/>
