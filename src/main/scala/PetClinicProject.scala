@@ -1,6 +1,19 @@
 import eu.execom.dry.generator.Project
 import eu.execom.dry.generator.server.api.CrudProperty
 
+// Server
+// scala language
+// persistence slick, HikariCP (mysql) or DataStax (cassandra)
+// hazelcast event bus, in memory Db
+// scalatra REST
+// logback
+
+// SPA Angular JS, Bower, Grunt ... api consumer, web components
+
+// Android (api consumer)
+
+// iPhone (api consumer)
+
 object PetClinicProject extends Project("eu.execom.dry", "petclinic") {
 
   developer("dvesin")
@@ -18,9 +31,10 @@ object PetClinicProject extends Project("eu.execom.dry", "petclinic") {
 
   val user = securedSqlModel("User")
   val userId = user.idProperty
-//  val (userAuthCode, userRole) = user.roleSecured("role", userRoleEnum)
-  val (clientModel, userRole, role, permission) = user.permissionsSecured("Role", "Permission", accessRight)
-  val (userUsername, userPassword) = user.signInWithUserName("username", "passwordHash")
+  val (clientModel, userRole, role, permission) = user.permissionsSecured(accessRight)
+  val (userUsername, userPassword) = user.signIn(true)
+  val (userFacebookId, _) = user.facebookSignIn()
+  val (userGoogleId, _) = user.googleSignIn()
   userPassword.triggerOnChange().triggerOnChange(userRole)
   userUsername.triggerOnChange()
   user.triggerOnCreate().triggerOnDelete().triggerOnUpdate()

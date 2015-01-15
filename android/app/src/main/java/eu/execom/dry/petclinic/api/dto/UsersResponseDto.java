@@ -4,12 +4,12 @@ import eu.execom.dry.petclinic.api.enumeration.*;
 
 public class UsersResponseDto {
     private Integer id;
-    private String username;
+    private String email;
     private Integer roleId;
 
-    public UsersResponseDto(Integer id, String username, Integer roleId) {
+    public UsersResponseDto(Integer id, String email, Integer roleId) {
         this.id = id;
-        this.username = username;
+        this.email = email;
         this.roleId = roleId;
     }
 
@@ -24,12 +24,12 @@ public class UsersResponseDto {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Integer getRoleId() {

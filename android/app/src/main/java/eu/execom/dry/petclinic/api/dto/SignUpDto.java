@@ -3,23 +3,23 @@ package eu.execom.dry.petclinic.api.dto;
 import eu.execom.dry.petclinic.api.enumeration.*;
 
 public class SignUpDto {
-    private String username;
+    private String email;
     private String password;
 
-    public SignUpDto(String username, String password) {
-        this.username = username;
+    public SignUpDto(String email, String password) {
+        this.email = email;
         this.password = password;
     }
 
     public SignUpDto() {
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {

@@ -29,10 +29,9 @@
         <input type="text" id="password" class="form-control" name="password" ng-model="ctrl.viewModel.user.password"
                ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0 } }"
                placeholder="{{'USERCREATEAPIFORM_PASSWORD' | translate}}"
-               minlength="0" maxlength="1024" required>
+               minlength="0" maxlength="1024" >
 
         <div ng-messages="userCreateApiForm.password.$error" ng-if="userCreateApiForm.password.$touched">
-            <div ng-message="required">{{'USERCREATEAPIFORM_PASSWORD_REQUIRED' | translate}}</div>
             <div ng-message="minlength">{{'USERCREATEAPIFORM_PASSWORD_MINLENGTH' | translate:'{ minlength: 0 }'}}</div>
             <div ng-message="maxlength">{{'USERCREATEAPIFORM_PASSWORD_MAXLENGTH' | translate:'{ maxlength: 1024 }'}}</div>
         </div>

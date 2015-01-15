@@ -18,7 +18,7 @@ class UserApi(val userDao: UserDao, val userService: UserService, val securedSer
       val result: Option[User] = userDao.findById(requestDto.id)
 
       result match {
-        case Some(r) => new ReadUserResponseDto(r.id, r.roleId, r.username)
+        case Some(r) => new ReadUserResponseDto(r.id, r.roleId, r.email)
         case None => throw new IllegalArgumentException()
       }
     }
@@ -30,13 +30,13 @@ class UserApi(val userDao: UserDao, val userService: UserService, val securedSer
 
       val entity: User = new User()
       entity.roleId = saveDto.role
-      entity.username = saveDto.username
+      entity.email = saveDto.username
       entity.passwordHash = saveDto.password
       userService.save(entity)
 
       val result: User = userDao.findById(entity.id).get
 
-      new ReadUserResponseDto(result.id, result.roleId, result.username)
+      new ReadUserResponseDto(result.id, result.roleId, result.email)
     }
   }
 
@@ -51,7 +51,7 @@ class UserApi(val userDao: UserDao, val userService: UserService, val securedSer
 
       val result: User = userDao.findById(entity.id).get
 
-      new ReadUserResponseDto(result.id, result.roleId, result.username)
+      new ReadUserResponseDto(result.id, result.roleId, result.email)
     }
   }
 
@@ -72,7 +72,7 @@ class UserApi(val userDao: UserDao, val userService: UserService, val securedSer
       val result: List[User] = userDao.findAllPaged(requestDto.from, requestDto.maxRowCount)
 
       new SearchResultDto(
-        result.map(r => new UsersResponseDto(r.id, r.username, r.roleId)),
+        result.map(r => new UsersResponseDto(r.id, r.email, r.roleId)),
         userDao.countAll())
     }
   }
@@ -84,7 +84,7 @@ class UserApi(val userDao: UserDao, val userService: UserService, val securedSer
       val result: List[User] = userDao.findByRolePaged(requestDto.role, requestDto.from, requestDto.maxRowCount)
 
       new SearchResultDto(
-        result.map(r => new AdminUsersResponseDto(r.id, r.username, r.roleId)),
+        result.map(r => new AdminUsersResponseDto(r.id, r.email, r.roleId)),
         userDao.countByRole(requestDto.role))
     }
   }
@@ -116,15 +116,16 @@ object READ_USER_RESPONSE_DTO_USERNAME_MIN_SIZE extends DataConstraintException(
 
 object READ_USER_RESPONSE_DTO_USERNAME_MAX_SIZE extends DataConstraintException("READ_USER_RESPONSE_DTO_USERNAME_MAX_SIZE")
 
-case class CreateUserDto(role: Int, username: String, password: String) {
+case class CreateUserDto(role: Int, username: String, password: Option[String]) {
 
   if (username == null) throw CREATE_USER_DTO_USERNAME_IS_REQUIRED
   if (username.size < 0) throw CREATE_USER_DTO_USERNAME_MIN_SIZE
   if (username.size > 1024) throw CREATE_USER_DTO_USERNAME_MAX_SIZE
 
-  if (password == null) throw CREATE_USER_DTO_PASSWORD_IS_REQUIRED
-  if (password.size < 0) throw CREATE_USER_DTO_PASSWORD_MIN_SIZE
-  if (password.size > 1024) throw CREATE_USER_DTO_PASSWORD_MAX_SIZE
+  if (password.isDefined) {
+    if (password.get.size < 0) throw CREATE_USER_DTO_PASSWORD_MIN_SIZE
+    if (password.get.size > 1024) throw CREATE_USER_DTO_PASSWORD_MAX_SIZE
+  }
 }
 
 object CreateUserDto {
@@ -139,15 +140,13 @@ object CREATE_USER_DTO_USERNAME_MIN_SIZE extends DataConstraintException("CREATE
 
 object CREATE_USER_DTO_USERNAME_MAX_SIZE extends DataConstraintException("CREATE_USER_DTO_USERNAME_MAX_SIZE")
 
-object CREATE_USER_DTO_PASSWORD_IS_REQUIRED extends DataConstraintException("CREATE_USER_DTO_PASSWORD_IS_REQUIRED")
-
 object CREATE_USER_DTO_PASSWORD_MIN_SIZE extends DataConstraintException("CREATE_USER_DTO_PASSWORD_MIN_SIZE")
 
 object CREATE_USER_DTO_PASSWORD_MAX_SIZE extends DataConstraintException("CREATE_USER_DTO_PASSWORD_MAX_SIZE")
 
-case class UpdateUserDto(id: Int, role: Int, password: Option[String]) {
+case class UpdateUserDto(id: Int, role: Int, password: Option[Option[String]]) {
 
-if (password.isDefined) {
+  if (password.isDefined) {
     if (password.get.size < 0) throw UPDATE_USER_DTO_PASSWORD_MIN_SIZE
     if (password.get.size > 1024) throw UPDATE_USER_DTO_PASSWORD_MAX_SIZE
   }
@@ -170,24 +169,24 @@ object UsersDto {
   val MAXROWCOUNT: String = "maxRowCount"
 }
 
-case class UsersResponseDto(id: Int, username: String, roleId: Int) {
+case class UsersResponseDto(id: Int, email: String, roleId: Int) {
 
-  if (username == null) throw USERS_RESPONSE_DTO_USERNAME_IS_REQUIRED
-  if (username.size < 0) throw USERS_RESPONSE_DTO_USERNAME_MIN_SIZE
-  if (username.size > 1024) throw USERS_RESPONSE_DTO_USERNAME_MAX_SIZE
+  if (email == null) throw USERS_RESPONSE_DTO_EMAIL_IS_REQUIRED
+  if (email.size < 0) throw USERS_RESPONSE_DTO_EMAIL_MIN_SIZE
+  if (email.size > 1024) throw USERS_RESPONSE_DTO_EMAIL_MAX_SIZE
 }
 
 object UsersResponseDto {
   val ID: String = "id"
-  val USERNAME: String = "username"
+  val EMAIL: String = "email"
   val ROLEID: String = "roleId"
 }
 
-object USERS_RESPONSE_DTO_USERNAME_IS_REQUIRED extends DataConstraintException("USERS_RESPONSE_DTO_USERNAME_IS_REQUIRED")
+object USERS_RESPONSE_DTO_EMAIL_IS_REQUIRED extends DataConstraintException("USERS_RESPONSE_DTO_EMAIL_IS_REQUIRED")
 
-object USERS_RESPONSE_DTO_USERNAME_MIN_SIZE extends DataConstraintException("USERS_RESPONSE_DTO_USERNAME_MIN_SIZE")
+object USERS_RESPONSE_DTO_EMAIL_MIN_SIZE extends DataConstraintException("USERS_RESPONSE_DTO_EMAIL_MIN_SIZE")
 
-object USERS_RESPONSE_DTO_USERNAME_MAX_SIZE extends DataConstraintException("USERS_RESPONSE_DTO_USERNAME_MAX_SIZE")
+object USERS_RESPONSE_DTO_EMAIL_MAX_SIZE extends DataConstraintException("USERS_RESPONSE_DTO_EMAIL_MAX_SIZE")
 
 case class AdminUsersDto(role: Int, from: Int, maxRowCount: Int)
 
@@ -197,21 +196,21 @@ object AdminUsersDto {
   val MAXROWCOUNT: String = "maxRowCount"
 }
 
-case class AdminUsersResponseDto(id: Int, username: String, roleId: Int) {
+case class AdminUsersResponseDto(id: Int, email: String, roleId: Int) {
 
-  if (username == null) throw ADMIN_USERS_RESPONSE_DTO_USERNAME_IS_REQUIRED
-  if (username.size < 0) throw ADMIN_USERS_RESPONSE_DTO_USERNAME_MIN_SIZE
-  if (username.size > 1024) throw ADMIN_USERS_RESPONSE_DTO_USERNAME_MAX_SIZE
+  if (email == null) throw ADMIN_USERS_RESPONSE_DTO_EMAIL_IS_REQUIRED
+  if (email.size < 0) throw ADMIN_USERS_RESPONSE_DTO_EMAIL_MIN_SIZE
+  if (email.size > 1024) throw ADMIN_USERS_RESPONSE_DTO_EMAIL_MAX_SIZE
 }
 
 object AdminUsersResponseDto {
   val ID: String = "id"
-  val USERNAME: String = "username"
+  val EMAIL: String = "email"
   val ROLEID: String = "roleId"
 }
 
-object ADMIN_USERS_RESPONSE_DTO_USERNAME_IS_REQUIRED extends DataConstraintException("ADMIN_USERS_RESPONSE_DTO_USERNAME_IS_REQUIRED")
+object ADMIN_USERS_RESPONSE_DTO_EMAIL_IS_REQUIRED extends DataConstraintException("ADMIN_USERS_RESPONSE_DTO_EMAIL_IS_REQUIRED")
 
-object ADMIN_USERS_RESPONSE_DTO_USERNAME_MIN_SIZE extends DataConstraintException("ADMIN_USERS_RESPONSE_DTO_USERNAME_MIN_SIZE")
+object ADMIN_USERS_RESPONSE_DTO_EMAIL_MIN_SIZE extends DataConstraintException("ADMIN_USERS_RESPONSE_DTO_EMAIL_MIN_SIZE")
 
-object ADMIN_USERS_RESPONSE_DTO_USERNAME_MAX_SIZE extends DataConstraintException("ADMIN_USERS_RESPONSE_DTO_USERNAME_MAX_SIZE")
+object ADMIN_USERS_RESPONSE_DTO_EMAIL_MAX_SIZE extends DataConstraintException("ADMIN_USERS_RESPONSE_DTO_EMAIL_MAX_SIZE")

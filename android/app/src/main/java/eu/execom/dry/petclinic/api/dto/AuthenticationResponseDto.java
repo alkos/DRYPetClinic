@@ -3,13 +3,13 @@ package eu.execom.dry.petclinic.api.dto;
 import eu.execom.dry.petclinic.api.enumeration.*;
 
 public class AuthenticationResponseDto {
-    private String username;
+    private String email;
     private Integer roleId;
     private String accessToken;
     private String refreshToken;
 
-    public AuthenticationResponseDto(String username, Integer roleId, String accessToken, String refreshToken) {
-        this.username = username;
+    public AuthenticationResponseDto(String email, Integer roleId, String accessToken, String refreshToken) {
+        this.email = email;
         this.roleId = roleId;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
@@ -18,12 +18,12 @@ public class AuthenticationResponseDto {
     public AuthenticationResponseDto() {
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Integer getRoleId() {

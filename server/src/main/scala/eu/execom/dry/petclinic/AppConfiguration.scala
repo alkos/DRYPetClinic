@@ -47,6 +47,8 @@ class AppConfiguration extends LifeCycle with ApiConfiguration {
   lazy val appEmail: String = properties.getProperty("app.email")
   lazy val appName: String = properties.getProperty("app.name")
   lazy val appUrl: String = properties.getProperty("app.url")
+  lazy val googleWebClientId: String = properties.getProperty("google.webclient.id")
+  lazy val googleWebClientSecret: String = properties.getProperty("google.clientweb.secret")
 
   def initialize():Unit = {
     //TODO do initialization

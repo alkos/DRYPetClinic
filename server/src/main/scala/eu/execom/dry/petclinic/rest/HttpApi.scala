@@ -208,9 +208,9 @@ class HttpApi(val slickDb: Database, val eventBus: EventBus, val authenticationA
   }
 }
 
-case class UpdateUserBodyDTO(role: Int, password: Option[String]) {
+case class UpdateUserBodyDTO(role: Int, password: Option[Option[String]]) {
 
-if (password.isDefined) {
+  if (password.isDefined) {
     if (password.get.size < 0) throw UPDATE_USER_BODY_DTO_PASSWORD_MIN_SIZE
     if (password.get.size > 1024) throw UPDATE_USER_BODY_DTO_PASSWORD_MAX_SIZE
   }

@@ -1,16 +1,16 @@
 <form name="signUpForm" role="form" novalidate ng-submit="ctrl.viewModel.onSubmit()">
 
     <div class="form-group">
-        <label for="username">{{'SIGNUPFORM_USERNAME' | translate}}</label>
-        <input type="text" id="username" class="form-control" name="username" ng-model="ctrl.viewModel.user.username"
+        <label for="email">{{'SIGNUPFORM_EMAIL' | translate}}</label>
+        <input type="text" id="email" class="form-control" name="email" ng-model="ctrl.viewModel.user.email"
                ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0 } }"
-               placeholder="{{'SIGNUPFORM_USERNAME' | translate}}"
+               placeholder="{{'SIGNUPFORM_EMAIL' | translate}}"
                minlength="0" maxlength="1024" required>
 
-        <div ng-messages="signUpForm.username.$error" ng-if="signUpForm.username.$touched">
-            <div ng-message="required">{{'SIGNUPFORM_USERNAME_REQUIRED' | translate}}</div>
-            <div ng-message="minlength">{{'SIGNUPFORM_USERNAME_MINLENGTH' | translate:'{ minlength: 0 }'}}</div>
-            <div ng-message="maxlength">{{'SIGNUPFORM_USERNAME_MAXLENGTH' | translate:'{ maxlength: 1024 }'}}</div>
+        <div ng-messages="signUpForm.email.$error" ng-if="signUpForm.email.$touched">
+            <div ng-message="required">{{'SIGNUPFORM_EMAIL_REQUIRED' | translate}}</div>
+            <div ng-message="minlength">{{'SIGNUPFORM_EMAIL_MINLENGTH' | translate:'{ minlength: 0 }'}}</div>
+            <div ng-message="maxlength">{{'SIGNUPFORM_EMAIL_MAXLENGTH' | translate:'{ maxlength: 1024 }'}}</div>
         </div>
     </div>
     <div class="form-group">

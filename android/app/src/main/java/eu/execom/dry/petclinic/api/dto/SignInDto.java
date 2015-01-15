@@ -3,30 +3,30 @@ package eu.execom.dry.petclinic.api.dto;
 import eu.execom.dry.petclinic.api.enumeration.*;
 
 public class SignInDto {
-    private String username;
-    private String passwordHash;
+    private String email;
+    private String password;
 
-    public SignInDto(String username, String passwordHash) {
-        this.username = username;
-        this.passwordHash = passwordHash;
+    public SignInDto(String email, String password) {
+        this.email = email;
+        this.password = password;
     }
 
     public SignInDto() {
     }
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

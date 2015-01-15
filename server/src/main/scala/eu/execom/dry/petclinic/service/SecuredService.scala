@@ -1,20 +1,21 @@
 package eu.execom.dry.petclinic.service
 
 import eu.execom.dry.petclinic.persistence._
-import eu.execom.dry.petclinic.util._
 import org.joda.time.DateTime
 
 import scala.slick.jdbc.JdbcBackend.{Session => SlickSession}
 import scala.util.Try
 
-class SecuredService(val userDao: UserDao, val userSessionDao: UserSessionDao, val passwordEncoder: PasswordEncoder, val mailSender: MailSender, val appEmail: String, val appName: String, val appUrl: String) {
+class SecuredService(val userDao: UserDao, val userSessionDao: UserSessionDao, val passwordEncoder: PasswordEncoder, val mailSender: MailSender, val facebookApiConsumer: FacebookApiConsumer, val googleApiConsumer: GoogleApiConsumer, val appEmail: String, val appName: String, val appUrl: String) {
 
-  def signUp(username: String, password: String)(implicit session: SlickSession): Try[(User, UserSession)] = Try {
-    require(username != null, password != null)
+  def signUp(email: String, password: String)(implicit session: SlickSession): Try[(User, UserSession)] = Try {
+    require(email != null && password != null)
+
+    mailSender.sendEmail(email, email, appEmail, appName, "Registration", s"Successful registration for $email!")
 
     val user = new User()
-    user.username = username
-    user.passwordHash = passwordEncoder.encode(password, username)
+    user.email = email
+    user.passwordHash = Some(passwordEncoder.encode(password, email))
     //TODO add other properties
     userDao.save(user)
 
@@ -23,13 +24,55 @@ class SecuredService(val userDao: UserDao, val userSessionDao: UserSessionDao, v
     (user, userSession)
   }
 
-  def signIn(username: String, passwordHash: String)(implicit session: SlickSession): Try[(User, UserSession)] = Try {
-    require(username != null, passwordHash != null)
+  def signIn(email: String, password: String)(implicit session: SlickSession): Try[(User, UserSession)] = Try {
+    require(email != null && password != null)
 
-    val user = userDao.findByUsername(username).getOrElse(throw CREDENTIALS_ARE_INVALID)
-    val encodedPassword = passwordEncoder.encode(passwordHash, username)
-    if (!encodedPassword.equals(user.passwordHash)) {
+    val user = userDao.findByEmail(email).getOrElse(throw CREDENTIALS_ARE_INVALID)
+    val encodedPassword = passwordEncoder.encode(password, email)
+    if (!encodedPassword.equals(user.passwordHash.get)) {
       throw CREDENTIALS_ARE_INVALID
+    }
+
+    val userSession = createUserSession(user)
+
+    (user, userSession)
+  }
+
+  def googleSignIn(googleId: String)(implicit session: SlickSession): Try[(User, UserSession)] = Try {
+    require(googleId != null)
+
+    val user = userDao.findByGoogleId(Some(googleId)) match {
+      case Some(existing) => existing
+      case None =>
+        val googleToken = googleApiConsumer.fetchGoogleUser(googleId).getOrElse(throw CREDENTIALS_ARE_INVALID)
+        val newUser = new User
+        newUser.googleId = Some(googleId)
+        newUser.email = googleToken.getPayload.getEmail
+        //TODO add other properties
+        userDao.save(newUser)
+
+        newUser
+    }
+
+    val userSession = createUserSession(user)
+
+    (user, userSession)
+  }
+
+  def facebookSignIn(facebookId: String)(implicit session: SlickSession): Try[(User, UserSession)] = Try {
+    require(facebookId != null)
+
+    val user = userDao.findByFacebookId(Some(facebookId)) match {
+      case Some(existing) => existing
+      case None =>
+        val facebookUser = facebookApiConsumer.fetchFacebookUser(facebookId).getOrElse(throw CREDENTIALS_ARE_INVALID)
+        val newUser = new User()
+        newUser.email = facebookUser.getEmail
+        newUser.facebookId = Some(facebookUser.getId)
+        //TODO add other properties
+        userDao.save(newUser)
+
+        newUser
     }
 
     val userSession = createUserSession(user)
@@ -67,10 +110,10 @@ class SecuredService(val userDao: UserDao, val userSessionDao: UserSessionDao, v
 
     val user = userSession.user
 
-    userSession.accessToken = passwordEncoder.encode(user.passwordHash, new DateTime())
+    userSession.accessToken = passwordEncoder.encode(user.email, new DateTime())
     userSession.accessTokenExpires = new DateTime().plusDays(1)
 
-    userSession.refreshToken = passwordEncoder.encode(user.passwordHash, new DateTime())
+    userSession.refreshToken = passwordEncoder.encode(user.email, new DateTime())
     userSession.refreshTokenExpires = new DateTime().plusMonths(1)
 
     userSessionDao.update(userSession)
@@ -79,8 +122,8 @@ class SecuredService(val userDao: UserDao, val userSessionDao: UserSessionDao, v
   }
 
   def createUserSession(user: User)(implicit session: SlickSession): UserSession = {
-    val userSession = new UserSession(user, passwordEncoder.encode(user.passwordHash, new DateTime()), new DateTime().plusDays(1), passwordEncoder.encode(user.passwordHash, new DateTime()),new DateTime().plusMonths(1))
-    userSession.accessToken = user.passwordHash
+    val userSession = new UserSession(user, passwordEncoder.encode(user.email, new DateTime()), new DateTime().plusDays(1), passwordEncoder.encode(user.email, new DateTime()),new DateTime().plusMonths(1))
+
     userSessionDao.save(userSession)
 
     userSession

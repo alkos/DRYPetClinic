@@ -1,10 +1,11 @@
 package eu.execom.dry.petclinic.service
 
+import com.google.api.client.http.javanet.NetHttpTransport
+import com.google.api.client.json.jackson.JacksonFactory
 import com.hazelcast.config.Config
 import com.hazelcast.config.GroupConfig
 import com.hazelcast.core.Hazelcast
 import eu.execom.dry.petclinic.persistence.SlickPersistenceConfiguration
-import eu.execom.dry.petclinic.util._
 
 trait ServiceConfiguration extends SlickPersistenceConfiguration {
 
@@ -17,10 +18,18 @@ trait ServiceConfiguration extends SlickPersistenceConfiguration {
 
   lazy val passwordEncoder = new PasswordEncoder
 
+  lazy val facebookApiConsumer: FacebookApiConsumer = new FacebookApiConsumer()
+
+  def googleWebClientId: String
+  def googleWebClientSecret: String
+  lazy val netHttpTransport = new NetHttpTransport()
+  lazy val jacksonFactory = new JacksonFactory()
+  lazy val googleApiConsumer: GoogleApiConsumer = new GoogleApiConsumer(googleWebClientId, googleWebClientSecret, netHttpTransport, jacksonFactory)
+
   def appEmail: String
   def appName: String
   def appUrl: String
-  lazy val securedService: SecuredService = new SecuredService(userDao, userSessionDao, passwordEncoder, mailSender, appEmail, appName, appUrl)
+  lazy val securedService: SecuredService = new SecuredService(userDao, userSessionDao, passwordEncoder, mailSender, facebookApiConsumer, googleApiConsumer, appEmail, appName, appUrl)
 
   def hazelcastGroupName: String
   def hazelcastGroupPassword: String

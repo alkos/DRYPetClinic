@@ -9,7 +9,7 @@
          *"Request": CreateUserDto {
          *    "role": Int,
          *    "username": String,
-         *    "password": String
+         *    "password": Option[String]
          *}
          *
          *"Response": ReadUserResponseDto {
@@ -64,7 +64,7 @@
          *"Request": UpdateUserDto {
          *    "id": Int,
          *    "role": Int,
-         *    "password": Option[String]
+         *    "password": Option[Option[String]]
          *}
          *
          *"Response": ReadUserResponseDto {
@@ -161,12 +161,12 @@
          *
          * Api URL: /api/signUp?
          *"Request": SignUpDto {
-         *    "username": String,
+         *    "email": String,
          *    "password": String
          *}
          *
          *"Response": AuthenticationResponseDto {
-         *    "username": String,
+         *    "email": String,
          *    "roleId": Int,
          *    "accessToken": String,
          *    "refreshToken": String
@@ -177,7 +177,7 @@
                 method: 'POST',
                 url: '/api/signUp',
                 data: {
-                  username: model.username,
+                  email: model.email,
                   password: model.password
                 }
             }).success(function (data) {
@@ -191,12 +191,12 @@
          *
          * Api URL: /api/signIn?
          *"Request": SignInDto {
-         *    "username": String,
-         *    "passwordHash": String
+         *    "email": String,
+         *    "password": String
          *}
          *
          *"Response": AuthenticationResponseDto {
-         *    "username": String,
+         *    "email": String,
          *    "roleId": Int,
          *    "accessToken": String,
          *    "refreshToken": String
@@ -207,8 +207,8 @@
                 method: 'POST',
                 url: '/api/signIn',
                 data: {
-                  username: model.username,
-                  passwordHash: model.passwordHash
+                  email: model.email,
+                  password: model.password
                 }
             }).success(function (data) {
                 successCallback(data);
@@ -241,7 +241,7 @@
          *}
          *
          *"Response": AuthenticationResponseDto {
-         *    "username": String,
+         *    "email": String,
          *    "roleId": Int,
          *    "accessToken": String,
          *    "refreshToken": String
@@ -269,7 +269,7 @@
          *}
          *
          *"Response": AuthenticationResponseDto {
-         *    "username": String,
+         *    "email": String,
          *    "roleId": Int,
          *    "accessToken": String,
          *    "refreshToken": String

@@ -1,29 +1,29 @@
 <form name="signInForm" role="form" novalidate ng-submit="ctrl.viewModel.onSubmit()">
 
     <div class="form-group">
-        <label for="username">{{'SIGNINFORM_USERNAME' | translate}}</label>
-        <input type="text" id="username" class="form-control" name="username" ng-model="ctrl.viewModel.user.username"
+        <label for="email">{{'SIGNINFORM_EMAIL' | translate}}</label>
+        <input type="text" id="email" class="form-control" name="email" ng-model="ctrl.viewModel.user.email"
                ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0 } }"
-               placeholder="{{'SIGNINFORM_USERNAME' | translate}}"
+               placeholder="{{'SIGNINFORM_EMAIL' | translate}}"
                minlength="0" maxlength="1024" required>
 
-        <div ng-messages="signInForm.username.$error" ng-if="signInForm.username.$touched">
-            <div ng-message="required">{{'SIGNINFORM_USERNAME_REQUIRED' | translate}}</div>
-            <div ng-message="minlength">{{'SIGNINFORM_USERNAME_MINLENGTH' | translate:'{ minlength: 0 }'}}</div>
-            <div ng-message="maxlength">{{'SIGNINFORM_USERNAME_MAXLENGTH' | translate:'{ maxlength: 1024 }'}}</div>
+        <div ng-messages="signInForm.email.$error" ng-if="signInForm.email.$touched">
+            <div ng-message="required">{{'SIGNINFORM_EMAIL_REQUIRED' | translate}}</div>
+            <div ng-message="minlength">{{'SIGNINFORM_EMAIL_MINLENGTH' | translate:'{ minlength: 0 }'}}</div>
+            <div ng-message="maxlength">{{'SIGNINFORM_EMAIL_MAXLENGTH' | translate:'{ maxlength: 1024 }'}}</div>
         </div>
     </div>
     <div class="form-group">
-        <label for="passwordHash">{{'SIGNINFORM_PASSWORD_HASH' | translate}}</label>
-        <input type="text" id="passwordHash" class="form-control" name="passwordHash" ng-model="ctrl.viewModel.user.passwordHash"
+        <label for="password">{{'SIGNINFORM_PASSWORD' | translate}}</label>
+        <input type="text" id="password" class="form-control" name="password" ng-model="ctrl.viewModel.user.password"
                ng-model-options="{ updateOn: 'default blur', debounce: {'default': 500, 'blur': 0 } }"
-               placeholder="{{'SIGNINFORM_PASSWORD_HASH' | translate}}"
+               placeholder="{{'SIGNINFORM_PASSWORD' | translate}}"
                minlength="0" maxlength="1024" required>
 
-        <div ng-messages="signInForm.passwordHash.$error" ng-if="signInForm.passwordHash.$touched">
-            <div ng-message="required">{{'SIGNINFORM_PASSWORD_HASH_REQUIRED' | translate}}</div>
-            <div ng-message="minlength">{{'SIGNINFORM_PASSWORD_HASH_MINLENGTH' | translate:'{ minlength: 0 }'}}</div>
-            <div ng-message="maxlength">{{'SIGNINFORM_PASSWORD_HASH_MAXLENGTH' | translate:'{ maxlength: 1024 }'}}</div>
+        <div ng-messages="signInForm.password.$error" ng-if="signInForm.password.$touched">
+            <div ng-message="required">{{'SIGNINFORM_PASSWORD_REQUIRED' | translate}}</div>
+            <div ng-message="minlength">{{'SIGNINFORM_PASSWORD_MINLENGTH' | translate:'{ minlength: 0 }'}}</div>
+            <div ng-message="maxlength">{{'SIGNINFORM_PASSWORD_MAXLENGTH' | translate:'{ maxlength: 1024 }'}}</div>
         </div>
     </div>
 
