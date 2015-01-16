@@ -128,13 +128,13 @@ case class PetHistory(private var _id: Int, private var _history_change_time: Ti
 }
 
 object PetHistory {
-  val ID: String = "_id"
-  val HISTORY_CHANGE_TIME: String = "_history_change_time"
-  val PETID: String = "_petId"
-  val NAME: String = "_name"
-  val BIRTHDATE: String = "_birthDate"
-  val OWNERID: String = "_ownerId"
-  val PETTYPEID: String = "_petTypeId"
+  val ID: String = "id"
+  val HISTORY_CHANGE_TIME: String = "history_change_time"
+  val PETID: String = "petId"
+  val NAME: String = "name"
+  val BIRTHDATE: String = "birthDate"
+  val OWNERID: String = "ownerId"
+  val PETTYPEID: String = "petTypeId"
 }
 
 object PET_HISTORY_HISTORY__CHANGE__TIME_IS_REQUIRED extends DataConstraintException("PET_HISTORY_HISTORY__CHANGE__TIME_IS_REQUIRED")

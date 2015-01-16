@@ -118,12 +118,12 @@ case class User(private var _id: Int, private var _roleId: Int, private var _ema
 }
 
 object User {
-  val ID: String = "_id"
-  val ROLEID: String = "_roleId"
-  val EMAIL: String = "_email"
-  val PASSWORDHASH: String = "_passwordHash"
-  val FACEBOOKID: String = "_facebookId"
-  val GOOGLEID: String = "_googleId"
+  val ID: String = "id"
+  val ROLEID: String = "roleId"
+  val EMAIL: String = "email"
+  val PASSWORDHASH: String = "passwordHash"
+  val FACEBOOKID: String = "facebookId"
+  val GOOGLEID: String = "googleId"
 }
 
 object USER_EMAIL_IS_REQUIRED extends DataConstraintException("USER_EMAIL_IS_REQUIRED")

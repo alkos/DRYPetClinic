@@ -7,6 +7,7 @@ case class EventBus(hazelcast: HazelcastInstance) {
 
   private val publishOnReceive = new ThreadLocal[Boolean]
   private val delayedEvents = new ThreadLocal[List[ServiceEvent]]
+  delayedEvents.set(Nil)
 
   def startSession(): Unit = publishOnReceive.set(true)
   def startTransaction(): Unit = publishOnReceive.set(false)

@@ -67,9 +67,9 @@ case class Vet(private var _id: Int, private var _firstName: String, private var
 }
 
 object Vet {
-  val ID: String = "_id"
-  val FIRSTNAME: String = "_firstName"
-  val LASTNAME: String = "_lastName"
+  val ID: String = "id"
+  val FIRSTNAME: String = "firstName"
+  val LASTNAME: String = "lastName"
 }
 
 object VET_FIRST_NAME_IS_REQUIRED extends DataConstraintException("VET_FIRST_NAME_IS_REQUIRED")

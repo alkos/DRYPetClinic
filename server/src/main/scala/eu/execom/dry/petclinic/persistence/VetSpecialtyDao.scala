@@ -52,8 +52,8 @@ case class VetSpecialty(private var _id: Int, private var _name: String) {
 }
 
 object VetSpecialty {
-  val ID: String = "_id"
-  val NAME: String = "_name"
+  val ID: String = "id"
+  val NAME: String = "name"
 }
 
 object VET_SPECIALTY_NAME_IS_REQUIRED extends DataConstraintException("VET_SPECIALTY_NAME_IS_REQUIRED")

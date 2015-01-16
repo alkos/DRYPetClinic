@@ -52,8 +52,8 @@ case class PetType(private var _id: Int, private var _name: String) {
 }
 
 object PetType {
-  val ID: String = "_id"
-  val NAME: String = "_name"
+  val ID: String = "id"
+  val NAME: String = "name"
 }
 
 object PET_TYPE_NAME_IS_REQUIRED extends DataConstraintException("PET_TYPE_NAME_IS_REQUIRED")

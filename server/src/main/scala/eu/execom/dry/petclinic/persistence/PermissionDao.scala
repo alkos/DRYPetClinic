@@ -68,9 +68,9 @@ case class Permission(private var _id: Int, private var _roleId: Int, private va
 }
 
 object Permission {
-  val ID: String = "_id"
-  val ROLEID: String = "_roleId"
-  val ACCESSRIGHT: String = "_accessRight"
+  val ID: String = "id"
+  val ROLEID: String = "roleId"
+  val ACCESSRIGHT: String = "accessRight"
 }
 
 object PERMISSION_ACCESS_RIGHT_IS_REQUIRED extends DataConstraintException("PERMISSION_ACCESS_RIGHT_IS_REQUIRED")

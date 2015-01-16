@@ -8,12 +8,20 @@ import scala.util.Try
 
 class SecuredService(val userDao: UserDao, val userSessionDao: UserSessionDao, val passwordEncoder: PasswordEncoder, val mailSender: MailSender, val facebookApiConsumer: FacebookApiConsumer, val googleApiConsumer: GoogleApiConsumer, val appEmail: String, val appName: String, val appUrl: String) {
 
+  def createUserSession(user: User)(implicit session: SlickSession): UserSession = {
+    val userSession = new UserSession(user, passwordEncoder.encode(user.toString, new DateTime()), new DateTime().plusDays(1), passwordEncoder.encode(user.toString, new DateTime()),new DateTime().plusMonths(1))
+
+    userSessionDao.save(userSession)
+
+    userSession
+  }
+
   def signUp(email: String, password: String)(implicit session: SlickSession): Try[(User, UserSession)] = Try {
     require(email != null && password != null)
 
     mailSender.sendEmail(email, email, appEmail, appName, "Registration", s"Successful registration for $email!")
 
-    val user = new User()
+    val user = new User
     user.email = email
     user.passwordHash = Some(passwordEncoder.encode(password, email))
     //TODO add other properties
@@ -110,23 +118,15 @@ class SecuredService(val userDao: UserDao, val userSessionDao: UserSessionDao, v
 
     val user = userSession.user
 
-    userSession.accessToken = passwordEncoder.encode(user.email, new DateTime())
+    userSession.accessToken = passwordEncoder.encode(user.toString, new DateTime())
     userSession.accessTokenExpires = new DateTime().plusDays(1)
 
-    userSession.refreshToken = passwordEncoder.encode(user.email, new DateTime())
+    userSession.refreshToken = passwordEncoder.encode(user.toString, new DateTime())
     userSession.refreshTokenExpires = new DateTime().plusMonths(1)
 
     userSessionDao.update(userSession)
 
     (user, userSession)
-  }
-
-  def createUserSession(user: User)(implicit session: SlickSession): UserSession = {
-    val userSession = new UserSession(user, passwordEncoder.encode(user.email, new DateTime()), new DateTime().plusDays(1), passwordEncoder.encode(user.email, new DateTime()),new DateTime().plusMonths(1))
-
-    userSessionDao.save(userSession)
-
-    userSession
   }
 
 }

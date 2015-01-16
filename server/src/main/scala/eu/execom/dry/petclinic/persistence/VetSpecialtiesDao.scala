@@ -69,9 +69,9 @@ case class VetSpecialties(private var _id: Int, private var _vetId: Int, private
 }
 
 object VetSpecialties {
-  val ID: String = "_id"
-  val VETID: String = "_vetId"
-  val SPECIALTYID: String = "_specialtyId"
+  val ID: String = "id"
+  val VETID: String = "vetId"
+  val SPECIALTYID: String = "specialtyId"
 }
 
 object VETSPECIALTIES_DOESNT_EXIST extends DataConstraintException("VETSPECIALTIES_DOESNT_EXIST")

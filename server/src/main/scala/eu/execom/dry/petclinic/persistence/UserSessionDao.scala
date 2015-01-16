@@ -116,12 +116,12 @@ case class UserSession(private var _id: Int, private var _userId: Int, private v
 }
 
 object UserSession {
-  val ID: String = "_id"
-  val USERID: String = "_userId"
-  val ACCESSTOKEN: String = "_accessToken"
-  val ACCESSTOKENEXPIRES: String = "_accessTokenExpires"
-  val REFRESHTOKEN: String = "_refreshToken"
-  val REFRESHTOKENEXPIRES: String = "_refreshTokenExpires"
+  val ID: String = "id"
+  val USERID: String = "userId"
+  val ACCESSTOKEN: String = "accessToken"
+  val ACCESSTOKENEXPIRES: String = "accessTokenExpires"
+  val REFRESHTOKEN: String = "refreshToken"
+  val REFRESHTOKENEXPIRES: String = "refreshTokenExpires"
 }
 
 object USER_SESSION_ACCESS_TOKEN_IS_REQUIRED extends DataConstraintException("USER_SESSION_ACCESS_TOKEN_IS_REQUIRED")

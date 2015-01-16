@@ -84,10 +84,10 @@ case class Visit(private var _id: Int, private var _date: Date, private var _des
 }
 
 object Visit {
-  val ID: String = "_id"
-  val DATE: String = "_date"
-  val DESCRIPTION: String = "_description"
-  val PETID: String = "_petId"
+  val ID: String = "id"
+  val DATE: String = "date"
+  val DESCRIPTION: String = "description"
+  val PETID: String = "petId"
 }
 
 object VISIT_DATE_IS_REQUIRED extends DataConstraintException("VISIT_DATE_IS_REQUIRED")

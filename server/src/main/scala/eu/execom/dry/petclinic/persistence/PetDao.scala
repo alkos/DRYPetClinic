@@ -99,11 +99,11 @@ case class Pet(private var _id: Int, private var _name: String, private var _bir
 }
 
 object Pet {
-  val ID: String = "_id"
-  val NAME: String = "_name"
-  val BIRTHDATE: String = "_birthDate"
-  val OWNERID: String = "_ownerId"
-  val PETTYPEID: String = "_petTypeId"
+  val ID: String = "id"
+  val NAME: String = "name"
+  val BIRTHDATE: String = "birthDate"
+  val OWNERID: String = "ownerId"
+  val PETTYPEID: String = "petTypeId"
 }
 
 object PET_NAME_IS_REQUIRED extends DataConstraintException("PET_NAME_IS_REQUIRED")

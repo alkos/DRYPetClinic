@@ -53,8 +53,8 @@ case class Role(private var _id: Int, private var _name: String) {
 }
 
 object Role {
-  val ID: String = "_id"
-  val NAME: String = "_name"
+  val ID: String = "id"
+  val NAME: String = "name"
 }
 
 object ROLE_NAME_IS_REQUIRED extends DataConstraintException("ROLE_NAME_IS_REQUIRED")

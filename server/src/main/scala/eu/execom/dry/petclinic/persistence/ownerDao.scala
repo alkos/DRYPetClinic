@@ -112,12 +112,12 @@ case class owner(private var _id: Int, private var _firstName: String, private v
 }
 
 object owner {
-  val ID: String = "_id"
-  val FIRSTNAME: String = "_firstName"
-  val LASTNAME: String = "_lastName"
-  val ADDRESS: String = "_address"
-  val CITY: String = "_city"
-  val TELEPHONE: String = "_telephone"
+  val ID: String = "id"
+  val FIRSTNAME: String = "firstName"
+  val LASTNAME: String = "lastName"
+  val ADDRESS: String = "address"
+  val CITY: String = "city"
+  val TELEPHONE: String = "telephone"
 }
 
 object OWNER_FIRST_NAME_IS_REQUIRED extends DataConstraintException("OWNER_FIRST_NAME_IS_REQUIRED")
