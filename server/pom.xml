@@ -11,8 +11,8 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-
         <java.version>1.8</java.version>
+        <encoding>UTF-8</encoding>
     </properties>
 
     <dependencies>
@@ -232,15 +232,11 @@
 
     <repositories>
         <repository>
-            <id>org.jboss.repository.releases</id>
-            <name>JBoss Maven Release Repository</name>
-            <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
+            <id>Central Maven repo</id>
+            <url>http://repo1.maven.org/maven/</url>
         </repository>
         <repository>
-            <id>vesin-repo</id>
+            <id>Execom repository</id>
             <url>http://execom-eu.github.io/repository/repo/</url>
         </repository>
     </repositories>
