@@ -28,15 +28,17 @@ class UserService(val userDao: UserDao, val eventBus: EventBus) extends Logging 
     userDao.update(user)
 
     if (emailChange.isDefined) {
-       eventBus.publish(UserEmailUpdateEvent(user.id, emailChange.get))
+      eventBus.publish(UserEmailUpdateEvent(user.id, emailChange.get))
     }
     if (passwordHashChange.isDefined) {
-       eventBus.publish(UserPasswordHashUpdateEvent(user.id, passwordHashChange.get))
+      eventBus.publish(UserPasswordHashUpdateEvent(user.id, passwordHashChange.get))
        eventBus.publish(user.roleId ,UserPasswordHashUpdateEvent(user.id, passwordHashChange.get))
     }
 
-    eventBus.publish(UserUpdateEvent(user.id, roleIdChange, emailChange, passwordHashChange, facebookIdChange, googleIdChange))
-    eventBus.publish(user.email ,UserUpdateEvent(user.id, roleIdChange, emailChange, passwordHashChange, facebookIdChange, googleIdChange))
+    if (roleIdChange.isDefined || emailChange.isDefined || passwordHashChange.isDefined || facebookIdChange.isDefined || googleIdChange.isDefined)
+      eventBus.publish(UserUpdateEvent(user.id, roleIdChange, emailChange, passwordHashChange, facebookIdChange, googleIdChange))
+    if (roleIdChange.isDefined || emailChange.isDefined || passwordHashChange.isDefined || facebookIdChange.isDefined || googleIdChange.isDefined)
+      eventBus.publish(user.email ,UserUpdateEvent(user.id, roleIdChange, emailChange, passwordHashChange, facebookIdChange, googleIdChange))
   }
 
   def delete(user: User)(implicit session: SlickSession): Unit = {
