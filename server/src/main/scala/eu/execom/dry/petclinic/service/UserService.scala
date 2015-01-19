@@ -32,7 +32,7 @@ class UserService(val userDao: UserDao, val eventBus: EventBus) extends Logging 
     }
     if (passwordHashChange.isDefined) {
       eventBus.publish(UserPasswordHashUpdateEvent(user.id, passwordHashChange.get))
-       eventBus.publish(user.roleId ,UserPasswordHashUpdateEvent(user.id, passwordHashChange.get))
+      eventBus.publish(user.roleId ,UserPasswordHashUpdateEvent(user.id, passwordHashChange.get))
     }
 
     if (roleIdChange.isDefined || emailChange.isDefined || passwordHashChange.isDefined || facebookIdChange.isDefined || googleIdChange.isDefined)
